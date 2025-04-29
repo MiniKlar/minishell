@@ -1,0 +1,6 @@
+--keep-debuginfo=yes
+--leak-check=full
+--track-origins=yes
+--show-leak-kinds=all
+--track-fds=yes
+--suppressions=minishell.supp

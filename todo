@@ -1,0 +1,46 @@
+//TODO signals
+	si ctrl-C --> SIGINT + retour a la ligne
+	si ctrl-D --> EOF (end-of-file (usually C-d)
+	The character indicating end-of-file as set, for example, by stty. If this charac-
+	ter is read when there are no characters on the line, and point is at the beginning
+	of the line, Readline interprets it as the end of input and returns eof.)
+	ctrl-\ --> do nothing.
+
+//TODO Readline NE PAS OUBLIER LE FLAG -lreadline
+	recupere variable pour afficher "lomont@c2r4p1:~$ " (espace important)
+	readline(ENV); --> on recupere un char* malloc donc on doit le free
+
+//
+	void add_history(char *s); --> add history des commandes.
+	rl_clear_history(); --> clear history a la fin. (comme un free);
+	int rl_on_new_line(void); --> maybe pour ctrl->C;
+
+//TODO #include <unistd.h> char *getcwd(char *buf, size_t size); --> pour recuperer le pwd
+
+//TODO #include <unistd.h> int chdir(const char *path); --> pour CD;
+
+//TODO on sait pas encore | pour recuperer des infos sur les fichiers
+#include <sys/stat.h>
+int stat(const char *restrict pathname, struct stat *restrict statbuf);
+int lstat(const char *restrict pathname, struct stat *restrict statbuf);
+int fstat(int fd, struct stat *statbuf);
+
+//TODO on sait pas encore | utilisation pour les dir
+opendir()
+
+#include <sys/types.h>
+#include <dirent.h>
+DIR *opendir(const char *name);
+
+readdir()
+
+#include <dirent.h>
+struct dirent *readdir(DIR *dirp);
+
+closedir()
+
+#include <sys/types.h>
+#include <dirent.h>
+int closedir(DIR *dirp);
+
+//TODO REGLER ESPACE DEBUT PEUT ETRE FIN ET DOUBLE QUOTE IMPLENTATION BOOLEAN
