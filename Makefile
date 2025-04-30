@@ -11,7 +11,10 @@ LIB_C			= LIB_C
 
 SRC 			= ./parsing/parsing.c \
 				./utils/free.c \
-				./minishell.c \
+				./built-ins/cd.c \
+				./built-ins/pwd.c \
+				./built-ins/exit.c \
+				./main.c \
 
 OBJ 			= $(SRC:.c=.o)
 
