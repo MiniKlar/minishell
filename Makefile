@@ -14,6 +14,7 @@ SRC 			= ./parsing/parsing.c \
 				./built-ins/cd.c \
 				./built-ins/pwd.c \
 				./built-ins/exit.c \
+				./built-ins/echo.c \
 				./main.c \
 
 OBJ 			= $(SRC:.c=.o)
@@ -23,7 +24,7 @@ all: $(NAME)
 bonus: $(NAME)
 
 $(NAME): $(LIB_C) $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) ./LIB_C/LIB_C.a -o $(NAME) -lreadline
+	$(CC) $(CFLAGS) $(OBJ) ./LIB_C/LIB_C.a -o $(NAME) -lreadline -ltermcap
 
 $(LIB_C):
 	git clone $(LIB_C_GIT_URL) $(LIB_C)

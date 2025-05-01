@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char *pwd(void)
+char *pwd(bool print)
 {
 	char *buffer;
 
@@ -9,8 +9,8 @@ char *pwd(void)
 		perror("pwd error");
 	else
 	{
-		printf("%s\n", buffer); //peut-etre enlever le \n
-		printf("Success!\n");
+		if (print)
+			printf("%s\n", buffer); //peut-etre enlever le \n
 	}
 	return (buffer);
 }

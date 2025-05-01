@@ -1,14 +1,14 @@
 #include "minishell.h"
 
-void	free_tab(char **tab)
+void	free_tab(char **tableau)
 {
 	int	i;
 
 	i = 0;
-	while (tab[i] != 0)
+	while (tableau[i] != 0)
 	{
-		free(tab[i]);
+		free(tableau[i]);
 		i++;
 	}
-	free(tab);
+	free(tableau);
 }
