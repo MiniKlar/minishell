@@ -11,9 +11,9 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <stdbool.h>
-#include </usr/include/stdio.h>
-#include </usr/include/readline/readline.h>
-#include </usr/include/readline/history.h>
+#include <stdio.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 typedef struct s_token
 {
@@ -21,14 +21,26 @@ typedef struct s_token
 	size_t nb_tokens;
 }			t_token;
 
-void	free_tab(char **tableau);
-void	ft_strtok(t_token *tokens, char *str, char delimiter);
+typedef struct s_parameters
+{
+	char	*name;
+	char	signe;
+	char	*valeur;
+
+}			t_parameters;
+
+void			free_tab(char **tableau);
+void			ft_strtok(t_token *tokens, char *str, char delimiter);
+t_parameters	*create_node_param(void);
+t_parameters	*add_parameters(char *str);
+char			*find_param(char *command, t_parameters *node);
 
 //built-ins
 
 int cd(char *path);
 char *pwd(bool print);
 int ft_exit(void);
-int ft_echo(char **tab_cmd);
+int ft_echo(char **tab_cmd, t_parameters *node);
+bool is_shell_parameter(char *str);
 
 #endif

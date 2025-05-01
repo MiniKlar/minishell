@@ -2,10 +2,11 @@
 
 char *get_home(char *str);
 
-int ft_echo(char **command)
+int ft_echo(char **command, t_parameters *node)
 {
 	size_t i;
 	char *tilde;
+	char *ptr;
 	bool has_arg = false;
 	i = 0;
 	if (command[1] == NULL)
@@ -26,6 +27,11 @@ int ft_echo(char **command)
 			if (tilde == NULL)
 				tilde = pwd(false);
 			ft_putstr_fd(get_home(tilde), 1);
+		}
+		else if (strncmp(command[i], "$", 1) == 0)
+		{
+			ptr = find_param(command[i], node);
+			ft_putstr_fd(ptr, 1);
 		}
 		else
 			ft_putstr_fd(command[i], 1);
