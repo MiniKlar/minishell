@@ -12,3 +12,22 @@ void	free_tab(char **tableau)
 	}
 	free(tableau);
 }
+
+void	free_params(t_params *node)
+{
+	t_params	*tmp;
+
+	if (node == NULL)
+		return ;
+	else
+	{
+		while (node)
+		{
+			free(node->name);
+			free(node->valeur);
+			tmp = node->next;
+			free(node);
+			node = tmp;
+		}
+	}
+}

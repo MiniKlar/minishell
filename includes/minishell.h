@@ -21,26 +21,31 @@ typedef struct s_token
 	size_t nb_tokens;
 }			t_token;
 
-typedef struct s_parameters
+typedef struct s_params
 {
 	char	*name;
 	char	signe;
 	char	*valeur;
+	void	*next;
 
-}			t_parameters;
+}			t_params;
 
 void			free_tab(char **tableau);
 void			ft_strtok(t_token *tokens, char *str, char delimiter);
-t_parameters	*create_node_param(void);
-t_parameters	*add_parameters(char *str);
-char			*find_param(char *command, t_parameters *node);
+t_params		*create_node_param(void);
+t_params		*add_parameters(char *str, t_params *node);
+char			*find_param(char *command, t_params *node);
+void			ft_add_back(t_params **lst, t_params *new);
+void			ft_add_front(t_params **lst, t_params *new);
+t_params		*ft_last(t_params *lst);
+void			free_params(t_params *node);
 
 //built-ins
 
 int cd(char *path);
 char *pwd(bool print);
-int ft_exit(void);
-int ft_echo(char **tab_cmd, t_parameters *node);
+int ft_exit(t_params *node);
+int ft_echo(char **tab_cmd, t_params *node);
 bool is_shell_parameter(char *str);
 
 #endif

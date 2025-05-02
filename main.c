@@ -5,9 +5,8 @@ int main(void)
 	char *command;
 	char **tab_cmd;
 	char *buffer;
-	t_parameters *node;
+	t_params *node = NULL;
 	bool shell_on = true;
-
 
 	while (shell_on)
 	{
@@ -26,11 +25,11 @@ int main(void)
 			ft_echo(tab_cmd, node);
 		else if (strncmp(command, "exit", 3) == 0)
 		{
-			ft_putstr_fd("exit\n", 1);
+			ft_exit(node);
 			shell_on = false;
 		}
 		else if (is_shell_parameter(command))
-			node = add_parameters(command);
+			node = add_parameters(command, node);
 		if (strncmp(command, "", 1) != 0)
 			add_history(command);
 		free_tab(tab_cmd);

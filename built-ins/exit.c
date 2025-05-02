@@ -1,15 +1,8 @@
 #include "minishell.h"
 
-int ft_exit(void)
+int ft_exit(t_params *node)
 {
-	if (kill(0, SIGTERM) == -1)
-	{
-		perror("Cannot kill shell");
-		return (-1);
-	}
-	else
-	{
-		printf("\nexit\n");
-		return (0);
-	}
+	ft_putstr_fd("exit\n", 1);
+	free_params(node);
+	return (0);
 }

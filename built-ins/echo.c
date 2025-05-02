@@ -2,7 +2,7 @@
 
 char *get_home(char *str);
 
-int ft_echo(char **command, t_parameters *node)
+int ft_echo(char **command, t_params *node)
 {
 	size_t i;
 	char *tilde;
@@ -31,7 +31,9 @@ int ft_echo(char **command, t_parameters *node)
 		else if (strncmp(command[i], "$", 1) == 0)
 		{
 			ptr = find_param(command[i], node);
-			ft_putstr_fd(ptr, 1);
+			if (ptr)
+				ft_putstr_fd(ptr, 1);
+			free(ptr);
 		}
 		else
 			ft_putstr_fd(command[i], 1);

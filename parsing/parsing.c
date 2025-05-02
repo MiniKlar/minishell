@@ -95,10 +95,7 @@ bool is_shell_parameter(char *str)
 		else if (str[i] == ' ' && seen_egal == true)
 			return (true);
 		else if (str[i] == '=')
-		{
 			seen_egal = true;
-		}
-		printf("Voici la lettre= %c\n", str[i]);
 		i++;
 	}
 	if(seen_egal == true)
@@ -107,42 +104,26 @@ bool is_shell_parameter(char *str)
 		return(false);
 }
 
-char *find_param(char *command, t_parameters *node)
+char *find_param(char *command, t_params *node)
 {
 	char *tmp;
 	command++;
-	if (strncmp(node->name, command, ft_strlen(node->name)) == 0)
+	while (node)
 	{
-		tmp = ft_strdup(node->valeur);
-		return (tmp);
+		if (strncmp(node->name, command, ft_strlen(node->name)) == 0)
+		{
+			tmp = ft_strdup(node->valeur);
+			return (tmp);
+		}
+		else
+			node = node->next;
 	}
-	else
-		return (NULL);
+	return (NULL);
 }
 
-t_parameters	*add_parameters(char *str)
+t_params *create_node_param(void)
 {
-	t_parameters *shell_para;
-	size_t		i;
-	size_t		k;
-
-	i = 0;
-	shell_para = create_node_param();
-	while(str[i] != '=')
-		i++;
-	shell_para->name = ft_substr(str, 0, i);
-	shell_para->signe = str[i];
-	k = i + 1;
-	while(str[++i] != '\0')
-		;
-	shell_para->valeur = ft_substr(str, k, i - k);
-	printf("NAME= '%s' | signe= '%c' | valeur= '%s'\n", shell_para->name, shell_para->signe, shell_para->valeur);
-	return (shell_para);
-}
-
-t_parameters *create_node_param(void)
-{
-	t_parameters	*shell_para;
+	t_params	*shell_para;
 
 	shell_para = malloc(sizeof(*shell_para));
 	if (!shell_para)
@@ -150,5 +131,6 @@ t_parameters *create_node_param(void)
 	shell_para->name = NULL;
 	shell_para->signe = '0';
 	shell_para->valeur= NULL;
-	return(shell_para);
+	shell_para->next=NULL;
+	return (shell_para);
 }

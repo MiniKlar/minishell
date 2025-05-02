@@ -16,6 +16,9 @@ SRC 			= ./parsing/parsing.c \
 				./built-ins/exit.c \
 				./built-ins/echo.c \
 				./main.c \
+				./utils/struct/ft_add.c \
+				./utils/struct/ft_get.c \
+				./utils/struct/ft_struct.c \
 
 OBJ 			= $(SRC:.c=.o)
 
