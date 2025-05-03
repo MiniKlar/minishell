@@ -4,7 +4,7 @@ int main(void)
 {
 	char *command;
 	char **tab_cmd;
-	char *buffer;
+	//char *buffer;
 	t_params *node = NULL;
 	bool shell_on = true;
 
@@ -12,18 +12,19 @@ int main(void)
 	{
 		command = readline("minishell exec test$ ");
 		if (command == NULL)
-			return (EXIT_FAILURE);
+			exit(EXIT_FAILURE);
 		tab_cmd = ft_split(command, ' ');
-		if (strncmp(command, "pwd", 3) == 0)
-		{
-			buffer = pwd(true);
-			free(buffer);
-		}
-		else if (strncmp(command, "cd", 2) == 0)
-			cd("..");
-		else if ((strncmp(command, "echo ", 5) == 0))
-			ft_echo(tab_cmd, node);
-		else if (strncmp(command, "exit", 3) == 0)
+		print_tab(tab_cmd);
+		// if (strncmp(command, "pwd", 3) == 0)
+		// {
+		// 	buffer = pwd(true);
+		// 	free(buffer);
+		// }
+		// else if (strncmp(command, "cd", 2) == 0)
+		// 	cd("..");
+		// else if ((strncmp(command, "echo ", 5) == 0))
+		// 	ft_echo(tab_cmd, node);
+		if (strncmp(command, "exit", 3) == 0)
 		{
 			ft_exit(node);
 			shell_on = false;

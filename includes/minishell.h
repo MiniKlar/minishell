@@ -39,6 +39,7 @@ void			ft_add_back(t_params **lst, t_params *new);
 void			ft_add_front(t_params **lst, t_params *new);
 t_params		*ft_last(t_params *lst);
 void			free_params(t_params *node);
+void			print_tab(char **tableau);
 
 //built-ins
 

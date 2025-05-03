@@ -134,3 +134,19 @@ t_params *create_node_param(void)
 	shell_para->next=NULL;
 	return (shell_para);
 }
+
+void print_tab(char **tableau)
+{
+	size_t	i;
+
+	i = 0;
+	while (tableau[i])
+	{
+		ft_putstr_fd("Tableau[", 1);
+		ft_putchar_fd((i + '0'), 1);
+		ft_putstr_fd("] = ", 1);
+		ft_putstr_fd(tableau[i], 1);
+		ft_putchar_fd('\n', 1);
+		i++;
+	}
+}
