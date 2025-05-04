@@ -10,6 +10,7 @@ LIB_C_GIT_URL 	= git@github.com:MiniKlar/LIB_C.git
 LIB_C			= LIB_C
 
 SRC 			= ./parsing/parsing.c \
+				./parsing/token.c \
 				./utils/free.c \
 				./built-ins/cd.c \
 				./built-ins/pwd.c \
@@ -19,6 +20,8 @@ SRC 			= ./parsing/parsing.c \
 				./utils/struct/ft_add.c \
 				./utils/struct/ft_get.c \
 				./utils/struct/ft_struct.c \
+				./exec/pipe.c \
+				./exec/utils.c \
 
 OBJ 			= $(SRC:.c=.o)
 
