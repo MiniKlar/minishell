@@ -18,7 +18,7 @@
 
 typedef struct s_pipe
 {
-	int	fdpipe[2];
+	int		*fdpipe;
 }			t_pipe;
 
 typedef struct s_token
@@ -27,7 +27,7 @@ typedef struct s_token
 	size_t nb_tokens;
 	size_t count_pipes;
 	void *next;
-	bool	is_pipe;
+	int	*is_pipe;
 }			t_token;
 
 typedef struct s_params
@@ -52,6 +52,7 @@ t_token			*ft_last_token(t_token *lst);
 void			free_params(t_params *node);
 void			print_tab(char **tableau);
 void			ft_add_back_tokens(t_token **lst, t_token *new);
+void free_struct_pipe(t_pipe *pipex);
 
 //built-ins
 

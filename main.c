@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int main(int argc, char **envp)
+int main(int argc, char **argv, char** envp)
 {
 	char *command;
 	char **tab_cmd;
@@ -8,6 +8,7 @@ int main(int argc, char **envp)
 	t_params *node = NULL;
 	bool shell_on = true;
 	(void)argc;
+	(void)argv;
 	while (shell_on)
 	{
 		t_token *tokens = NULL;

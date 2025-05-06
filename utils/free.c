@@ -49,3 +49,9 @@ void	free_params(t_params *node)
 		}
 	}
 }
+
+void free_struct_pipe(t_pipe *pipex)
+{
+	free(pipex->fdpipe);
+	free(pipex);
+}
