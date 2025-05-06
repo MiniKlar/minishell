@@ -1,5 +1,13 @@
 #include "minishell.h"
 
+void	free_execve_error(t_token *tok, t_pipe *p, char **c_arg, char *c_path)
+{
+	free(c_path);
+	free_tab(c_arg);
+	free_tokens(tok);
+	free_struct_pipe(p);
+}
+
 void	free_tab(char **tableau)
 {
 	int	i;

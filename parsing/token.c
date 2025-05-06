@@ -29,11 +29,7 @@ t_token *create_node_token(char *arg, size_t i)
 	node->nb_tokens = i;
 	node->count_pipes = 0;
 	node->next = NULL;
-	node->is_pipe = malloc(sizeof(int));
-	if (!node->is_pipe)
-		return (NULL);
-	else
-		*node->is_pipe = 0;
+	node->is_pipe = false;
 	return (node);
 }
 
@@ -49,7 +45,7 @@ void	find_pipes_heredoc(t_token *node)
 		if (ft_strncmp(node->tokens, "|", ft_strlen(node->tokens)) == 0)
 		{
 			node->count_pipes = ++i;
-			*node->is_pipe = 1;
+			node->is_pipe = true;
 		}
 		node = node->next;
 	}

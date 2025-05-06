@@ -17,6 +17,7 @@ int main(int argc, char **argv, char** envp)
 			exit(EXIT_FAILURE);
 		tab_cmd = ft_split(command, ' ');
 		tokens = fill_token(tokens, tab_cmd);
+		free_tab(tab_cmd);
 		print_tokens(tokens);
 		printf("nbr of pipes: %zu\n", print_pipes_nbr(tokens));
 		if (strncmp(command, "exit", 3) == 0)
@@ -43,7 +44,6 @@ int main(int argc, char **argv, char** envp)
 			add_history(command);
 		}
 		free_tokens(tokens);
-		free_tab(tab_cmd);
 	}
 	return (EXIT_SUCCESS);
 }

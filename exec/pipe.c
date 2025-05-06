@@ -18,7 +18,7 @@ char **recup_command_arg(t_token *node)
 		return NULL;
 	while (node)
 	{
-		if (*node->is_pipe == 0)
+		if (node->is_pipe == false)
 		{
 			tmp = buffer;
 			buffer = ft_strjoin(buffer, node->tokens);
@@ -51,17 +51,24 @@ int ft_pipe(t_token *tokens, char **envp)
 
 	pipex = malloc(sizeof(*pipex));
 	if (!pipex)
-		return 1;
+		return (EXIT_FAILURE);
 	pipex->fdpipe = malloc(sizeof(int) * ((nb_pipe * 2) + 1));
 	if (pipex->fdpipe == NULL)
-		return 1;
+	{
+		free(pipex);
+		return (EXIT_FAILURE);
+	}
 	wstatus = 0;
 	j = 0;
 	pipex->fdpipe[nb_pipe * 2] = 0;
 	while (j < nb_pipe * 2)
 	{
 		if (pipe(((pipex->fdpipe) + j)) == -1)
+		{
+			perror("Error pipe");
 			free(pipex);
+			return (EXIT_FAILURE);
+		}
 		j += 2;
 	}
 	id_fork[0] = fork();
@@ -94,7 +101,7 @@ int ft_pipe(t_token *tokens, char **envp)
 			exit(WEXITSTATUS(wstatus));
 		i++;
 	}
-	while (*tokens->is_pipe == 0 && tokens->next != NULL)
+	while (tokens->is_pipe == false && tokens->next != NULL)
 		tokens = tokens->next;
 	tokens = tokens->next;
 	id_fork[nb_pipe] = fork();
@@ -105,14 +112,15 @@ int ft_pipe(t_token *tokens, char **envp)
 		exit(EXIT_FAILURE);
 	}
 	if (id_fork[nb_pipe] == 0)
-	{
 		fork_pipex3(tokens, pipex, envp);
-	}
 	if (WEXITSTATUS(wstatus) == 127)
 		exit(WEXITSTATUS(wstatus));
-	j = -1;
-	while (pipex->fdpipe[++j] != 0)
+	j = 0;
+	while (pipex->fdpipe[j] != 0)
+	{
 		close(pipex->fdpipe[j]);
+		j++;
+	}
 	wstatus = ft_wait(id_fork, nb_pipe, wstatus);
 	free_struct_pipe(pipex);
 	if (WIFEXITED(wstatus) && WEXITSTATUS(wstatus))
@@ -122,88 +130,95 @@ int ft_pipe(t_token *tokens, char **envp)
 
 void	fork_pipex1(t_token *node, t_pipe *pipex, char **envp)
 {
-	char	*command_path;
 	char	**command_arg;
+	char	*command_path;
+	size_t	i;
 
+	i = 0;
 	command_path = check_command_path(node->tokens, envp);
-	printf("COMMAND PATH %s\n", command_path);
 	command_arg = recup_command_arg(node);
-	if (!node->tokens)
+	if (dup2(pipex->fdpipe[i + 1], 1) == -1)
 	{
-		ft_printf("command not found\n");
+		free_execve_error(node, pipex, command_arg, command_path);
 		exit(1);
 	}
-	dup2(pipex->fdpipe[1], 1); // besoin d'ecrire dans pipe[1]
-	close(pipex->fdpipe[0]); // pas besoin de lire
-	close(pipex->fdpipe[1]);
-	close(pipex->fdpipe[2]);
-	close(pipex->fdpipe[3]); // close fdpipe[1];
+	while (pipex->fdpipe[i] != 0)
+	{
+		printf("valeur de i = %zu\n", i);
+		close(pipex->fdpipe[i]);
+		i++;
+	}
 	if (execve(command_path, &command_arg[0], envp) == -1)
 	{
-		ft_putstr_fd("ERROR EXEC VE fork 1", 1);
-		free(command_arg);
-		free(command_path);
-		free_tokens(node);
-		free_struct_pipe(pipex);
+		perror("ERROR EXEC VE fork 1");
+		free_execve_error(node, pipex, command_arg, command_path);
 		exit(127);
 	}
 }
 
 void	fork_pipex_n(t_token *node, t_pipe* pipex, char **envp)
 {
-	char	*command_path;
 	char	**command_arg;
+	char	*command_path;
+	size_t	i;
 
+	i = 0;
 	command_path = check_command_path(node->tokens, envp);
-	printf("COMMAND PATH %s\n", command_path);
-	command_arg = recup_command_arg(node);
-	if (!node->tokens)
+	if (!command_path)
 	{
-		ft_printf("command not found\n");
-		exit(127);
+		ft_putstr_fd("command_path NULL",2);
+		exit(1);
 	}
-	dup2(pipex->fdpipe[0], 0); //besoin de lire de fdpipe[0]
-	dup2(pipex->fdpipe[3], 1); //besoin decrire dans fdpipe[3]
-	close(pipex->fdpipe[0]); //close
-	close(pipex->fdpipe[1]); //close
-	close(pipex->fdpipe[2]); //close
-	close(pipex->fdpipe[3]); //close
+	command_arg = recup_command_arg(node);
+	if (dup2(pipex->fdpipe[0], 0) == -1 || dup2(pipex->fdpipe[3], 1) == -1)
+	{
+		free_execve_error(node, pipex, command_arg, command_path);
+		exit(1);
+	}
+	while (pipex->fdpipe[i] != 0)
+	{
+		close(pipex->fdpipe[i]);
+		i++;
+	}
 	if (execve(command_path, &command_arg[0], envp) == -1)
 	{
-		ft_putstr_fd("ERROR EXEC VE fork 2", 1);
-		free(command_arg);
-		free(command_path);
-		free_tokens(node);
-		free_struct_pipe(pipex);
+		perror("ERROR EXEC VE fork");
+		free_execve_error(node, pipex, command_arg, command_path);
 		exit(127);
 	}
 }
 
 void	fork_pipex3(t_token *node, t_pipe *pipex, char **envp)
 {
-	char	*command_path;
 	char	**command_arg;
+	char	*command_path;
+	size_t	i;
 
+	i = 0;
 	command_path = check_command_path(node->tokens, envp);
-	printf("COMMAND PATH %s\n", command_path);
-	command_arg = recup_command_arg(node);
-	if (!node->tokens)
+	if (!command_path)
 	{
-		ft_printf("command not found\n");
-		exit(127);
+		ft_putstr_fd("command_path NULL",2);
+		exit(1);
 	}
-	dup2(pipex->fdpipe[2], 0); //besoin de lire
-	close(pipex->fdpipe[0]); //close fdpipe[0];
-	close(pipex->fdpipe[1]); //pas besoin decrire;
-	close(pipex->fdpipe[2]); //pas besoin decrire;
-	close(pipex->fdpipe[3]); //pas besoin decrire;
+	command_arg = recup_command_arg(node);
+	while (pipex->fdpipe[i] != 0)
+		i++;
+	if (dup2(pipex->fdpipe[i - 2], 0) == -1)
+	{
+		free_execve_error(node, pipex, command_arg, command_path);
+		exit(-1);
+	}
+	i = 0;
+	while (pipex->fdpipe[i] != 0)
+	{
+		close(pipex->fdpipe[i]);
+		i++;
+	}
 	if (execve(command_path, &command_arg[0], envp) == -1)
 	{
 		perror("ERROR EXEC VE fork3");
-		free(command_arg);
-		free(command_path);
-		free_tokens(node);
-		free_struct_pipe(pipex);
+		free_execve_error(node, pipex, command_arg, command_path);
 		exit(127);
 	}
 }
