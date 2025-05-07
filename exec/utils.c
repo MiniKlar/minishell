@@ -62,6 +62,46 @@ char	*new_command_function(char **path, char *new_command)
 	return (NULL);
 }
 
+char *get_cmd_arg(t_token *node, char *buffer)
+{
+	char *tmp;
+
+	if (node == NULL)
+		;
+	else
+	{
+		tmp = buffer;
+		buffer = ft_strjoin(buffer, node->tokens);
+		if (!buffer)
+			return (NULL);
+		free(tmp);
+		tmp = buffer;
+		buffer = ft_strjoin(buffer, " ");
+		if (!buffer)
+			return (NULL);
+		free(tmp);
+	}
+	return (buffer);
+}
+
+char **recup_command_arg(t_token *node)
+{
+	char **command_arg;
+	char *buffer;
+
+	buffer = ft_strdup("");
+	if (!buffer)
+		return NULL;
+	while (node && node->is_pipe == false)
+	{
+		buffer = get_cmd_arg(node, buffer);
+		node = node->next;
+	}
+	command_arg = ft_split(buffer, ' ');
+	free(buffer);
+	return (command_arg);
+}
+
 // int	open_access_infile(t_data *data, char *argv)
 // {
 // 	int	fd;
@@ -87,3 +127,6 @@ char	*new_command_function(char **path, char *new_command)
 // 	}
 // 	return (fd);
 // }
+
+
+

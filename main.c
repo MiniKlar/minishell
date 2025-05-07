@@ -18,8 +18,6 @@ int main(int argc, char **argv, char** envp)
 		tab_cmd = ft_split(command, ' ');
 		tokens = fill_token(tokens, tab_cmd);
 		free_tab(tab_cmd);
-		print_tokens(tokens);
-		printf("nbr of pipes: %zu\n", print_pipes_nbr(tokens));
 		if (strncmp(command, "exit", 3) == 0)
 		{
 			ft_exit(node);

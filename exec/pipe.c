@@ -1,241 +1,172 @@
 #include "minishell.h"
 
-int		ft_wait(pid_t *id_fork, size_t nb_pipes, int wstatus);
-void	fork_pipex1(t_token *node, t_pipe *pipex, char **envp);
-void	fork_pipex_n(t_token *node, t_pipe *pipex, char **envp);
-void	fork_pipex3(t_token *node, t_pipe *pipex, char **envp);
+int		ft_wait(t_pipe *pipex, pid_t *id_fork, size_t nb_pipes);
+void	fork_pipex(t_token *node, t_pipe *pipex, char **envp);
+void	pipe_struct_update(t_pipe *pipex, size_t i);
+void	ft_close_fdpipe(t_pipe *pipex);
+int		ft_dup(t_pipe *pipex);
 
-char **recup_command_arg(t_token *node)
+t_token *move_tokptr(t_token *tokens)
 {
-	char **command_arg;
-	char *buffer;
-	char *tmp;
-	int i;
+	bool	is_pipe;
 
-	i = 0;
-	buffer = ft_strdup("");
-	if (!buffer)
-		return NULL;
-	while (node)
+	is_pipe = false;
+	while(is_pipe == false && tokens) 
 	{
-		if (node->is_pipe == false)
-		{
-			tmp = buffer;
-			buffer = ft_strjoin(buffer, node->tokens);
-			if (!buffer)
-				return (NULL);
-			free(tmp);
-			tmp = buffer;
-			buffer = ft_strjoin(buffer, " ");
-			if (!buffer)
-				return (NULL);
-			free(tmp);
-		}
+		if (tokens->is_pipe == true)
+			is_pipe = true;
 		else
-			break;
-		node = node->next;
+			tokens = tokens->next;
 	}
-	command_arg = ft_split(buffer, ' ');
-	free(buffer);
-	return (command_arg);
+	if (tokens != NULL)
+		tokens = tokens->next;
+	return (tokens);
 }
 
-int ft_pipe(t_token *tokens, char **envp)
+t_pipe *init_struct_pipex(t_token *tokens, t_pipe *pipex)
 {
-	t_pipe *pipex;
-	size_t nb_pipe = print_pipes_nbr(tokens);
-	int	wstatus;
-	pid_t id_fork[nb_pipe];
-	size_t i;
-	size_t j;
+	size_t	i;
 
+	i = 0;
 	pipex = malloc(sizeof(*pipex));
 	if (!pipex)
-		return (EXIT_FAILURE);
-	pipex->fdpipe = malloc(sizeof(int) * ((nb_pipe * 2) + 1));
+		exit(EXIT_FAILURE);
+	pipex->pipe_index = FIRST_PIPE;
+	pipex->fdpipe_index = 0;
+	pipex->wstatus = 0;
+	pipex->nb_pipe = print_pipes_nbr(tokens);
+	pipex->fdpipe = malloc(sizeof(int) * ((pipex->nb_pipe * 2) + 1));
 	if (pipex->fdpipe == NULL)
 	{
 		free(pipex);
-		return (EXIT_FAILURE);
+		exit(EXIT_FAILURE);
 	}
-	wstatus = 0;
-	j = 0;
-	pipex->fdpipe[nb_pipe * 2] = 0;
-	while (j < nb_pipe * 2)
+	pipex->fdpipe[pipex->nb_pipe * 2] = 0;
+	while (i < pipex->nb_pipe * 2)
 	{
-		if (pipe(((pipex->fdpipe) + j)) == -1)
+		if (pipe(((pipex->fdpipe) + i)) == -1)
 		{
 			perror("Error pipe");
 			free(pipex);
-			return (EXIT_FAILURE);
+			exit(EXIT_FAILURE);
 		}
-		j += 2;
+		i += 2;
 	}
-	id_fork[0] = fork();
-	if (id_fork[0] == -1)
-	{
-		ft_putstr_fd("ERROR ID FORK", 1);
-		free(pipex);
-		exit(EXIT_FAILURE);
-	}
-	if (id_fork[0] == 0)
-		fork_pipex1(tokens, pipex, envp);
-	if (WEXITSTATUS(wstatus) == 127)
-		exit(WEXITSTATUS(wstatus));
-	i = 1;
-	while (i != nb_pipe)
+	return(pipex);
+}
+int ft_pipe(t_token *tokens, char **envp)
+{
+	t_pipe *pipex;
+	size_t i;
+
+	pipex = NULL;
+	pipex = init_struct_pipex(tokens, pipex);
+	pid_t	id_fork[pipex->nb_pipe];
+	i = 0;
+	while(i < pipex->nb_pipe + 1)
 	{
 		id_fork[i] = fork();
 		if (id_fork[i] == -1)
-		{
-			ft_putstr_fd("ERROR ID FORK", 1);
-			free_struct_pipe(pipex);;
-			exit(EXIT_FAILURE);
-		}
-		while (tokens->count_pipes != i)
-			tokens = tokens->next;
-		tokens = tokens->next;
-		if (id_fork[i] == 0)
-			fork_pipex_n(tokens, pipex, envp);
-		if (WEXITSTATUS(wstatus) == 127)
-			exit(WEXITSTATUS(wstatus));
+			free(pipex);
+		else if (id_fork[i] == 0)
+			fork_pipex(tokens, pipex, envp);
+		if (WEXITSTATUS(pipex->wstatus) == 127)
+			exit(WEXITSTATUS(pipex->wstatus) == 127);
+		pipe_struct_update(pipex, i);
+		tokens = move_tokptr(tokens);
 		i++;
 	}
-	while (tokens->is_pipe == false && tokens->next != NULL)
-		tokens = tokens->next;
-	tokens = tokens->next;
-	id_fork[nb_pipe] = fork();
-	if (id_fork[nb_pipe] == -1)
-	{
-		ft_putstr_fd("ERROR ID FORK", 1);
-		free_struct_pipe(pipex);
-		exit(EXIT_FAILURE);
-	}
-	if (id_fork[nb_pipe] == 0)
-		fork_pipex3(tokens, pipex, envp);
-	if (WEXITSTATUS(wstatus) == 127)
-		exit(WEXITSTATUS(wstatus));
-	j = 0;
-	while (pipex->fdpipe[j] != 0)
-	{
-		close(pipex->fdpipe[j]);
-		j++;
-	}
-	wstatus = ft_wait(id_fork, nb_pipe, wstatus);
+	ft_close_fdpipe(pipex);
+	pipex->wstatus = ft_wait(pipex, id_fork, pipex->nb_pipe);
+	if (WIFEXITED(pipex->wstatus) && WEXITSTATUS(pipex->wstatus))
+		return (WEXITSTATUS(pipex->wstatus));
 	free_struct_pipe(pipex);
-	if (WIFEXITED(wstatus) && WEXITSTATUS(wstatus))
-		return (WEXITSTATUS(wstatus));
 	return (EXIT_SUCCESS);
 }
 
-void	fork_pipex1(t_token *node, t_pipe *pipex, char **envp)
+void	fork_pipex(t_token *node, t_pipe *pipex, char **envp)
 {
 	char	**command_arg;
 	char	*command_path;
-	size_t	i;
 
-	i = 0;
-	command_path = check_command_path(node->tokens, envp);
 	command_arg = recup_command_arg(node);
-	if (dup2(pipex->fdpipe[i + 1], 1) == -1)
+	command_path = check_command_path(node->tokens, envp);
+	// check both cmd to clear memory if error
+	if (ft_dup(pipex) == -1)
 	{
 		free_execve_error(node, pipex, command_arg, command_path);
 		exit(1);
 	}
-	while (pipex->fdpipe[i] != 0)
-	{
-		printf("valeur de i = %zu\n", i);
-		close(pipex->fdpipe[i]);
-		i++;
-	}
+	ft_close_fdpipe(pipex);
 	if (execve(command_path, &command_arg[0], envp) == -1)
 	{
-		perror("ERROR EXEC VE fork 1");
+		perror("ERROR EXEC VE");
 		free_execve_error(node, pipex, command_arg, command_path);
 		exit(127);
 	}
 }
 
-void	fork_pipex_n(t_token *node, t_pipe* pipex, char **envp)
+int	ft_dup(t_pipe *pipex)
 {
-	char	**command_arg;
-	char	*command_path;
-	size_t	i;
+	int i;
+	int	p;
 
-	i = 0;
-	command_path = check_command_path(node->tokens, envp);
-	if (!command_path)
+	i = pipex->fdpipe_index;
+	p = pipex->pipe_index;
+	if (p == FIRST_PIPE)
 	{
-		ft_putstr_fd("command_path NULL",2);
-		exit(1);
+		if (dup2(pipex->fdpipe[i + 1], 1) == -1)
+			return (-1);
 	}
-	command_arg = recup_command_arg(node);
-	if (dup2(pipex->fdpipe[0], 0) == -1 || dup2(pipex->fdpipe[3], 1) == -1)
+	else if (p == N_PIPE)
 	{
-		free_execve_error(node, pipex, command_arg, command_path);
-		exit(1);
+		if (dup2(pipex->fdpipe[i - 2], 0) == -1 || dup2(pipex->fdpipe[i + 1], 1) == -1)
+			return (-1);
 	}
-	while (pipex->fdpipe[i] != 0)
+	else if (p == LAST_PIPE)
 	{
-		close(pipex->fdpipe[i]);
-		i++;
+		if (dup2(pipex->fdpipe[i], 0) == -1)
+			return (-1);
 	}
-	if (execve(command_path, &command_arg[0], envp) == -1)
-	{
-		perror("ERROR EXEC VE fork");
-		free_execve_error(node, pipex, command_arg, command_path);
-		exit(127);
-	}
+	return (0);
 }
 
-void	fork_pipex3(t_token *node, t_pipe *pipex, char **envp)
+void	pipe_struct_update(t_pipe *pipex, size_t i)
 {
-	char	**command_arg;
-	char	*command_path;
+	if (i < pipex->nb_pipe - 1)
+	{
+		pipex->pipe_index = N_PIPE;
+		pipex->fdpipe_index += 2;
+	}
+	else
+		pipex->pipe_index = LAST_PIPE;
+}
+
+void	ft_close_fdpipe(t_pipe *pipex)
+{
 	size_t	i;
 
-	i = 0;
-	command_path = check_command_path(node->tokens, envp);
-	if (!command_path)
-	{
-		ft_putstr_fd("command_path NULL",2);
-		exit(1);
-	}
-	command_arg = recup_command_arg(node);
-	while (pipex->fdpipe[i] != 0)
-		i++;
-	if (dup2(pipex->fdpipe[i - 2], 0) == -1)
-	{
-		free_execve_error(node, pipex, command_arg, command_path);
-		exit(-1);
-	}
 	i = 0;
 	while (pipex->fdpipe[i] != 0)
 	{
 		close(pipex->fdpipe[i]);
 		i++;
 	}
-	if (execve(command_path, &command_arg[0], envp) == -1)
-	{
-		perror("ERROR EXEC VE fork3");
-		free_execve_error(node, pipex, command_arg, command_path);
-		exit(127);
-	}
 }
 
-int	ft_wait(pid_t *id_fork, size_t nb_pipes, int wstatus)
+int	ft_wait(t_pipe *pipex, pid_t *id_fork, size_t nb_pipes)
 {
 	size_t	i;
 
 	i = 0;
 	while (i < nb_pipes + 1)
 	{
-		if (waitpid(id_fork[i], &wstatus, 0) == -1)
+		if (waitpid(id_fork[i], &pipex->wstatus, 0) == -1)
 		{
 			perror("waitpid error");
 			exit(1);
 		}
 		i++;
 	}
-	return (wstatus);
+	return (pipex->wstatus);
 }

@@ -2,10 +2,8 @@
 
 int ft_pipe_counter(t_token *node)
 {
-	size_t i;
 	size_t current_max_pipes;
 
-	i = 0;
 	current_max_pipes = 1;
 	while (node)
 	{
@@ -35,11 +33,9 @@ t_token *create_node_token(char *arg, size_t i)
 
 void	find_pipes_heredoc(t_token *node)
 {
-	t_token *first_node;
 	size_t	i;
 
 	i = 0;
-	first_node = node;
 	while (node)
 	{
 		if (ft_strncmp(node->tokens, "|", ft_strlen(node->tokens)) == 0)

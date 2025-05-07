@@ -16,9 +16,17 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+# define FIRST_PIPE		1
+# define N_PIPE			2
+# define LAST_PIPE		3
+
 typedef struct s_pipe
 {
 	int		*fdpipe;
+	int		fdpipe_index;
+	int		pipe_index;
+	int		wstatus;
+	size_t	nb_pipe;
 }			t_pipe;
 
 typedef struct s_token
@@ -55,6 +63,7 @@ void			ft_add_back_tokens(t_token **lst, t_token *new);
 void			free_struct_pipe(t_pipe *pipex);
 void			free_execve_error(t_token *tok, t_pipe *p,
 					char **c_arg, char *c_path);
+char *get_cmd_arg(t_token *node, char *buffer);
 
 //built-ins
 
@@ -71,5 +80,7 @@ char	*recup_env(char **envp);
 char	*check_command_path(char *command, char **envp);
 char	*new_command_function(char **path, char *new_command);
 int ft_pipe(t_token *node, char**envp);
+
+char **recup_command_arg(t_token *node);
 
 #endif
