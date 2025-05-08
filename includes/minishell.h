@@ -73,7 +73,7 @@ char *get_cmd_arg(t_token *node, char *buffer);
 
 //built-ins
 
-int cd(char *path);
+int cd(t_token *tokens, char **envp);
 char *pwd(bool print);
 int ft_exit(t_token *node);
 int ft_echo(char **tab_cmd, t_params *node);

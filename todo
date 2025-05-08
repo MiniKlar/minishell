@@ -60,3 +60,5 @@ int closedir(DIR *dirp);
 // arguments.
 // The exit status of the last command is available in the special parameter $? (see
 // Section 3.4.2 [Special Parameters], page 23).
+
+//cd, exit, unset, export --> parent. Autre child.

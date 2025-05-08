@@ -28,7 +28,6 @@ bool exec_shell_param(t_token *tokens, char **envp)
 bool	is_cmd_built_ins(t_token *tokens, char **envp)
 {
 	char *buffer;
-	(void)envp;
 	buffer = NULL;
 	if (ft_strncmp(tokens->tokens, "pwd", 3) == 0)
 	{
@@ -38,7 +37,7 @@ bool	is_cmd_built_ins(t_token *tokens, char **envp)
 	}
 	else if (ft_strncmp(tokens->tokens, "cd", 2) == 0)
 	{
-		cd("..");
+		cd(tokens, envp);
 		return (true);
 	}
 	// else if ((ft_strncmp(tokens->tokens, "echo ", 5) == 0))

@@ -1,15 +1,38 @@
 #include "minishell.h"
 
-int cd(char *path)
+int cd(t_token *tokens, char **envp)
 {
-	if (chdir(path) == -1)
+	size_t	i;
+
+	i = 0;
+	t_token *tmp;
+
+	tmp = tokens;
+	while (i != 2)
 	{
-		perror("cd");
-		return (-1);
+		tokens = tokens->next;
+		i++;
+	}
+	if (tokens->tokens != NULL)
+	{
+		printf("Trop d'arguments");
+		return (1);
 	}
 	else
 	{
-		printf("Success! You changed the directory\n");
-		return (0);
+		tokens = tmp;
+		tokens = tokens->next;
+		if (chdir(tokens->tokens) == -1)
+		{
+			perror("cd");
+			return (1);
+		}
+		else
+		{
+			
+			printf("Success! You changed the directory\n");
+			return (0);
+		}
 	}
+	return (0);
 }
