@@ -47,6 +47,12 @@ typedef struct s_params
 
 }			t_params;
 
+typedef struct s_envp
+{
+	char *envp;
+	void *next;
+}			t_envp;
+
 t_token			*fill_token(t_token *node, char**arg);
 void			free_tab(char **tableau);
 void			ft_strtok(t_token *tokens, char *str, char delimiter);
@@ -69,9 +75,9 @@ char *get_cmd_arg(t_token *node, char *buffer);
 
 int cd(char *path);
 char *pwd(bool print);
-int ft_exit(t_params *node);
+int ft_exit(t_token *node);
 int ft_echo(char **tab_cmd, t_params *node);
-bool is_shell_parameter(char *str);
+bool is_shell_parameter(t_token *tokens);
 size_t print_pipes_nbr(t_token *node);
 void	free_tokens(t_token *node);
 void print_tokens(t_token *node);
@@ -80,7 +86,12 @@ char	*recup_env(char **envp);
 char	*check_command_path(char *command, char **envp);
 char	*new_command_function(char **path, char *new_command);
 int ft_pipe(t_token *node, char**envp);
+void exec_cmd(t_token *tokens, char **envp);
 
 char **recup_command_arg(t_token *node);
+t_envp *fill_envp(t_envp *node, char **envp);
+t_envp	*ft_last_envp(t_envp *lst);
+void	ft_add_back_envp(t_envp **lst, t_envp *new);
+t_envp *create_node_envp(char *env);
 
 #endif

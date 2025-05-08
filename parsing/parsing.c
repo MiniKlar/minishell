@@ -77,29 +77,20 @@ int ft_nb_tokens(char *str)
 // 	tokens->tokens[tokens->nb_tokens] = NULL;
 // }
 
-bool is_shell_parameter(char *str)
+bool is_shell_parameter(t_token *tokens)
 {
-	bool seen_egal = false;
 	size_t	i;
 
 	i = 0;
-	while (str[i] == ' ')
-			i++;
-	while (str[i])
+	while (tokens->tokens[i] != '\0' && tokens->tokens[i] != '=')
 	{
-		if (str[i] == ' ' && seen_egal == false)
-		{
-			printf("COMMAND NOT COMPLETE\n");
+		if (ft_isalpha(tokens->tokens[i]) != 1)
 			return (false);
-		}
-		else if (str[i] == ' ' && seen_egal == true)
-			return (true);
-		else if (str[i] == '=')
-			seen_egal = true;
-		i++;
+		else
+			i++;
 	}
-	if(seen_egal == true)
-		return (true);
+	if (ft_strncmp(tokens->tokens, "=", ft_strlen(tokens->tokens)))
+		return(true);
 	else
 		return(false);
 }
@@ -133,6 +124,33 @@ t_params *create_node_param(void)
 	shell_para->valeur= NULL;
 	shell_para->next=NULL;
 	return (shell_para);
+}
+
+t_envp *create_node_envp(char *env)
+{
+	t_envp	*new_env;
+
+	new_env = malloc(sizeof(*new_env));
+	if (!new_env)
+		return (NULL);
+	new_env->envp = ft_strdup(env);
+	new_env->next = NULL;
+	return (new_env);
+}
+
+t_envp *fill_envp(t_envp *node, char **envp)
+{
+	t_envp *new_node;
+	size_t	i;
+
+	i = 0;
+	while (envp[i])
+	{
+		new_node = create_node_envp(envp[i]);
+		ft_add_back_envp(&node, new_node);
+		i++;
+	}
+	return (node);
 }
 
 void print_tab(char **tableau)

@@ -14,6 +14,20 @@ t_params	*ft_last(t_params *lst)
 	return (tmp);
 }
 
+t_envp	*ft_last_envp(t_envp *lst)
+{
+	t_envp	*tmp;
+
+	if (lst == NULL)
+		return (lst);
+	while (lst != NULL)
+	{
+		tmp = lst;
+		lst = lst->next;
+	}
+	return (tmp);
+}
+
 t_token	*ft_last_token(t_token *lst)
 {
 	t_token	*tmp;
