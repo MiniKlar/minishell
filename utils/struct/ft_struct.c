@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-t_params	*add_parameters(char *str, t_params *node)
+t_tmp_env	*add_parameters(char *str, t_tmp_env *node)
 {
-	t_params *tmp;
+	t_tmp_env *tmp;
 	size_t		i;
 	size_t		k;
 
@@ -20,16 +20,22 @@ t_params	*add_parameters(char *str, t_params *node)
 	return (tmp);
 }
 
-void	ft_delone(t_params *lst, void (*del)(void*))
+void	ft_delone(t_tmp_env *lst, void (*del)(void*))
 {
 	del(lst->name);
 	del(lst->valeur);
 	free(lst);
 }
 
-void	ft_clear(t_params **lst, void (*del)(void*))
+void	ft_delone_env(t_envp *lst)
 {
-	t_params	*tmp;
+	free(lst->envp);
+	free(lst);
+}
+
+void	ft_clear(t_tmp_env **lst, void (*del)(void*))
+{
+	t_tmp_env	*tmp;
 
 	while (*lst)
 	{

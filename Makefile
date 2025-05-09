@@ -16,6 +16,8 @@ SRC 			= ./parsing/parsing.c \
 				./built-ins/pwd.c \
 				./built-ins/exit.c \
 				./built-ins/echo.c \
+				./built-ins/export.c \
+				./built-ins/env.c \
 				./main.c \
 				./utils/struct/ft_add.c \
 				./utils/struct/ft_get.c \

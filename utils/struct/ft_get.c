@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-t_params	*ft_last(t_params *lst)
+t_tmp_env	*ft_last(t_tmp_env *lst)
 {
-	t_params	*tmp;
+	t_tmp_env	*tmp;
 
 	if (lst == NULL)
 		return (lst);
@@ -42,7 +42,7 @@ t_token	*ft_last_token(t_token *lst)
 	return (tmp);
 }
 
-int	ft_size(t_params *lst)
+int	ft_size(t_tmp_env *lst)
 {
 	int	size;
 

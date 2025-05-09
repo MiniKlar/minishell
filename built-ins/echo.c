@@ -2,7 +2,7 @@
 
 char *get_home(char *str);
 
-int ft_echo(char **command, t_params *node)
+int ft_echo(char **command, t_tmp_env *node)
 {
 	size_t i;
 	char *tilde;

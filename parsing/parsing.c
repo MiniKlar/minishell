@@ -77,25 +77,7 @@ int ft_nb_tokens(char *str)
 // 	tokens->tokens[tokens->nb_tokens] = NULL;
 // }
 
-bool is_shell_parameter(t_token *tokens)
-{
-	size_t	i;
-
-	i = 0;
-	while (tokens->tokens[i] != '\0' && tokens->tokens[i] != '=')
-	{
-		if (ft_isalpha(tokens->tokens[i]) != 1)
-			return (false);
-		else
-			i++;
-	}
-	if (ft_strncmp(tokens->tokens, "=", ft_strlen(tokens->tokens)))
-		return(true);
-	else
-		return(false);
-}
-
-char *find_param(char *command, t_params *node)
+char *find_param(char *command, t_tmp_env *node)
 {
 	char *tmp;
 	command++;
@@ -112,9 +94,9 @@ char *find_param(char *command, t_params *node)
 	return (NULL);
 }
 
-t_params *create_node_param(void)
+t_tmp_env *create_node_param(void)
 {
-	t_params	*shell_para;
+	t_tmp_env	*shell_para;
 
 	shell_para = malloc(sizeof(*shell_para));
 	if (!shell_para)
@@ -160,11 +142,7 @@ void print_tab(char **tableau)
 	i = 0;
 	while (tableau[i])
 	{
-		ft_putstr_fd("Tableau[", 1);
-		ft_putchar_fd((i + '0'), 1);
-		ft_putstr_fd("] = ", 1);
-		ft_putstr_fd(tableau[i], 1);
-		ft_putchar_fd('\n', 1);
+		printf("%s\n", tableau[i]);
 		i++;
 	}
 }

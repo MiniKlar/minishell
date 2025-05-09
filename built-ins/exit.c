@@ -4,5 +4,5 @@ int ft_exit(t_token *node)
 {
 	ft_putstr_fd("exit\n", 1);
 	free_tokens(node);
-	return (0);
+	exit(0); //doit exit sur le wstatus ou le exit code de lancienne commande
 }

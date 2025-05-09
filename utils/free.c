@@ -21,6 +21,24 @@ void	free_tab(char **tableau)
 	free(tableau);
 }
 
+void	free_env(t_envp *node)
+{
+	t_envp	*tmp;
+
+	if (node == NULL)
+		return ;
+	else
+	{
+		while (node)
+		{
+			free(node->envp);
+			tmp = node->next;
+			free(node);
+			node = tmp;
+		}
+	}
+}
+
 void	free_tokens(t_token *node)
 {
 	t_token	*tmp;
@@ -39,9 +57,9 @@ void	free_tokens(t_token *node)
 	}
 }
 
-void	free_params(t_params *node)
+void	free_params(t_tmp_env *node)
 {
-	t_params	*tmp;
+	t_tmp_env	*tmp;
 
 	if (node == NULL)
 		return ;

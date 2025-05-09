@@ -31,6 +31,7 @@ typedef struct s_pipe
 
 typedef struct s_token
 {
+	char	**envp;
 	char	*tokens;
 	size_t	nb_tokens;
 	size_t	count_pipes;
@@ -38,14 +39,14 @@ typedef struct s_token
 	void	*next;
 }			t_token;
 
-typedef struct s_params
+typedef struct s_tmp_env
 {
 	char	*name;
 	char	signe;
 	char	*valeur;
 	void	*next;
 
-}			t_params;
+}			t_tmp_env;
 
 typedef struct s_envp
 {
@@ -56,14 +57,14 @@ typedef struct s_envp
 t_token			*fill_token(t_token *node, char**arg);
 void			free_tab(char **tableau);
 void			ft_strtok(t_token *tokens, char *str, char delimiter);
-t_params		*create_node_param(void);
-t_params		*add_parameters(char *str, t_params *node);
-char			*find_param(char *command, t_params *node);
-void			ft_add_back(t_params **lst, t_params *new);
-void			ft_add_front(t_params **lst, t_params *new);
-t_params		*ft_last(t_params *lst);
+t_tmp_env		*create_node_param(void);
+t_tmp_env		*add_parameters(char *str, t_tmp_env *node);
+char			*find_param(char *command, t_tmp_env *node);
+void			ft_add_back(t_tmp_env **lst, t_tmp_env *new);
+void			ft_add_front(t_tmp_env **lst, t_tmp_env *new);
+t_tmp_env		*ft_last(t_tmp_env *lst);
 t_token			*ft_last_token(t_token *lst);
-void			free_params(t_params *node);
+void			free_params(t_tmp_env *node);
 void			print_tab(char **tableau);
 void			ft_add_back_tokens(t_token **lst, t_token *new);
 void			free_struct_pipe(t_pipe *pipex);
@@ -76,8 +77,7 @@ char *get_cmd_arg(t_token *node, char *buffer);
 int cd(t_token *tokens, char **envp);
 char *pwd(bool print);
 int ft_exit(t_token *node);
-int ft_echo(char **tab_cmd, t_params *node);
-bool is_shell_parameter(t_token *tokens);
+int ft_echo(char **tab_cmd, t_tmp_env *node);
 size_t print_pipes_nbr(t_token *node);
 void	free_tokens(t_token *node);
 void print_tokens(t_token *node);
@@ -85,13 +85,19 @@ void print_tokens(t_token *node);
 char	*recup_env(char **envp);
 char	*check_command_path(char *command, char **envp);
 char	*new_command_function(char **path, char *new_command);
-int ft_pipe(t_token *node, char**envp);
-void exec_cmd(t_token *tokens, char **envp);
+int		ft_pipe(t_token *node, char**envp);
+void	exec_cmd(t_token *tokens, char **envp);
 
-char **recup_command_arg(t_token *node);
-t_envp *fill_envp(t_envp *node, char **envp);
+char	**recup_command_arg(t_token *node);
+t_envp	*fill_envp(t_envp *node, char **envp);
 t_envp	*ft_last_envp(t_envp *lst);
 void	ft_add_back_envp(t_envp **lst, t_envp *new);
-t_envp *create_node_envp(char *env);
+t_envp	*create_node_envp(char *env);
 
+bool	is_shell_parameter(t_token *tokens);
+void	export(t_token *tokens, char **envp);
+t_envp *append_envp(t_token *tokens, char **envp);
+void	free_env(t_envp *node);
+void env(char **envp);
+void	ft_delone_env(t_envp *lst);
 #endif

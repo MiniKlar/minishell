@@ -1,18 +1,17 @@
 #include "minishell.h"
 
-int main(int argc, char **argv, char** envp)
+int main(int argc, char **argv, char **envp)
 {
 	char *command;
 	char **tab_cmd;
 	//char *buffer;
-	//t_params *node = NULL;
-	bool shell_on = true;
+	//t_tmp_env *node = NULL;
 	(void)argc;
 	(void)argv;
-	while (shell_on)
+	while (1)
 	{
 		t_token *tokens = NULL;
-		command = readline("minishell exec test$ ");
+		command = readline("bash-5.1$ ");
 		if (command == NULL)
 			exit(EXIT_FAILURE);
 		tab_cmd = ft_split(command, ' ');

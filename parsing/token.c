@@ -24,10 +24,11 @@ t_token *create_node_token(char *arg, size_t i)
 	if (!node)
 		return (NULL);
 	node->tokens = ft_strdup(arg);
+	node->next = NULL;
+	node->envp = NULL;
+	node->is_pipe = false;
 	node->nb_tokens = i;
 	node->count_pipes = 0;
-	node->next = NULL;
-	node->is_pipe = false;
 	return (node);
 }
 

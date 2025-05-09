@@ -1,19 +1,41 @@
 #include <minishell.h>
 
-void append_envp(t_token *tokens, char **envp)
+bool	is_cmd_built_ins(t_token *tokens, char **envp)
 {
-	t_envp *env;
-	t_envp *new_node;
-
-	env = NULL;
-	env = fill_envp(env, envp);
-	new_node = create_node_envp(tokens->tokens);
-	ft_add_back_envp(&env, new_node);
-	while (env)
+	char *buffer;
+	buffer = NULL;
+	if (ft_strncmp(tokens->tokens, "export", 5) == 0)
 	{
-		printf("ENVP = %s\n", env->envp);
-		env = env->next;
+		export(tokens, envp);
+		return (true);
 	}
+	else if (ft_strncmp(tokens->tokens, "pwd", 3) == 0)
+	{
+		buffer = pwd(true);
+		free(buffer);
+		return (true);
+	}
+	else if (ft_strncmp(tokens->tokens, "cd", 2) == 0)
+	{
+		cd(tokens, envp);
+		return (true);
+	}
+	else if ((ft_strncmp(tokens->tokens, "echo ", 5) == 0))
+	{
+		//ft_echo(tab_cmd, node);
+		return (true);
+	}
+	else if (ft_strncmp(tokens->tokens, "exit", 4) == 0)
+	{
+		ft_exit(tokens);
+		return (true);
+	}
+	else if (ft_strncmp(tokens->tokens, "env", 3) == 0)
+	{
+		env(envp);
+		return (true);
+	}
+	return (false);
 }
 
 bool exec_shell_param(t_token *tokens, char **envp)
@@ -25,34 +47,6 @@ bool exec_shell_param(t_token *tokens, char **envp)
 	return (true);
 }
 
-bool	is_cmd_built_ins(t_token *tokens, char **envp)
-{
-	char *buffer;
-	buffer = NULL;
-	if (ft_strncmp(tokens->tokens, "pwd", 3) == 0)
-	{
-		buffer = pwd(true);
-		free(buffer);
-		return (true);
-	}
-	else if (ft_strncmp(tokens->tokens, "cd", 2) == 0)
-	{
-		cd(tokens, envp);
-		return (true);
-	}
-	// else if ((ft_strncmp(tokens->tokens, "echo ", 5) == 0))
-	// {
-	// 	ft_echo(tab_cmd, node);
-	// 	return (true);
-	// }
-	else if (ft_strncmp(tokens->tokens, "exit", 4) == 0)
-	{
-		ft_exit(tokens);
-		return (true);
-	}
-	return (false);
-}
-
 void exec_cmd(t_token *tokens, char **envp)
 {
 	if (is_cmd_built_ins(tokens, envp) == true)
@@ -62,18 +56,20 @@ void exec_cmd(t_token *tokens, char **envp)
 	else
 	{
 		pid_t id_fork;
-
+		char *arg[] = { NULL };
 		id_fork = fork();
 		if (id_fork == 0)
 		{
-			if (execve(tokens->tokens, &tokens->tokens, envp) == -1)
+			if (execve(tokens->tokens, arg, envp) == -1)
 			{
+				perror(tokens->tokens);
 				free_tokens(tokens);
 				exit(127);
 			}
 		}
 		else
 		{
+			waitpid(id_fork, 0, 0);
 			printf("COMMAND EXECUTED SUCCESSFULLY\n");
 		}
 	}

@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-void	ft_add_back(t_params **lst, t_params *new)
+void	ft_add_back(t_tmp_env **lst, t_tmp_env *new)
 {
-	t_params	*current;
+	t_tmp_env	*current;
 
 	if (*lst == NULL)
 		*lst = new;
@@ -39,7 +39,7 @@ void	ft_add_back_tokens(t_token **lst, t_token *new)
 	}
 }
 
-void	ft_add_front(t_params **lst, t_params *new)
+void	ft_add_front(t_tmp_env **lst, t_tmp_env *new)
 {
 	new->next = *lst;
 	*lst = new;
