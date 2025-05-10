@@ -21,6 +21,7 @@ int main(int argc, char **argv, char **envp)
 		if (ft_strncmp(command, "", 1) != 0)
 			add_history(command);
 		free_tokens(tokens);
+		free(command);
 	}
 	return (EXIT_SUCCESS);
 }

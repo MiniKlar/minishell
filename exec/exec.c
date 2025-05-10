@@ -4,6 +4,11 @@ bool	is_cmd_built_ins(t_token *tokens, char **envp)
 {
 	char *buffer;
 	buffer = NULL;
+	if (ft_strncmp(tokens->tokens, "<<", 2) == 0)
+	{
+		here_doc(tokens);
+		return (true);
+	}
 	if (ft_strncmp(tokens->tokens, "export", 5) == 0)
 	{
 		export(tokens, envp);
@@ -43,7 +48,7 @@ bool exec_shell_param(t_token *tokens, char **envp)
 	if (is_shell_parameter(tokens) == false)
 		return (false);
 	else
-		append_envp(tokens, envp);
+		append_envp(tokens->tokens, envp);
 	return (true);
 }
 
@@ -60,17 +65,23 @@ void exec_cmd(t_token *tokens, char **envp)
 		id_fork = fork();
 		if (id_fork == 0)
 		{
+			char *cmd_path;
+			cmd_path = check_command_path(tokens->tokens, envp);
+			if (!cmd_path)
+			{
+				ft_putstr_fd("bash: command: command not found", 2); //modifier avec printf et le nom de la commande.
+				exit(127);
+			}
 			if (execve(tokens->tokens, arg, envp) == -1)
 			{
 				perror(tokens->tokens);
 				free_tokens(tokens);
-				exit(127);
+				exit(126);
 			}
 		}
 		else
 		{
-			waitpid(id_fork, 0, 0);
-			printf("COMMAND EXECUTED SUCCESSFULLY\n");
+			waitpid(id_fork, &tokens->wstatus, 0);
 		}
 	}
 }

@@ -35,6 +35,7 @@ typedef struct s_token
 	char	*tokens;
 	size_t	nb_tokens;
 	size_t	count_pipes;
+	int		wstatus;
 	bool	is_pipe;
 	void	*next;
 }			t_token;
@@ -96,8 +97,9 @@ t_envp	*create_node_envp(char *env);
 
 bool	is_shell_parameter(t_token *tokens);
 void	export(t_token *tokens, char **envp);
-t_envp *append_envp(t_token *tokens, char **envp);
+t_envp *append_envp(char *arg, char **envp);
 void	free_env(t_envp *node);
 void env(char **envp);
 void	ft_delone_env(t_envp *lst);
+int 	here_doc(t_token *tokens);
 #endif

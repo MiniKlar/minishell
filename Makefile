@@ -25,6 +25,7 @@ SRC 			= ./parsing/parsing.c \
 				./exec/pipe.c \
 				./exec/utils.c \
 				./exec/exec.c \
+				./exec/redirections.c \
 
 OBJ 			= $(SRC:.c=.o)
 
