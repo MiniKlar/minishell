@@ -9,7 +9,7 @@ CFLAGS 			= -Wall -Wextra -Werror -ggdb -I ./includes
 LIB_C_GIT_URL 	= git@github.com:MiniKlar/LIB_C.git
 LIB_C			= LIB_C
 
-SRC 			= ./parsing/parsing.c \
+SRC 			= ./parsing/tokens_counter.c ./parsing/tokeniser.c \
 				./utils/free.c \
 				./minishell.c \
 
