@@ -2,6 +2,7 @@
 # define MINISHELL_H
 
 #include "../LIB_C/LIB_C.h"
+#include "../LIB_C/LIB_C.h"
 #include <sys/stat.h>
 #include <stdlib.h>
 #include <stdbool.h>
