@@ -1,14 +1,14 @@
 #include "minishell.h"
 
-void	unset(t_token	*tokens)
+void	unset(t_shell	*shell)
 {
 	char *name_to_unset;
 	t_envp *env;
 	size_t	i;
 
 	i = 0;
-	tokens = tokens->next;
-	name_to_unset = tokens;
+	shell = shell->next;
+	name_to_unset = shell;
 	while (name_to_unset[i])
 	{
 		if (ft_isalnum(name_to_unset[i]) != 1)

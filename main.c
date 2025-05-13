@@ -10,17 +10,17 @@ int main(int argc, char **argv, char **envp)
 	(void)argv;
 	while (1)
 	{
-		t_token *tokens = NULL;
+		t_shell *shell = NULL;
 		command = readline("bash-5.1$ ");
 		if (command == NULL)
 			exit(EXIT_FAILURE);
 		tab_cmd = ft_split(command, ' ');
-		tokens = fill_token(tokens, tab_cmd);
+		shell = fill_token(shell, tab_cmd);
 		free_tab(tab_cmd);
-		exec_cmd(tokens, envp);
+		exec(shell, &envp);
 		if (ft_strncmp(command, "", 1) != 0)
 			add_history(command);
-		free_tokens(tokens);
+		free_shell(shell);
 		free(command);
 	}
 	return (EXIT_SUCCESS);

@@ -40,16 +40,16 @@ t_envp *append_envp(char *arg, char **envp)
 	return (env);
 }
 
-bool is_shell_parameter(t_token *tokens)
+bool is_shell_parameter(t_shell *shell)
 {
 	char *arg;
 	size_t	i;
 
 	i = 0;
-	if (tokens->next == NULL)
+	if (shell->next == NULL)
 		return (false);
-	tokens = tokens->next;
-	arg = tokens->tokens;
+	shell = shell->next;
+	arg = shell->shell;
 	while (arg[i])
 	{
 		if (ft_isalpha(arg[i]) != 1 && arg[i] != '=') //faire en sorte que le premier soit check si cest pas un nombre et apres nombre ok
@@ -61,17 +61,17 @@ bool is_shell_parameter(t_token *tokens)
 	return(false);
 }
 
-void	export(t_token *tokens, char **envp)
+void	export(t_shell *shell, char **envp)
 {
 	t_envp *env;
 	char *arg;
 
-	if (is_shell_parameter(tokens) == false)
+	if (is_shell_parameter(shell) == false)
 		;
 	else
 	{
-		tokens = tokens->next;
-		arg = tokens->tokens;
+		shell = shell->next;
+		arg = shell->shell;
 		env = append_envp(arg, envp);
 		envp = ft_transform_envp(env);
 	}

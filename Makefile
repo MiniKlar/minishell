@@ -26,6 +26,10 @@ SRC 			= ./parsing/parsing.c \
 				./exec/utils.c \
 				./exec/exec.c \
 				./exec/redirections.c \
+				./exec/pipex_utils.c \
+				./exec/infile.c \
+				./exec/outfile.c \
+				./exec/here_doc.c \
 
 OBJ 			= $(SRC:.c=.o)
 

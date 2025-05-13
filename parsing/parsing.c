@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int ft_nb_tokens(char *str)
+int ft_nb_shell(char *str)
 {
 	size_t i;
 	size_t k;
@@ -18,7 +18,7 @@ int ft_nb_tokens(char *str)
 	return (k);
 }
 
-// void set_caca(char *str, size_t i, t_token *tokens)
+// void set_caca(char *str, size_t i, t_shell *shell)
 // {
 // 	size_t k;
 // 	size_t j;
@@ -37,44 +37,44 @@ int ft_nb_tokens(char *str)
 // 	}
 // 	if (strlen(str) == i || k != 0)
 // 		k++;
-// 	tokens->tokens[tokens->nb_tokens] = malloc(sizeof(char) * (i - k + 1));
+// 	shell->shell[shell->nb_shell] = malloc(sizeof(char) * (i - k + 1));
 // 	while (k != i)
 // 	{
-// 		tokens->tokens[tokens->nb_tokens][j] = str[k];
+// 		shell->shell[shell->nb_shell][j] = str[k];
 // 		j++;
 // 		k++;
 // 	}
-// 	tokens->tokens[tokens->nb_tokens][j] = '\0';
-// 	tokens->nb_tokens++;
+// 	shell->shell[shell->nb_shell][j] = '\0';
+// 	shell->nb_shell++;
 //}
 
-// void	ft_strtok(t_token *tokens, char *str, char delimiter)
+// void	ft_strtok(t_shell *shell, char *str, char delimiter)
 // {
 // 	size_t i;
 // 	bool parenthesis;
 
 // 	i = 0;
 // 	parenthesis = false;
-// 	tokens->nb_tokens = 0;
-// 	tokens->tokens = malloc(sizeof(char *) * (ft_nb_tokens(str) + 1));
-// 	if (!str || !tokens->tokens)
+// 	shell->nb_shell = 0;
+// 	shell->shell = malloc(sizeof(char *) * (ft_nb_shell(str) + 1));
+// 	if (!str || !shell->shell)
 // 		return ;
 // 	while (str[i])
 // 	{
 // 		if (str[i] == '(')
 // 			parenthesis = true;
 // 		else if (str[i] == delimiter && parenthesis == false)
-// 			set_caca(str, i, tokens);
+// 			set_caca(str, i, shell);
 // 		else if (str[i] == ')' && parenthesis == true)
 // 		{
 // 			parenthesis = false;
 // 			i++;
-// 			set_caca(str, i, tokens);
+// 			set_caca(str, i, shell);
 // 		}
 // 		i++;
 // 	}
-// 	set_caca(str, i, tokens);
-// 	tokens->tokens[tokens->nb_tokens] = NULL;
+// 	set_caca(str, i, shell);
+// 	shell->shell[shell->nb_shell] = NULL;
 // }
 
 char *find_param(char *command, t_tmp_env *node)

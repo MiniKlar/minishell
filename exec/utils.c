@@ -1,25 +1,7 @@
 #include "minishell.h"
 
-char	*recup_env(char **envp)
-{
-	char	*path;
-	int		i;
-
-	i = 0;
-	if (!envp)
-		return (NULL);
-	while (envp[i])
-	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-		{
-			return (ft_strtrim(envp[i], "PATH="));
-		}
-		else
-			path = NULL;
-		i++;
-	}
-	return (path);
-}
+char	*recup_env(char **envp);
+char	*new_command_function(char **path, char *new_command);
 
 char	*check_command_path(char *command, char **envp)
 {
@@ -42,6 +24,27 @@ char	*check_command_path(char *command, char **envp)
 	return (new_command_function(path_tab, new_command));
 }
 
+char	*recup_env(char **envp)
+{
+	char	*path;
+	int		i;
+
+	i = 0;
+	if (!envp)
+		return (NULL);
+	while (envp[i])
+	{
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+		{
+			return (ft_strtrim(envp[i], "PATH="));
+		}
+		else
+			path = NULL;
+		i++;
+	}
+	return (path);
+}
+
 char	*new_command_function(char **path, char *new_command)
 {
 	int		i;
@@ -61,72 +64,3 @@ char	*new_command_function(char **path, char *new_command)
 	free(new_command);
 	return (NULL);
 }
-
-char *get_cmd_arg(t_token *node, char *buffer)
-{
-	char *tmp;
-
-	if (node == NULL)
-		;
-	else
-	{
-		tmp = buffer;
-		buffer = ft_strjoin(buffer, node->tokens);
-		if (!buffer)
-			return (NULL);
-		free(tmp);
-		tmp = buffer;
-		buffer = ft_strjoin(buffer, " ");
-		if (!buffer)
-			return (NULL);
-		free(tmp);
-	}
-	return (buffer);
-}
-
-char **recup_command_arg(t_token *node)
-{
-	char **command_arg;
-	char *buffer;
-
-	buffer = ft_strdup("");
-	if (!buffer)
-		return NULL;
-	while (node && node->is_pipe == false)
-	{
-		buffer = get_cmd_arg(node, buffer);
-		node = node->next;
-	}
-	command_arg = ft_split(buffer, ' ');
-	free(buffer);
-	return (command_arg);
-}
-
-// int	open_access_infile(t_data *data, char *argv)
-// {
-// 	int	fd;
-
-// 	if (access(argv, F_OK) != 0)
-// 	{
-// 		perror("File not accessible");
-// 		free_close(data);
-// 		exit(EXIT_FAILURE);
-// 	}
-// 	else if (access(argv, R_OK) != 0)
-// 	{
-// 		perror("File not readable");
-// 		free_close(data);
-// 		exit(EXIT_FAILURE);
-// 	}
-// 	fd = open(argv, O_RDWR);
-// 	if (fd == -1)
-// 	{
-// 		perror("Cannot open file");
-// 		free_close(data);
-// 		exit(EXIT_FAILURE);
-// 	}
-// 	return (fd);
-// }
-
-
-

@@ -28,9 +28,9 @@ t_envp	*ft_last_envp(t_envp *lst)
 	return (tmp);
 }
 
-t_token	*ft_last_token(t_token *lst)
+t_shell	*ft_last_shell(t_shell *lst)
 {
-	t_token	*tmp;
+	t_shell	*tmp;
 
 	if (lst == NULL)
 		return (lst);
@@ -55,7 +55,7 @@ int	ft_size(t_tmp_env *lst)
 	return (size);
 }
 
-size_t print_pipes_nbr(t_token *node)
+size_t print_pipes_nbr(t_shell *node)
 {
 	size_t i;
 

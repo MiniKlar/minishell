@@ -1,10 +1,10 @@
 #include "minishell.h"
 
-void	free_execve_error(t_token *tok, t_pipe *p, char **c_arg, char *c_path)
+void	free_execve_error(t_shell *tok, t_pipe *p, char **c_arg, char *c_path)
 {
 	free(c_path);
 	free_tab(c_arg);
-	free_tokens(tok);
+	free_shell(tok);
 	free_struct_pipe(p);
 }
 
@@ -39,9 +39,9 @@ void	free_env(t_envp *node)
 	}
 }
 
-void	free_tokens(t_token *node)
+void	free_shell(t_shell *node)
 {
-	t_token	*tmp;
+	t_shell	*tmp;
 
 	if (node == NULL)
 		return ;
@@ -49,7 +49,7 @@ void	free_tokens(t_token *node)
 	{
 		while (node)
 		{
-			free(node->tokens);
+			free(node->shell);
 			tmp = node->next;
 			free(node);
 			node = tmp;

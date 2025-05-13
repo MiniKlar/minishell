@@ -26,15 +26,15 @@ void	ft_add_back_envp(t_envp **lst, t_envp *new)
 	}
 }
 
-void	ft_add_back_tokens(t_token **lst, t_token *new)
+void	ft_add_back_shell(t_shell **lst, t_shell *new)
 {
-	t_token	*current;
+	t_shell	*current;
 
 	if (*lst == NULL)
 		*lst = new;
 	else
 	{
-		current = ft_last_token(*lst);
+		current = ft_last_shell(*lst);
 		current->next = new;
 	}
 }
