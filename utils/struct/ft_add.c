@@ -13,6 +13,19 @@ void	ft_add_back(t_tmp_env **lst, t_tmp_env *new)
 	}
 }
 
+void	ft_add_back_redir(t_redir **lst, t_redir *new)
+{
+	t_redir	*current;
+
+	if (*lst == NULL)
+		*lst = new;
+	else
+	{
+		current = ft_last_redir(*lst);
+		current->next = new;
+	}
+}
+
 void	ft_add_back_envp(t_envp **lst, t_envp *new)
 {
 	t_envp	*current;

@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-bool	init_pipe(t_pipex *pipex);
+bool	init_pipe(t_pipe *pipex, size_t nb_pipe);
 
 t_pipe	*init_struct_pipex(size_t nb_pipe)
 {
@@ -13,22 +13,24 @@ t_pipe	*init_struct_pipex(size_t nb_pipe)
 	pipex->fdpipe_index = 0;
 	if (nb_pipe > 0)
 	{
-		pipex->fdpipe = malloc(sizeof(int) * ((pipex->nb_pipe * 2) + 1));
+		pipex->fdpipe = malloc(sizeof(int) * ((nb_pipe * 2) + 1));
 		if (pipex->fdpipe == NULL)
 			return (NULL);
-		if (init_pipe(pipex) == false)
+		if (init_pipe(pipex, nb_pipe) == false)
 			return (NULL);
 	}
+	else
+		pipex->fdpipe = NULL;
 	return (pipex);
 }
 
-bool	init_pipe(t_pipex *pipex)
+bool	init_pipe(t_pipe *pipex, size_t nb_pipe)
 {
 	size_t	i;
 
 	i = 0;
-	pipex->fdpipe[pipex->nb_pipe * 2] = 0;
-	while (i < pipex->nb_pipe * 2)
+	pipex->fdpipe[nb_pipe * 2] = 0;
+	while (i < nb_pipe * 2)
 	{
 		if (pipe(((pipex->fdpipe) + i)) == -1)
 		{
@@ -40,7 +42,7 @@ bool	init_pipe(t_pipex *pipex)
 	return (true);
 }
 
-void	pipe_struct_update(t_shell *shell, size_t i)
+void	pipe_struct_update(t_shell *shell, t_pipe *pipex, size_t i)
 {
 	if (i < shell->nb_pipe - 1)
 	{

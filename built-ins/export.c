@@ -49,7 +49,7 @@ bool is_shell_parameter(t_shell *shell)
 	if (shell->next == NULL)
 		return (false);
 	shell = shell->next;
-	arg = shell->shell;
+	arg = shell->cmd[0];
 	while (arg[i])
 	{
 		if (ft_isalpha(arg[i]) != 1 && arg[i] != '=') //faire en sorte que le premier soit check si cest pas un nombre et apres nombre ok
@@ -71,7 +71,7 @@ void	export(t_shell *shell, char **envp)
 	else
 	{
 		shell = shell->next;
-		arg = shell->shell;
+		arg = shell->cmd[0];
 		env = append_envp(arg, envp);
 		envp = ft_transform_envp(env);
 	}

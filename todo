@@ -63,5 +63,5 @@ int closedir(DIR *dirp);
 
 //cd, exit, unset, export --> parent. Autre child.
 
-
+//mettre des heredoc tmp dans un dossier.
 

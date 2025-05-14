@@ -39,7 +39,7 @@ typedef struct s_redir
 {
 	e_symbol		symbol;
 	char			*str;
-	struct	s_redir *t_redir;
+	struct	s_redir *next;
 }			t_redir;
 
 typedef struct	s_shell
@@ -48,8 +48,8 @@ typedef struct	s_shell
 	t_redir			*redir;
 	size_t			nb_pipe;
 	int				wstatus;
-	int				tmp_name_heredoc;
-	struct	s_shell *shell;
+	int				hdc_idx;
+	struct	s_shell *next;
 }				t_shell;
 
 typedef struct s_tmp_env
@@ -72,18 +72,22 @@ int		exec_cmd(t_shell *node, char **envp);
 
 //pipex_utils
 t_pipe	*init_struct_pipex(size_t nb_pipe);
-void	pipe_struct_update(t_shell *shell, size_t i);
+void	pipe_struct_update(t_shell *shell, t_pipe *pipex, size_t i);
 void	ft_close_fdpipe(t_pipe *pipex);
 
 //REDIRECTIONS
 void	open_append_access_outfile(char *str);
 void	open_access_outfile(char *str);
 void	open_access_infile(char *str);
-int 	here_doc(t_shell *shell);
+char 	*here_doc(t_shell *shell, int i);
+void	ft_add_back_redir(t_redir **lst, t_redir *new);
+t_redir *create_node_redir(char *arg);
+t_redir	*ft_last_redir(t_redir *lst);
 
 t_shell	*fill_token(t_shell *node, char **arg);
 
 //FREE
+void	free_all(t_shell *shell, t_pipe *pipex);
 void	free_tab(char **tableau);
 void	free_params(t_tmp_env *node);
 void	free_shell(t_shell *node);

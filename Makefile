@@ -22,14 +22,13 @@ SRC 			= ./parsing/parsing.c \
 				./utils/struct/ft_add.c \
 				./utils/struct/ft_get.c \
 				./utils/struct/ft_struct.c \
-				./exec/pipe.c \
-				./exec/utils.c \
+				./exec/exec_cmd.c \
 				./exec/exec.c \
-				./exec/redirections.c \
-				./exec/pipex_utils.c \
+				./exec/here_doc.c \
 				./exec/infile.c \
 				./exec/outfile.c \
-				./exec/here_doc.c \
+				./exec/pipex_utils.c \
+				./exec/utils.c \
 
 OBJ 			= $(SRC:.c=.o)
 

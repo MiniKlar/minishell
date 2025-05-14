@@ -1,11 +1,53 @@
 #include "minishell.h"
 
-void	free_execve_error(t_shell *tok, t_pipe *p, char **c_arg, char *c_path)
+void	free_redir_struct(t_redir *redirections);
+void	free_struct_pipe(t_pipe *pipex);
+void	free_shell(t_shell *shell);
+
+void	free_all(t_shell *shell, t_pipe *pipex)
 {
-	free(c_path);
-	free_tab(c_arg);
-	free_shell(tok);
-	free_struct_pipe(p);
+	free_shell(shell);
+	free_struct_pipe(pipex);
+	exit(EXIT_FAILURE);
+}
+
+void	free_shell(t_shell *shell)
+{
+	t_shell	*tmp;
+
+	if (shell == NULL)
+		return ;
+	else
+	{
+		while (shell != NULL)
+		{
+			free_tab(shell->cmd);
+			free_redir_struct(shell->redir);
+			tmp = shell;
+			shell = shell->next;
+			free(tmp);
+		}
+	}
+}
+
+void	free_struct_pipe(t_pipe *pipex)
+{
+	if (pipex->fdpipe != NULL)
+		free(pipex->fdpipe);
+	free(pipex);
+}
+
+void free_redir_struct(t_redir *redirections)
+{
+	t_redir	*tmp;
+
+	while (redirections != NULL)
+	{
+		tmp = redirections;
+		free(redirections->str);
+		redirections = redirections->next;
+		free(tmp);
+	}
 }
 
 void	free_tab(char **tableau)
@@ -39,24 +81,6 @@ void	free_env(t_envp *node)
 	}
 }
 
-void	free_shell(t_shell *node)
-{
-	t_shell	*tmp;
-
-	if (node == NULL)
-		return ;
-	else
-	{
-		while (node)
-		{
-			free(node->shell);
-			tmp = node->next;
-			free(node);
-			node = tmp;
-		}
-	}
-}
-
 void	free_params(t_tmp_env *node)
 {
 	t_tmp_env	*tmp;
@@ -74,10 +98,4 @@ void	free_params(t_tmp_env *node)
 			node = tmp;
 		}
 	}
-}
-
-void free_struct_pipe(t_pipe *pipex)
-{
-	free(pipex->fdpipe);
-	free(pipex);
 }
