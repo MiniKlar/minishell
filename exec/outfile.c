@@ -1,29 +1,25 @@
 #include "minishell.h"
 
-void	open_append_access_outfile(char *str)
+void	redir_outfile(t_shell *shell)
 {
 	int	fd;
+	char *str;
 
-	fd = open(str, O_CREAT | O_RDWR | O_APPEND, 0755);
+	str = shell->redir->str;
+	if (shell->redir->symbol == APPEND)
+		fd = open(str, O_CREAT | O_RDWR | O_APPEND, 0755);
+	else
+		fd = open(str, O_CREAT | O_RDWR | O_TRUNC, 0755);
 	if (fd == -1)
 	{
 		perror("Cannot open file");
 		exit(EXIT_FAILURE);
 	}
-	dup2(fd, 1);
-	close(fd);
-}
-
-void	open_access_outfile(char *str)
-{
-	int	fd;
-
-	fd = open(str, O_CREAT | O_RDWR | O_TRUNC, 0755);
-	if (fd == -1)
+	if (shell->fd_out != STDOUT_FILENO)
 	{
-		perror("Cannot open file");
-		exit(EXIT_FAILURE);
+		close(shell->fd_out);
+		shell->fd_out = fd;
 	}
-	dup2(fd, 1);
-	close(fd);
+	else
+		shell->fd_out = fd;
 }

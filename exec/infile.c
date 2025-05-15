@@ -1,9 +1,11 @@
 #include "minishell.h"
 
-void	open_access_infile(char *str)
+void	redir_infile(t_shell *shell)
 {
 	int	fd;
+	char *str;
 
+	str = shell->redir->str;
 	if (access(str, F_OK) != 0)
 	{
 		perror("File not accessible");
@@ -20,6 +22,11 @@ void	open_access_infile(char *str)
 		perror("Cannot open file");
 		exit(EXIT_FAILURE);
 	}
-	dup2(fd, 0);
-	close(fd);
+	if (shell->fd_in != STDIN_FILENO)
+	{
+		close(shell->fd_in);
+		shell->fd_in = fd;
+	}
+	else
+		shell->fd_in = fd;
 }

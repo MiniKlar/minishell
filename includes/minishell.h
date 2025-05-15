@@ -44,6 +44,8 @@ typedef struct s_redir
 
 typedef struct	s_shell
 {
+	int				fd_in;
+	int				fd_out;
 	char			**cmd;
 	t_redir			*redir;
 	size_t			nb_pipe;
@@ -76,12 +78,15 @@ void	pipe_struct_update(t_shell *shell, t_pipe *pipex, size_t i);
 void	ft_close_fdpipe(t_pipe *pipex);
 
 //REDIRECTIONS
-void	open_append_access_outfile(char *str);
-void	open_access_outfile(char *str);
-void	open_access_infile(char *str);
+void	redir_outfile(t_shell *shell);
+void	redir_infile(t_shell *shell);
 char 	*here_doc(t_shell *shell, int i);
+
+t_redir *create_node_redir_out(char *arg);
+bool	ft_is_last_in(t_shell *shell);
 void	ft_add_back_redir(t_redir **lst, t_redir *new);
 t_redir *create_node_redir(char *arg);
+t_redir *create_node_here_redir(char *arg);
 t_redir	*ft_last_redir(t_redir *lst);
 
 t_shell	*fill_token(t_shell *node, char **arg);

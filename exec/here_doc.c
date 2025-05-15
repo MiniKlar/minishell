@@ -1,30 +1,27 @@
 #include "minishell.h"
 
 void	read_heredoc(t_shell *shell, int fd);
+int		ft_tmp_open_heredoc(char *name, int i);
+bool	ft_is_last_in(t_shell *shell);
 
 char	*here_doc(t_shell *shell, int i)
 {
 	int		fd;
 	char	*name;
+
 	name = ft_strjoin("tmp", ft_itoa(i));
 	if (!name)
 		return (NULL);
-	fd = open(name, O_CREAT | O_RDWR, 0755);
-	if (fd == -1)
-	{
-		printf("ERROR OPENING TMP[%d]", i);
-		exit(1);
-	}
+	fd = ft_tmp_open_heredoc(name, i);
 	read_heredoc(shell, fd);
-	close(fd);
-	fd = open(name, O_CREAT | O_RDWR, 0755);
-	if (fd == -1)
+	fd = ft_tmp_open_heredoc(name, i);
+	if (shell->fd_in != STDIN_FILENO)
 	{
-		printf("ERROR OPENING TMP[%d]", i);
-		exit(1);
+		close(shell->fd_in);
+		shell->fd_in = fd;
 	}
-	dup2(fd, 0);
-	close(fd);
+	else
+		shell->fd_in = fd;
 	return (name);
 }
 
@@ -41,7 +38,7 @@ void	read_heredoc(t_shell *shell, int fd)
 		matching_word = readline("> ");
 		while (word_to_match[i] || matching_word[i])
 		{
-			if (matching_word[i] == word_to_match[i])
+			if (word_to_match[i] == matching_word[i])
 				i++;
 			else
 				break ;
@@ -52,4 +49,39 @@ void	read_heredoc(t_shell *shell, int fd)
 		ft_putchar_fd('\n', fd);
 		free(matching_word);
 	}
+	free(matching_word);
+	close(fd);
+}
+
+int	ft_tmp_open_heredoc(char *name, int i)
+{
+	int	fd;
+
+	fd = open(name, O_CREAT | O_RDWR, 0755);
+	if (fd == -1)
+	{
+		printf("ERROR OPENING TMP[%d]", i);
+		exit(1);
+	}
+	return (fd);
+}
+
+bool	ft_is_last_in(t_shell *shell)
+{
+	t_shell *tmp;
+
+	tmp = shell;
+	while (shell->redir->next != NULL)
+	{
+		if (shell->redir->next->symbol == HERE_DOC
+			|| shell->redir->next->symbol == REDIR_IN)
+		{
+			shell = tmp;
+			return (false);
+		}
+		else
+			shell->redir = shell->redir->next;
+	}
+	shell = tmp;
+	return (true);
 }

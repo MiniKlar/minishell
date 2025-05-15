@@ -5,6 +5,7 @@ int		ft_wait(t_shell *shell, pid_t *id_fork, size_t nb_pipes);
 pid_t	*fork_cmd(t_shell *shell, t_pipe *pipex, char **envp);
 void	redir_cmd_input_output(t_shell *shell);
 int		ft_dup(t_pipe *pipex);
+void	ft_dup_redir(t_shell *shell);
 
 int	exec_cmd(t_shell *shell, char **envp)
 {
@@ -73,6 +74,8 @@ void	create_children(t_shell *shell, t_pipe *pipex, char **envp)
 		exit(1);
 	}
 	redir_cmd_input_output(shell);
+	printf("FD IN avant final redir %d\n", shell->fd_in);
+	printf("FD OUT avant final redir %d\n", shell->fd_out);
 	if (shell->nb_pipe != 0)
 	{
 		if (ft_dup(pipex) == -1)
@@ -83,6 +86,8 @@ void	create_children(t_shell *shell, t_pipe *pipex, char **envp)
 		}
 		ft_close_fdpipe(pipex);
 	}
+	else
+		ft_dup_redir(shell);
 	if (execve(command_path, &shell->cmd[0], envp) == -1)
 	{
 		perror("ERROR EXEC VE");
@@ -94,28 +99,31 @@ void	create_children(t_shell *shell, t_pipe *pipex, char **envp)
 
 void	redir_cmd_input_output(t_shell *shell)
 {
-	char	*heredoc_name;
-	int		i;
+	char		*heredoc_name;
+	e_symbol	type_redir;
+	int			i;
 
 	i = 0;
 	heredoc_name = NULL;
 	while (shell->redir != NULL)
 	{
-		if (shell->redir->symbol == REDIR_IN)
-			open_access_infile(shell->redir->str);
-		else if (shell->redir->symbol == REDIR_OUT)
-			open_access_outfile(shell->redir->str);
-		else if (shell->redir->symbol == HERE_DOC)
+		printf("VOICI FD IN = %d\n", shell->fd_in);
+		printf("VOICI FD OUT = %d\n", shell->fd_out);
+		type_redir = shell->redir->symbol;
+		if (type_redir == REDIR_IN)
+			redir_infile(shell);
+		else if (type_redir == REDIR_OUT || type_redir == APPEND)
+			redir_outfile(shell);
+		else if (type_redir == HERE_DOC)
 		{
+			heredoc_name = here_doc(shell, i);
 			if (heredoc_name)
 				unlink(heredoc_name);
-			heredoc_name = here_doc(shell, i);
 			i++;
 		}
-		else if (shell->redir->symbol == APPEND)
-			open_append_access_outfile(shell->redir->str);
 		shell->redir = shell->redir->next;
 	}
+
 }
 
 int	ft_dup(t_pipe *pipex)
@@ -142,6 +150,16 @@ int	ft_dup(t_pipe *pipex)
 			return (-1);
 	}
 	return (0);
+}
+
+void	ft_dup_redir(t_shell *shell)
+{
+	if (shell->fd_in != STDIN_FILENO)
+		dup2(shell->fd_in, STDIN_FILENO);
+	if (shell->fd_out != STDOUT_FILENO)
+		dup2(shell->fd_out, STDOUT_FILENO);
+	close(shell->fd_in);
+	close(shell->fd_out);
 }
 
 int	ft_wait(t_shell *shell, pid_t *id_fork, size_t nb_pipes)
