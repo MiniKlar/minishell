@@ -42,16 +42,22 @@ typedef struct s_redir
 	struct	s_redir *next;
 }			t_redir;
 
+typedef struct s_cmd
+{
+	char **cmd;
+	struct s_cmd *next;
+}				t_cmd;
+
 typedef struct	s_shell
 {
-	int				fd_in;
-	int				fd_out;
-	char			**cmd;
+	char			**envp;
+	t_cmd			*cmd;
 	t_redir			*redir;
 	size_t			nb_pipe;
-	int				wstatus;
+	int				fd_in;
+	int				fd_out;
 	int				hdc_idx;
-	struct	s_shell *next;
+	int				wstatus;
 }				t_shell;
 
 typedef struct s_tmp_env
@@ -117,11 +123,12 @@ char *get_cmd_arg(t_shell *node, char *buffer);
 
 void	env(char **envp);
 void	export(t_shell *shell, char **envp);
-int		cd(t_shell *shell, char **envp);
+int		cd(t_shell *shell);
 char	*pwd(bool print);
 int		ft_exit(t_shell *node);
 int		ft_echo(char **tab_cmd, t_tmp_env *node);
 
+char	**ft_malloc_envp(char **envp);
 void print_shells(t_shell *node);
 size_t	print_pipes_nbr(t_shell *node);
 char	*recup_env(char **envp);

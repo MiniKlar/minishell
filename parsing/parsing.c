@@ -1,5 +1,33 @@
 #include "minishell.h"
 
+char	**ft_malloc_envp(char **envp)
+{
+	char	**alloc_envp;
+	int		i;
+	int		k;
+	i = 0;
+	while (envp[i])
+		i++;
+	alloc_envp = malloc(sizeof(char *) * (i));
+	if (!alloc_envp)
+		return (NULL);
+	i = 0;
+	while (envp[i])
+	{
+		k = 0;
+		while (envp[i][k] != '\0')
+			k++;
+		alloc_envp[i] = malloc(sizeof(char) * (k + 1));
+		if (!alloc_envp[i])
+			return (NULL);
+		ft_memmove(alloc_envp[i], envp[i], k);
+		alloc_envp[i][k] = '\0';
+		i++;
+	}
+	alloc_envp[i - 1] = NULL;
+	return (alloc_envp);
+}
+
 int ft_nb_shell(char *str)
 {
 	size_t i;

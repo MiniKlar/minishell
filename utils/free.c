@@ -13,20 +13,13 @@ void	free_all(t_shell *shell, t_pipe *pipex)
 
 void	free_shell(t_shell *shell)
 {
-	t_shell	*tmp;
-
 	if (shell == NULL)
 		return ;
 	else
 	{
-		while (shell != NULL)
-		{
-			free_tab(shell->cmd);
-			free_redir_struct(shell->redir);
-			tmp = shell;
-			shell = shell->next;
-			free(tmp);
-		}
+		free_tab(shell->cmd->cmd);
+		free(shell->cmd);
+		//free_redir_struct(shell->redir);
 	}
 }
 

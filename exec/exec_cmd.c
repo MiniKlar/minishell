@@ -71,11 +71,9 @@ void	create_children(t_shell *shell, t_pipe *pipex, char **envp)
 	if (command_path == NULL)
 	{
 		free_all(shell, pipex);
-		exit(1);
+		exit(127);
 	}
 	redir_cmd_input_output(shell);
-	printf("FD IN avant final redir %d\n", shell->fd_in);
-	printf("FD OUT avant final redir %d\n", shell->fd_out);
 	if (shell->nb_pipe != 0)
 	{
 		if (ft_dup(pipex) == -1)
@@ -107,8 +105,6 @@ void	redir_cmd_input_output(t_shell *shell)
 	heredoc_name = NULL;
 	while (shell->redir != NULL)
 	{
-		printf("VOICI FD IN = %d\n", shell->fd_in);
-		printf("VOICI FD OUT = %d\n", shell->fd_out);
 		type_redir = shell->redir->symbol;
 		if (type_redir == REDIR_IN)
 			redir_infile(shell);

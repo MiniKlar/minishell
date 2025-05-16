@@ -18,33 +18,33 @@ bool	is_cmd_built_ins(t_shell *shell, char **envp)
 	char	*buffer;
 
 	buffer = NULL;
-	if (ft_strncmp(shell->cmd[0], "export", 5) == 0)
+	if (ft_strncmp(shell->cmd->cmd[0], "export", 5) == 0)
 	{
 		export(shell, envp);
 		return (true);
 	}
-	else if (ft_strncmp(shell->cmd[0], "pwd", 3) == 0)
+	else if (ft_strncmp(shell->cmd->cmd[0], "pwd", 3) == 0)
 	{
 		buffer = pwd(true);
 		free(buffer);
 		return (true);
 	}
-	else if (ft_strncmp(shell->cmd[0], "cd", 2) == 0)
+	else if (ft_strncmp(shell->cmd->cmd[0], "cd", 2) == 0)
 	{
-		cd(shell, envp);
+		cd(shell);
 		return (true);
 	}
-	else if ((ft_strncmp(shell->cmd[0], "echo ", 5) == 0))
+	else if ((ft_strncmp(shell->cmd->cmd[0], "echo ", 5) == 0))
 	{
 		//ft_echo(tab_cmd, node);
 		return (true);
 	}
-	else if (ft_strncmp(shell->cmd[0], "exit", 4) == 0)
+	else if (ft_strncmp(shell->cmd->cmd[0], "exit", 4) == 0)
 	{
 		ft_exit(shell);
 		return (true);
 	}
-	else if (ft_strncmp(shell->cmd[0], "env", 3) == 0)
+	else if (ft_strncmp(shell->cmd->cmd[0], "env", 3) == 0)
 	{
 		env(envp);
 		return (true);
@@ -57,6 +57,6 @@ bool	exec_shell_param(t_shell *shell, char **envp)
 	if (is_shell_parameter(shell) == false)
 		return (false);
 	else
-		append_envp(shell->cmd[0], envp);
+		append_envp(shell->cmd->cmd[0], envp);
 	return (true);
 }

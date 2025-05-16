@@ -9,7 +9,7 @@ char	*here_doc(t_shell *shell, int i)
 	int		fd;
 	char	*name;
 
-	name = ft_strjoin("tmp", ft_itoa(i));
+	name = ft_strjoin("/tmp/tmp", ft_itoa(i));
 	if (!name)
 		return (NULL);
 	fd = ft_tmp_open_heredoc(name, i);
