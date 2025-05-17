@@ -1,13 +1,13 @@
 #include "minishell.h"
 
-void	create_children(t_shell *node, t_pipe *pipex, char **envp);
+void	create_children(t_shell *node, t_pipe *pipex);
 int		ft_wait(t_shell *shell, pid_t *id_fork, size_t nb_pipes);
-pid_t	*fork_cmd(t_shell *shell, t_pipe *pipex, char **envp);
+pid_t	*fork_cmd(t_shell *shell, t_pipe *pipex);
 void	redir_cmd_input_output(t_shell *shell);
 int		ft_dup(t_pipe *pipex);
 void	ft_dup_redir(t_shell *shell);
 
-int	exec_cmd(t_shell *shell, char **envp)
+int	exec_cmd(t_shell *shell)
 {
 	t_pipe	*pipex;
 	pid_t	*id_fork;
@@ -18,7 +18,7 @@ int	exec_cmd(t_shell *shell, char **envp)
 		free_shell(shell);
 		exit(EXIT_FAILURE);
 	}
-	id_fork = fork_cmd(shell, pipex, envp);
+	id_fork = fork_cmd(shell, pipex);
 	if (pipex->fdpipe != NULL)
 		ft_close_fdpipe(pipex);
 	shell->wstatus = ft_wait(shell, id_fork, shell->nb_pipe);
@@ -29,7 +29,7 @@ int	exec_cmd(t_shell *shell, char **envp)
 	return (0);
 }
 
-pid_t	*fork_cmd(t_shell *shell, t_pipe *pipex, char **envp)
+pid_t	*fork_cmd(t_shell *shell, t_pipe *pipex)
 {
 	size_t	i;
 	size_t	nb_fork;
@@ -44,7 +44,7 @@ pid_t	*fork_cmd(t_shell *shell, t_pipe *pipex, char **envp)
 	if (!id_fork)
 		free_all(shell, pipex);
 	i = 0;
-	while (shell != NULL)
+	while (shell->cmd)
 	{
 		id_fork[i] = fork();
 		if (id_fork[i] == -1)
@@ -53,21 +53,21 @@ pid_t	*fork_cmd(t_shell *shell, t_pipe *pipex, char **envp)
 			free_all(shell, pipex);
 		}
 		else if (id_fork[i] == 0)
-			create_children(shell, pipex, envp);
+			create_children(shell, pipex);
 		if (WEXITSTATUS(shell->wstatus) == 127)
 			exit(shell->wstatus);
 		pipe_struct_update(shell, pipex, i);
-		shell = shell->next;
+		shell->cmd = shell->cmd->next;
 		i++;
 	}
 	return (id_fork);
 }
 
-void	create_children(t_shell *shell, t_pipe *pipex, char **envp)
+void	create_children(t_shell *shell, t_pipe *pipex)
 {
 	char	*command_path;
 
-	command_path = check_command_path(shell->cmd[0], envp);
+	command_path = check_command_path(shell->cmd->cmd[0], shell->envp);
 	if (command_path == NULL)
 	{
 		free_all(shell, pipex);
@@ -86,7 +86,7 @@ void	create_children(t_shell *shell, t_pipe *pipex, char **envp)
 	}
 	else
 		ft_dup_redir(shell);
-	if (execve(command_path, &shell->cmd[0], envp) == -1)
+	if (execve(command_path, &shell->cmd->cmd[0], shell->envp) == -1)
 	{
 		perror("ERROR EXEC VE");
 		free_all(shell, pipex);

@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-void env(char **envp)
+void	ft_env(t_shell *shell)
 {
-	if (!envp)
+	if (!shell->envp)
 		perror("env");
 	else
 	{
@@ -12,9 +12,9 @@ void env(char **envp)
 		if (id_fork == -1)
 			perror("fork");
 		if (id_fork == 0)
-		{
-			print_tab(envp);
-		}
+			print_tab(shell->envp);
+		waitpid(id_fork, &shell->wstatus, 0);
 	}
-	// finir fonction avec la structure globale pour update le envp correctement.
+	printf("%d\n", shell->wstatus);
+	return ;
 }

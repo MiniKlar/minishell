@@ -42,20 +42,6 @@ t_envp	*ft_last_envp(t_envp *lst)
 	return (tmp);
 }
 
-t_shell	*ft_last_shell(t_shell *lst)
-{
-	t_shell	*tmp;
-
-	if (lst == NULL)
-		return (lst);
-	while (lst != NULL)
-	{
-		tmp = lst;
-		lst = lst->next;
-	}
-	return (tmp);
-}
-
 int	ft_size(t_tmp_env *lst)
 {
 	int	size;

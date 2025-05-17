@@ -1,78 +1,140 @@
 #include "minishell.h"
 
-char **ft_transform_envp(t_envp *env)
+bool	check_arg_export_syntax(char *arg);
+char	*remove_extra_char_before_egal(char *arg);
+bool	error_export(char *arg);
+void	export_all(char **envp);
+void	export_arg_to_env(t_shell *shell, char *arg);
+
+int	ft_export(t_shell *shell)
 {
-	char **envp;
-	char *tmp_env;
-	char *tmp;
-
-	tmp_env = ft_strdup("");
-	if (!tmp_env)
-		return (NULL);
-	while (env)
-	{
-		tmp = tmp_env;
-		tmp_env = ft_strjoin(tmp_env, env->envp);
-		free(tmp);
-		if (env->next != NULL)
-		{
-			tmp = tmp_env;
-			tmp_env = ft_strjoin(tmp_env, " ");
-			free(tmp);
-		}
-		env = env->next;
-	}
-	envp = ft_split(tmp_env, ' ');
-	free(tmp_env);
-	free_env(env);
-	return (envp);
-}
-
-t_envp *append_envp(char *arg, char **envp)
-{
-	t_envp *env;
-	t_envp *new_node;
-
-	env = NULL;
-	env = fill_envp(env, envp);
-	new_node = create_node_envp(arg);
-	ft_add_back_envp(&env, new_node);
-	return (env);
-}
-
-bool is_shell_parameter(t_shell *shell)
-{
-	char *arg;
 	size_t	i;
+	int		exit_code;
 
-	i = 0;
-	if (shell->next == NULL)
-		return (false);
-	shell = shell->next;
-	arg = shell->cmd[0];
-	while (arg[i])
+	i = 1;
+	exit_code = 0;
+	if (shell->cmd->cmd[i] == 0)
+		export_all(shell->envp);
+	while (shell->cmd->cmd[i])
 	{
-		if (ft_isalpha(arg[i]) != 1 && arg[i] != '=') //faire en sorte que le premier soit check si cest pas un nombre et apres nombre ok
-			return (false);
-		if (arg[i] == '=')
-			return (true);
+		if (check_arg_export_syntax(shell->cmd->cmd[i]) == true)
+			export_arg_to_env(shell, shell->cmd->cmd[i]);
+		else
+			exit_code = 1;
 		i++;
 	}
-	return(false);
+	return (exit_code);
 }
 
-void	export(t_shell *shell, char **envp)
+void	export_arg_to_env(t_shell *shell, char *arg)
 {
-	t_envp *env;
-	char *arg;
+	t_envp	*new_envp;
+	t_envp	*env;
+	char	**tmp;
+	char	*new_arg;
 
-	if (is_shell_parameter(shell) == false)
-		;
-	else
+	env = NULL;
+	new_arg = remove_extra_char_before_egal(arg);
+	new_envp = create_node_envp(new_arg);
+	env = fill_envp(env, shell->envp);
+	ft_add_back_envp(&env, new_envp);
+	tmp = shell->envp;
+	shell->envp = ft_convert_node_to_envp(env);
+	free(tmp);
+	free(env);
+	free(new_arg);
+}
+
+char	*remove_char_arg(char *arg)
+{
+	char	*new_arg;
+	size_t	i;
+	size_t	k;
+
+	i = 0;
+	k = 0;
+	new_arg = malloc(sizeof(char) * (ft_strlen(arg)));
+	if (!new_arg)
+		return (NULL);
+	while (arg[i] != '=')
+		i++;
+	ft_memmove(new_arg, arg, i - 1);
+	ft_memmove(new_arg + i - 1, arg + i, ft_strlen(arg) - i);
+	new_arg[ft_strlen(arg) - 1] = '\0';
+	return (new_arg);
+}
+
+char	*remove_extra_char_before_egal(char *arg)
+{
+	size_t	i;
+	bool	remove_char;
+
+	i = 0;
+	remove_char = false;
+	while (arg[i] != '\0')
 	{
-		shell = shell->next;
-		arg = shell->cmd[0];
-		env = append_envp(arg, envp);
-		envp = ft_transform_envp(env);
+		if (arg[i + 1] == '=' && (arg[i] == '+'
+			|| arg[i] == '_' || arg[i] == '<' || arg[i] == '>'))
+			remove_char = true;
+		i++;
+	}
+	if (remove_char == true)
+		return (remove_char_arg(arg));
+	return (ft_strdup(arg));
+}
+
+bool	check_arg_export_syntax(char *arg)
+{
+	size_t	i;
+
+	i = 1;
+	if (arg[0] == '-' && arg[1] != '\0')
+	{
+		printf("bash: export: %c%c: invalid option\n", arg[0], arg[1]);
+		printf("export: usage:export [name[=value] ...]");
+		return (false);
+	}
+	if (ft_isalpha(arg[0]) != true)
+		return (error_export(arg));
+	while (arg[i])
+	{
+		if (arg[i] == '=')
+			break ;
+		else if (ft_isalnum(arg[i]) != true && arg[i + 1] != '=')
+			return (error_export(arg));
+		else if (ft_isalnum(arg[i]) != 1 && arg[i + 1] == '=' && arg[i] != '+'
+					&& arg[i] != '_' && arg[i] != '<' && arg[i] != '>')
+			return (error_export(arg));
+		i++;
+	}
+	return (true);
+}
+
+bool	error_export(char *arg)
+{
+	printf("export: `%s': not a valid identifier", arg);
+	return (false);
+}
+
+void	export_all(char **envp)
+{
+	size_t	i;
+	size_t	k;
+
+	i = 0;
+	while (envp[i])
+	{
+		k = 0;
+		ft_putstr_fd("export ", 1);
+		while (envp[i][k])
+		{
+			if (k > 0)
+				if (envp[i][k - 1] == '=')
+					ft_putchar_fd('"', 1);
+			ft_putchar_fd(envp[i][k], 1);
+			k++;
+		}
+		ft_putstr_fd("\"\n", 1);
+		i++;
 	}
 }

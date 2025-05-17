@@ -1,62 +1,67 @@
 #include <minishell.h>
 
-bool	is_cmd_built_ins(t_shell *shell, char **envp);
-bool	exec_shell_param(t_shell *shell, char **envp);
+bool	is_cmd_built_ins(t_shell *shell);
+bool	exec_shell_param(t_shell *shell);
 
-void	exec(t_shell *shell, char **envp)
+void	exec(t_shell *shell)
 {
-	if (is_cmd_built_ins(shell, envp) == true)
-		printf("Built-ins executed\n");
-	else if (exec_shell_param(shell, envp) == true)
-		printf("Shell parameters added to envp\n");
+	if (is_cmd_built_ins(shell) == true)
+		;
+		// printf("Built-ins executed\n");
+	// else if (exec_shell_param(shell) == true)
+	// 	printf("Shell parameters added to envp\n");
 	else
-		exec_cmd(shell, envp);
+		exec_cmd(shell);
 }
 
-bool	is_cmd_built_ins(t_shell *shell, char **envp)
+bool	is_cmd_built_ins(t_shell *shell)
 {
 	char	*buffer;
 
 	buffer = NULL;
 	if (ft_strncmp(shell->cmd->cmd[0], "export", 5) == 0)
 	{
-		export(shell, envp);
+		shell->wstatus = ft_export(shell);
 		return (true);
 	}
-	else if (ft_strncmp(shell->cmd->cmd[0], "pwd", 3) == 0)
+	if (ft_strncmp(shell->cmd->cmd[0], "pwd", 4) == 0)
 	{
-		buffer = pwd(true);
-		free(buffer);
+		ft_pwd(shell, true);
 		return (true);
 	}
-	else if (ft_strncmp(shell->cmd->cmd[0], "cd", 2) == 0)
+	else if (ft_strncmp(shell->cmd->cmd[0], "cd", 3) == 0)
 	{
-		cd(shell);
+		shell->wstatus = ft_cd(shell);
 		return (true);
 	}
-	else if ((ft_strncmp(shell->cmd->cmd[0], "echo ", 5) == 0))
+	else if ((ft_strncmp(shell->cmd->cmd[0], "echo", 5) == 0))
 	{
-		//ft_echo(tab_cmd, node);
+		ft_echo(shell);
 		return (true);
 	}
-	else if (ft_strncmp(shell->cmd->cmd[0], "exit", 4) == 0)
+	else if (ft_strncmp(shell->cmd->cmd[0], "exit", 5) == 0)
 	{
 		ft_exit(shell);
 		return (true);
 	}
-	else if (ft_strncmp(shell->cmd->cmd[0], "env", 3) == 0)
+	else if (ft_strncmp(shell->cmd->cmd[0], "env", 4) == 0)
 	{
-		env(envp);
+		ft_env(shell);
+		return (true);
+	}
+	else if (ft_strncmp(shell->cmd->cmd[0], "unset", 6) == 0)
+	{
+		shell->wstatus = ft_unset(shell);
 		return (true);
 	}
 	return (false);
 }
 
-bool	exec_shell_param(t_shell *shell, char **envp)
-{
-	if (is_shell_parameter(shell) == false)
-		return (false);
-	else
-		append_envp(shell->cmd->cmd[0], envp);
-	return (true);
-}
+// bool	exec_shell_param(t_shell *shell)
+// {
+// 	if (is_shell_parameter(shell) == false)
+// 		return (false);
+// 	else
+// 		append_envp(shell->cmd->cmd[0]);
+// 	return (true);
+// }

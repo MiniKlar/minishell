@@ -61,6 +61,4 @@ int closedir(DIR *dirp);
 // The exit status of the last command is available in the special parameter $? (see
 // Section 3.4.2 [Special Parameters], page 23).
 
-//cd, exit, unset, export --> parent. Autre child.
-
-cd faire cd -;
+//on peut essayer de gerer les variables bash ex. caca=prout. mais pas obligatoire, il faut creer un char** temporaire.

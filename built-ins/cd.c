@@ -11,7 +11,6 @@ void	update_pwd(t_shell *shell, char *arg);
 
 int	exec_cd(char *arg)
 {
-	printf("VOICI ARG = %s\n", arg);
 	if (chdir(arg) == -1)
 	{
 		perror("cd");
@@ -24,7 +23,7 @@ int	exec_cd(char *arg)
 	}
 }
 
-int cd(t_shell *shell)
+int ft_cd(t_shell *shell)
 {
 	char *arg;
 	size_t	i;
@@ -43,7 +42,8 @@ int cd(t_shell *shell)
 	else
 	{
 		exec_cd(arg);
-		pwd(true);
+		if (ft_strncmp(shell->cmd->cmd[1], "-\0", 2) == 0)
+			ft_pwd(shell, true);
 		update_pwd(shell, arg);
 		return (0);
 	}
@@ -132,13 +132,14 @@ char *join_args(char *arg, char *new_arg)
 
 char *check_arg(char *arg, char **envp)
 {
-	if (ft_strncmp(arg, ".", 1) == 0 && arg[1] == '\0')
-		arg = get_specific_env(envp, "PWD");
-	else if (ft_strncmp(arg, "..", 2) == 0 && (arg[2] == '\0'))
+	if (ft_strncmp(arg, ".", 2) == 0)
+		arg = get_specific_env(envp, "PWD=");
+	else if (ft_strncmp(arg, "..", 3) == 0)
 		arg = get_prev_pwd(envp);
-	else if (ft_strncmp(arg, "~", 1) == 0 && (arg[1] == '\0'))
-		arg = get_specific_env(envp, "HOME");
-	printf("VOICI ARG %s\n", arg);
+	else if (ft_strncmp(arg, "~", 2) == 0)
+		arg = get_specific_env(envp, "HOME=");
+	else if (ft_strncmp(arg, "-", 2) == 0)
+		arg = get_specific_env(envp, "OLDPWD=");
 	return (arg);
 }
 
@@ -195,7 +196,7 @@ char *get_specific_env(char **envp, char *env)
 	while (envp[i])
 	{
 		if (ft_strncmp(envp[i], env, ft_strlen(env)) == 0)
-			return (ft_substr(envp[i], ft_strlen(env) + 1, ft_strlen(envp[i]) - 5));
+			return (ft_substr(envp[i], ft_strlen(env), ft_strlen(envp[i]) - ft_strlen(env)));
 		i++;
 	}
 	return (NULL);

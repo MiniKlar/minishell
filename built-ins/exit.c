@@ -1,8 +1,9 @@
 #include "minishell.h"
 
-int ft_exit(t_shell *node)
+void	ft_exit(t_shell *shell)
 {
 	ft_putstr_fd("exit\n", 1);
-	free_shell(node);
-	exit(0); //doit exit sur le wstatus ou le exit code de lancienne commande
+	free_shell(shell);
+	rl_clear_history();
+	exit(shell->wstatus); //doit exit sur le wstatus ou le exit code de lancienne commande
 }

@@ -22,7 +22,7 @@ int main(int argc, char **argv, char **envp)
 		shell->cmd = create_node_cmd();
 		shell->wstatus = 0;
 		shell->redir = NULL;
-		exec(shell, envp);
+		exec(shell);
 		if (ft_strncmp(command, "", 1) != 0)
 			add_history(command);
 		envp = shell->envp;
@@ -65,7 +65,7 @@ t_cmd *create_node_cmd(void)
 {
 	t_cmd	*cmd;
 
-	char *str = "cd ~";
+	char *str = "echo -n caca prout pipi albillie bombe a chiotte";
 	cmd = malloc(sizeof(*cmd));
 	if (!cmd)
 		return (NULL);

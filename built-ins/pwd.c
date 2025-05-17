@@ -1,16 +1,24 @@
 #include "minishell.h"
 
-char *pwd(bool print)
+int	ft_pwd(t_shell *shell, bool print)
 {
-	char *buffer;
-
-	buffer = malloc(sizeof(char) * 1024);
-	if (getcwd(buffer, 1024) == NULL)
-		perror("pwd error");
-	else
+	pid_t id_fork;
+	id_fork = fork();
+	if (id_fork == -1)
+		perror("fork");
+	if (id_fork == 0)
 	{
-		if (print)
-			printf("%s\n", buffer); //peut-etre enlever le \n
+		char *buffer;
+		buffer = malloc(sizeof(char) * 1024);
+		if (getcwd(buffer, 1024) == NULL)
+			perror("pwd error");
+		else
+		{
+			if (print)
+				printf("%s\n", buffer);
+		}
+		free(buffer);
 	}
-	return (buffer);
+	waitpid(id_fork, &shell->wstatus, 0);
+	return (0);
 }

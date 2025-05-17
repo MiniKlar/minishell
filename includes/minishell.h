@@ -75,8 +75,8 @@ typedef struct s_envp
 	void *next;
 }			t_envp;
 
-void	exec(t_shell *shell, char **envp);
-int		exec_cmd(t_shell *node, char **envp);
+void	exec(t_shell *shell);
+int		exec_cmd(t_shell *shell);
 
 //pipex_utils
 t_pipe	*init_struct_pipex(size_t nb_pipe);
@@ -121,12 +121,16 @@ char *get_cmd_arg(t_shell *node, char *buffer);
 
 //built-ins
 
-void	env(char **envp);
-void	export(t_shell *shell, char **envp);
-int		cd(t_shell *shell);
-char	*pwd(bool print);
-int		ft_exit(t_shell *node);
-int		ft_echo(char **tab_cmd, t_tmp_env *node);
+int		ft_cd(t_shell *shell);
+void	ft_env(t_shell *shell);
+int		ft_unset(t_shell *shell);
+int		ft_export(t_shell *shell);
+int		ft_echo(t_shell *shell);
+int		ft_pwd(t_shell *shell, bool print);
+void	ft_exit(t_shell *shell);
+
+void	ft_delone_env(t_envp *lst, char *env_to_find);
+char	**ft_convert_node_to_envp(t_envp *env);
 
 char	**ft_malloc_envp(char **envp);
 void print_shells(t_shell *node);
@@ -144,5 +148,5 @@ bool	is_shell_parameter(t_shell *shell);
 
 t_envp *append_envp(char *arg, char **envp);
 
-void	ft_delone_env(t_envp *lst);
+void	ft_delone_env(t_envp *lst, char *env_to_find);
 #endif
