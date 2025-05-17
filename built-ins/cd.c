@@ -43,7 +43,7 @@ int ft_cd(t_shell *shell)
 	{
 		exec_cd(arg);
 		if (ft_strncmp(shell->cmd->cmd[1], "-\0", 2) == 0)
-			ft_pwd(shell, true);
+			ft_pwd(true);
 		update_pwd(shell, arg);
 		return (0);
 	}

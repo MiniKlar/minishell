@@ -1,8 +1,5 @@
 #include "minishell.h"
 
-char	*recup_env(char **envp);
-char	*new_command_function(char **path, char *new_command);
-
 char	*check_command_path(char *command, char **envp)
 {
 	char	**path_tab;

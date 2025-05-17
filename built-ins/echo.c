@@ -1,20 +1,22 @@
 #include "minishell.h"
 
-void	echo_cmd(t_shell *shell);
+// DANS CHILD
 
-int ft_echo(t_shell *shell)
+void	echo_w_arg(t_shell *shell)
 {
-	pid_t id_fork;
-	id_fork = fork();
-	if (id_fork == -1)
-		perror("fork");
-	if (id_fork == 0)
-		echo_cmd(shell);
-	waitpid(id_fork, &shell->wstatus, 0);
-	return (0);
+	int	i;
+
+	i = 1;
+	while (shell->cmd->cmd[++i])
+	{
+		if (shell->cmd->cmd[i + 1] == NULL)
+			printf("%s",shell->cmd->cmd[i]);
+		else
+			printf("%s ",shell->cmd->cmd[i]);
+	}
 }
 
-void	echo_cmd(t_shell *shell)
+void	ft_echo(t_shell *shell)
 {
 	bool	has_arg;
 	size_t	i;
@@ -29,16 +31,7 @@ void	echo_cmd(t_shell *shell)
 	else if (strncmp(shell->cmd->cmd[1], "-n", 3) == 0)
 		has_arg = true;
 	if (has_arg)
-	{
-		i = 1;
-		while (shell->cmd->cmd[++i])
-		{
-			if (shell->cmd->cmd[i + 1] == NULL)
-				printf("%s",shell->cmd->cmd[i]);
-			else
-				printf("%s ",shell->cmd->cmd[i]);
-		}
-	}
+		echo_w_arg(shell);
 	else
 	{
 		while (shell->cmd->cmd[++i])

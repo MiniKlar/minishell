@@ -9,27 +9,26 @@ CFLAGS 			= -Wall -Wextra -Werror -ggdb -I ./includes
 LIB_C_GIT_URL 	= git@github.com:MiniKlar/LIB_C.git
 LIB_C			= LIB_C
 
-SRC 			= ./parsing/parsing.c \
+SRC 			= ./main.c \
 				./parsing/token.c \
+				./parsing/parsing.c \
 				./utils/free.c \
 				./built-ins/cd.c \
+				./built-ins/env.c \
 				./built-ins/pwd.c \
 				./built-ins/exit.c \
 				./built-ins/echo.c \
-				./built-ins/export.c \
-				./built-ins/env.c \
 				./built-ins/unset.c \
-				./main.c \
-				./utils/struct/ft_add.c \
-				./utils/struct/ft_get.c \
+				./built-ins/export.c \
 				./utils/struct/ft_struct.c \
-				./exec/exec_cmd.c \
-				./exec/exec.c \
-				./exec/here_doc.c \
+				./exec/exec.c  \
 				./exec/infile.c \
 				./exec/outfile.c \
+				./exec/here_doc.c \
+				./exec/exec_cmd.c  \
 				./exec/pipex_utils.c \
-				./exec/utils.c \
+				./exec/utils_path.c   \
+				./exec/utils_exec.c	   \
 
 OBJ 			= $(SRC:.c=.o)
 

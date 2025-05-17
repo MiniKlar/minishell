@@ -62,3 +62,17 @@ int closedir(DIR *dirp);
 // Section 3.4.2 [Special Parameters], page 23).
 
 //on peut essayer de gerer les variables bash ex. caca=prout. mais pas obligatoire, il faut creer un char** temporaire.
+
+
+// pour faire un child built-ins :
+
+// 	pid_t id_fork;
+// 	id_fork = fork();
+// 	if (id_fork == -1)
+// 		perror("fork");
+// 	if (id_fork == 0)
+// 	{
+
+// 	}
+// 	waitpid(id_fork, &shell->wstatus, 0);
+// 	return (0);

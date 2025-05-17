@@ -1,31 +1,7 @@
 #include "minishell.h"
 
-t_tmp_env	*add_parameters(char *str, t_tmp_env *node)
-{
-	t_tmp_env *tmp;
-	size_t		i;
-	size_t		k;
-
-	i = 0;
-	tmp = create_node_param();
-	while(str[i] != '=')
-		i++;
-	tmp->name = ft_substr(str, 0, i);
-	tmp->signe = str[i];
-	k = i + 1;
-	while(str[++i] != '\0')
-		;
-	tmp->valeur = ft_substr(str, k, i - k);
-	ft_add_front(&node, tmp);
-	return (tmp);
-}
-
-void	ft_delone(t_tmp_env *lst, void (*del)(void*))
-{
-	del(lst->name);
-	del(lst->valeur);
-	free(lst);
-}
+static 	t_envp	*ft_last_envp(t_envp *lst);
+static 	t_redir	*ft_last_redir(t_redir *lst);
 
 void	ft_delone_env(t_envp *lst, char *env_to_find)
 {
@@ -54,14 +30,56 @@ void	ft_delone_env(t_envp *lst, char *env_to_find)
 	}
 }
 
-void	ft_clear(t_tmp_env **lst, void (*del)(void*))
+void	ft_add_back_redir(t_redir **lst, t_redir *new)
 {
-	t_tmp_env	*tmp;
+	t_redir	*current;
 
-	while (*lst)
+	if (*lst == NULL)
+		*lst = new;
+	else
 	{
-		tmp = (*lst)->next;
-		ft_delone(*lst, del);
-		*lst = tmp;
+		current = ft_last_redir(*lst);
+		current->next = new;
 	}
+}
+
+void	ft_add_back_envp(t_envp **lst, t_envp *new)
+{
+	t_envp	*current;
+
+	if (*lst == NULL)
+		*lst = new;
+	else
+	{
+		current = ft_last_envp(*lst);
+		current->next = new;
+	}
+}
+
+static t_redir	*ft_last_redir(t_redir *lst)
+{
+	t_redir	*tmp;
+
+	if (lst == NULL)
+		return (lst);
+	while (lst != NULL)
+	{
+		tmp = lst;
+		lst = lst->next;
+	}
+	return (tmp);
+}
+
+static t_envp	*ft_last_envp(t_envp *lst)
+{
+	t_envp	*tmp;
+
+	if (lst == NULL)
+		return (lst);
+	while (lst != NULL)
+	{
+		tmp = lst;
+		lst = lst->next;
+	}
+	return (tmp);
 }

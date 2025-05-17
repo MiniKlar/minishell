@@ -66,7 +66,7 @@ int	ft_tmp_open_heredoc(char *name, int i)
 	return (fd);
 }
 
-bool	ft_is_last_in(t_shell *shell)
+bool	ft_is_last_fd_in(t_shell *shell)
 {
 	t_shell *tmp;
 
