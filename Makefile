@@ -12,7 +12,9 @@ LIB_C			= LIB_C
 SRC 			= ./parsing/tokens_counter.c ./parsing/tokeniser.c \
 				./parsing/parsing_leo/full_tokenization.c \
 				./parsing/tokens_counter.c ./parsing_leo/tokenizer_suite/tokeniser.c \
-				./utils/free.c ./utils/utils.c \
+				./parsing/parsing_leo/full_tokenization.c \
+				./parsing/parsing_leo/tokenizer_suite.c \
+				./utils/free.c ./utils/utils.c ./utils/utils.c \
 				./minishell.c \
 
 OBJ 			= $(SRC:.c=.o)
