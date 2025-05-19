@@ -50,15 +50,15 @@ typedef struct 	s_redir
 
 typedef struct 	s_cmd
 {
-	char 		**cmd;
-	struct s_cmd *next;
+	char 			**cmd;
+	t_redir			*redir;
+	struct s_cmd	*next;
 }				t_cmd;
 
 typedef struct	s_shell
 {
 	char		**envp;
 	t_cmd		*cmd;
-	t_redir		*redir;
 	size_t		nb_pipe;
 	int			fd_in;
 	int			fd_out;

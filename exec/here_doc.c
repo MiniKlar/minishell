@@ -71,16 +71,16 @@ bool	ft_is_last_fd_in(t_shell *shell)
 	t_shell *tmp;
 
 	tmp = shell;
-	while (shell->redir->next != NULL)
+	while (shell->redir->cmd->next != NULL)
 	{
-		if (shell->redir->next->symbol == HERE_DOC
-			|| shell->redir->next->symbol == REDIR_IN)
+		if (shell->redir->cmd->next->symbol == HERE_DOC
+			|| shell->redir->cmd->next->symbol == REDIR_IN)
 		{
 			shell = tmp;
 			return (false);
 		}
 		else
-			shell->redir = shell->redir->next;
+			shell->cmd->redir = shell->cmd->redir->next;
 	}
 	shell = tmp;
 	return (true);

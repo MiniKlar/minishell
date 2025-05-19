@@ -11,11 +11,11 @@ void	exec(t_shell *shell)
 bool	exec_built_in_inside_child(t_shell *shell)
 {
 	if (ft_strncmp(shell->cmd->cmd[0], "pwd", 4) == 0)
-		ft_pwd(true);
+		shell->wstatus = ft_pwd(true);
 	else if ((ft_strncmp(shell->cmd->cmd[0], "echo", 5) == 0))
-		ft_echo(shell);
+		shell->wstatus = ft_echo(shell);
 	else if (ft_strncmp(shell->cmd->cmd[0], "env", 4) == 0)
-		ft_env(shell);
+		shell->wstatus = ft_env(shell);
 	else
 		return (false);
 	return (true);
@@ -31,9 +31,9 @@ int	exec_built_in(t_shell *shell)
 		shell->wstatus = ft_unset(shell);
 	else if (ft_strncmp(shell->cmd->cmd[0], "exit", 5) == 0)
 		ft_exit(shell);
-	else
+	else if (exec_built_in_inside_child(shell) == false)
 		return (false);
-	exit(0);
+	return (0);
 }
 
 bool	is_cmd_built_ins(t_shell *shell)

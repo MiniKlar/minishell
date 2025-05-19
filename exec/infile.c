@@ -5,7 +5,7 @@ void	redir_infile(t_shell *shell)
 	int	fd;
 	char *str;
 
-	str = shell->redir->str;
+	str = shell->cmd->redir->str;
 	if (access(str, F_OK) != 0)
 	{
 		perror("File not accessible");
