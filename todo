@@ -46,3 +46,33 @@ int closedir(DIR *dirp);
 //TODO REGLER ESPACE DEBUT PEUT ETRE FIN ET DOUBLE QUOTE IMPLENTATION BOOLEAN
 
 //TODO PARSING NIVEAU PROFONDEUR PARENTHESES, VOIR SI IL Y A BESOIN DAUTRES NIVEAUX DE PROFONDEURS
+
+//TODO get exit code with waitpid or 128+n (n = signal).
+
+// If a command is not found, the child process created to execute it returns a status of
+// 127. If a command is found but is not executable, the return status is 126.
+// If a command fails because of an error during expansion or redirection, the exit status
+// is greater than zero.
+
+// All of the Bash builtins return an exit status of zero if they succeed and a non-zero
+// status on failure, so they may be used by the conditional and list constructs. All builtins
+// return an exit status of 2 to indicate incorrect usage, generally invalid options or missing
+// arguments.
+// The exit status of the last command is available in the special parameter $? (see
+// Section 3.4.2 [Special Parameters], page 23).
+
+//on peut essayer de gerer les variables bash ex. caca=prout. mais pas obligatoire, il faut creer un char** temporaire.
+
+
+// pour faire un child built-ins :
+
+// 	pid_t id_fork;
+// 	id_fork = fork();
+// 	if (id_fork == -1)
+// 		perror("fork");
+// 	if (id_fork == 0)
+// 	{
+
+// 	}
+// 	waitpid(id_fork, &shell->wstatus, 0);
+// 	return (0);
