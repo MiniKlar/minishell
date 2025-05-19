@@ -10,7 +10,9 @@ LIB_C_GIT_URL 	= git@github.com:MiniKlar/LIB_C.git
 LIB_C			= LIB_C
 
 SRC 			= ./parsing/tokens_counter.c ./parsing/tokeniser.c \
-				./utils/free.c \
+				./parsing/parsing_leo/full_tokenization.c \
+				./parsing/parsing_leo/tokenizer_suite.c \
+				./utils/free.c ./utils/utils.c \
 				./minishell.c \
 
 OBJ 			= $(SRC:.c=.o)
