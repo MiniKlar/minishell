@@ -7,6 +7,7 @@ t_pipe	*set_struct_pipex(t_shell *shell)
 	pipex = init_struct_pipex(shell->nb_pipe);
 	if (!pipex)
 	{
+		printf("Error alloc pipex");
 		free_shell(shell);
 		exit(EXIT_FAILURE);
 	}

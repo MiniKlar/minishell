@@ -16,7 +16,7 @@ void	echo_w_arg(t_shell *shell)
 	}
 }
 
-void	ft_echo(t_shell *shell)
+int	ft_echo(t_shell *shell)
 {
 	bool	has_arg;
 	size_t	i;
@@ -26,7 +26,7 @@ void	ft_echo(t_shell *shell)
 	if (shell->cmd->cmd[1] == NULL)
 	{
 		printf("\n");
-		return ;
+		return (0);
 	}
 	else if (strncmp(shell->cmd->cmd[1], "-n", 3) == 0)
 		has_arg = true;
@@ -35,8 +35,9 @@ void	ft_echo(t_shell *shell)
 	else
 	{
 		while (shell->cmd->cmd[++i])
-			printf("%s ",shell->cmd->cmd[i]);
+			printf("%s",shell->cmd->cmd[i]);
 	}
 	if (!has_arg)
 		printf("\n");
+	return (0);
 }

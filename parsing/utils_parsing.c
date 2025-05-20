@@ -13,31 +13,31 @@ void	free_tokens(t_token *tokens)
 	}
 }
 
-void	free_shell(t_shell *shell)
-{
-	t_cmd	*cmd;
-	t_redir	*redir;
+// void	free_shell(t_shell *shell)
+// {
+// 	t_cmd	*cmd;
+// 	t_redir	*redir;
 
-	while (shell->cmd)
-	{
-		cmd = shell->cmd;
-		shell->cmd = shell->cmd->next;
-		if (cmd->cmd)
-		{
-			for (int i = 0; cmd->cmd[i]; i++)
-				free(cmd->cmd[i]);
-			free(cmd->cmd);
-		}
-		while (cmd->redir)
-		{
-			redir = cmd->redir;
-			cmd->redir = cmd->redir->next;
-			free(redir->str);
-			free(redir);
-		}
-		free(cmd);
-	}
-}
+// 	while (shell->cmd)
+// 	{
+// 		cmd = shell->cmd;
+// 		shell->cmd = shell->cmd->next;
+// 		if (cmd->cmd)
+// 		{
+// 			for (int i = 0; cmd->cmd[i]; i++)
+// 				free(cmd->cmd[i]);
+// 			free(cmd->cmd);
+// 		}
+// 		while (cmd->redir)
+// 		{
+// 			redir = cmd->redir;
+// 			cmd->redir = cmd->redir->next;
+// 			free(redir->str);
+// 			free(redir);
+// 		}
+// 		free(cmd);
+// 	}
+// }
 
 int	syntax_error(const char *msg)
 {
@@ -82,9 +82,9 @@ int	is_redirection(t_token *token)
 	if (!token)
 		return (0);
 	return (
-		!ft_strcmp(token->value, "<") 
+		!ft_strcmp(token->value, "<")
 		|| !ft_strcmp(token->value, ">")
-		|| !ft_strcmp(token->value, "<<") 
+		|| !ft_strcmp(token->value, "<<")
 		|| !ft_strcmp(token->value, ">>")
 	);
 }
