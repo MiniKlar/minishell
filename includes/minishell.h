@@ -29,6 +29,7 @@
 typedef struct 	s_pipe
 {
 	int			*fdpipe;
+	int			*fdpipe2;
 	int			fdpipe_index;
 	int			pipe_index;
 }				t_pipe;
@@ -62,7 +63,6 @@ typedef struct	s_shell
 	size_t		nb_pipe;
 	int			fd_in;
 	int			fd_out;
-	int			hdc_idx;
 	int			wstatus;
 }				t_shell;
 
@@ -109,11 +109,11 @@ void			free_all(t_shell *shell, t_pipe *pipex);
 
 //built-ins
 
-void			ft_env(t_shell *shell);
+int				ft_env(t_shell *shell);
 void			ft_exit(t_shell *shell);
 int				ft_cd(t_shell *shell);
 int				ft_pwd(bool print);
-void			ft_echo(t_shell *shell);
+int				ft_echo(t_shell *shell);
 int				ft_unset(t_shell *shell);
 int				ft_export(t_shell *shell);
 

@@ -8,39 +8,49 @@ t_pipe	*init_struct_pipex(size_t nb_pipe)
 
 	pipex = malloc(sizeof(*pipex));
 	if (!pipex)
+	{
+		printf("Error malloc struct pipex");
 		return (NULL);
+	}
 	pipex->pipe_index = FIRST_PIPE;
 	pipex->fdpipe_index = 0;
-	if (nb_pipe > 0)
+	if (nb_pipe == 1)
 	{
-		pipex->fdpipe = malloc(sizeof(int) * ((nb_pipe * 2) + 1));
+		pipex->fdpipe = malloc(sizeof(int) * (2 + 1));
 		if (pipex->fdpipe == NULL)
+		{
+			printf("Error malloc fd pipes");
 			return (NULL);
-		if (init_pipe(pipex, nb_pipe) == false)
-			return (NULL);
+		}
 	}
-	else
-		pipex->fdpipe = NULL;
+	else if (nb_pipe > 1)
+	{
+		pipex->fdpipe = malloc(sizeof(int) * 3);
+		pipex->fdpipe2 = malloc(sizeof(int) * 3);
+		if (pipex->fdpipe == NULL || pipex->fdpipe2 == NULL)
+		{
+			printf("Error malloc fd pipes");
+			return (NULL);
+		}
+	}
 	return (pipex);
 }
 
 bool	init_pipe(t_pipe *pipex, size_t nb_pipe)
 {
-	size_t	i;
-
-	i = 0;
-	pipex->fdpipe[nb_pipe * 2] = 0;
-	while (i < nb_pipe * 2)
+	if (nb_pipe == 1)
+		pipex->fdpipe[2] = 0;
+	else if (nb_pipe > 1)
+		pipex->fdpipe2[2] = 0;
+	if (pipe((pipex->fdpipe)) == -1)
 	{
-		if (pipe(((pipex->fdpipe) + i)) == -1)
-		{
-			perror("Error init pipe");
-			return (false);
-		}
-		i += 2;
+		perror("Error init pipe");
+		return (false);
 	}
 	return (true);
 }
+
+//
 
 void	pipe_struct_update(t_shell *shell, t_pipe *pipex, size_t i)
 {
@@ -64,3 +74,6 @@ void	ft_close_fdpipe(t_pipe *pipex)
 		i++;
 	}
 }
+
+
+//

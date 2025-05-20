@@ -2,7 +2,7 @@
 
 void	exec(t_shell *shell)
 {
-	if (shell->cmd->next == NULL)
+	if (shell->cmd->next == NULL && is_cmd_built_ins(shell) == true)
 		exec_built_in(shell);
 	else
 		exec_cmd(shell);

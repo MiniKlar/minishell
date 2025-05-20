@@ -31,7 +31,7 @@ void	read_heredoc(t_shell *shell, int fd)
 	char	*matching_word;
 	size_t	i;
 
-	word_to_match = shell->redir->str;
+	word_to_match = shell->cmd->redir->str;
 	while (1)
 	{
 		i = 0;
@@ -71,10 +71,10 @@ bool	ft_is_last_fd_in(t_shell *shell)
 	t_shell *tmp;
 
 	tmp = shell;
-	while (shell->redir->cmd->next != NULL)
+	while (shell->cmd->redir->next != NULL)
 	{
-		if (shell->redir->cmd->next->symbol == HERE_DOC
-			|| shell->redir->cmd->next->symbol == REDIR_IN)
+		if (shell->cmd->redir->next->symbol == HERE_DOC
+			|| shell->cmd->redir->next->symbol == REDIR_IN)
 		{
 			shell = tmp;
 			return (false);
