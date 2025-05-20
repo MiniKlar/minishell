@@ -19,13 +19,11 @@ int	exec_cmd(t_shell *shell)
 	else
 		pipex = NULL;	//sinon pipex init a NULL
 	id_fork = fork_cmd(shell, pipex); //init du nombres d'enfants
-	if (pipex->fdpipe != NULL)
-		ft_close_fdpipe(pipex);
 	shell->wstatus = ft_wait(shell, id_fork, shell->nb_pipe);
 	if (WIFEXITED(shell->wstatus) && WEXITSTATUS(shell->wstatus))
 		return (WEXITSTATUS(shell->wstatus));
 	free(id_fork);
-	free_struct_pipe(pipex);
+	free(pipex);
 	return (0);
 }
 
@@ -37,7 +35,7 @@ pid_t	*fork_cmd(t_shell *shell, t_pipe *pipex)
 	if (shell->nb_pipe == 0) //si nb_pipe = 0
 		nb_fork = 1;	//alors nb enfant = 1
 	else
-		nb_fork = shell->nb_pipe + 1; //sinon nb enfant = nb pipe = nb commande
+		nb_fork = shell->nb_pipe + 1; //sinon nb enfant = nb pipe + 1 = nb commande
 	id_fork = malloc(sizeof(pid_t) * (nb_fork + 1)); //alloue memoire des id enfants
 	id_fork[nb_fork] = 0;	//on met a zero le dernier pour dire qu'il n'y a plus d'enfant.
 	if (!id_fork) //si alloc echoue
@@ -57,6 +55,14 @@ void	create_children(t_shell *shell, pid_t *id_fork, t_pipe *pipex)
 	i = 0; //init a 0 index.
 	while (shell->cmd != NULL) //tant qu'il y a des commandes
 	{
+		if (shell->nb_pipe > 0)
+		{
+			if (pipe(pipex->fdpipe) == -1)
+			{
+				free_all(shell, pipex);
+				exit(EXIT_FAILURE);
+			}
+		}
 		id_fork[i] = fork();	//on fork puis on met dans la variable id_fork le numero de lenfant
 		if (id_fork[i] == -1) //si ca echoue
 		{
@@ -64,17 +70,10 @@ void	create_children(t_shell *shell, pid_t *id_fork, t_pipe *pipex)
 			free(id_fork);
 			free_all(shell, pipex); //on free tout
 		}
-		//init avec fonction pipe fdpipe[] selon le nb pipe + le i
-			//si 1 pipe
-				//alors	fdpipe[2 * nb_pipe]
-			//si 2 pipe
-				//alors fdpipe[2 * nb_pipe]
-			// si 3 pipe ou plus fdpipe[2 * 3]
-				// 1 0 3 2
-				//fdpipe[]
 		else if (id_fork[i] == 0) //si c'est 0
 			create_child(shell, pipex); //on cree lenfant
-		pipe_struct_update(shell, pipex, i); //on met a jour la struct pipe pour la prochaine commande.
+		if (shell->nb_pipe > 0)
+			pipe_struct_update(shell, pipex, i); //on met a jour la struct pipe pour la prochaine commande.
 		shell->cmd = shell->cmd->next; //on avant dans les commandes.
 		i++; //on avance dans l'index des id fork.
 	}
@@ -85,14 +84,12 @@ void	create_child(t_shell *shell, t_pipe *pipex)
 	char	*command_path; //on initialise la string pour placer notre path de commande
 	bool	is_built_ins;	//on crée un boolean pour savoir si cest un built in
 
-	//printf("TU ES DANS LENFANT\n");
 	is_built_ins = is_cmd_built_ins(shell);	//on check si cest un builtin
-//	printf("VOICI IS BUILT INS %d\n", is_built_ins);
 	if (!is_built_ins) //si ce nest pas un built in
 		command_path = find_command_exist_executable(shell, pipex); //on va check la commande si elle existe
 	redir_cmd_input_output(shell); //redirection in et out (infile, outfile, heredoc)
 	ft_dup_redir(shell); //dup le fd_in et fd_out
-	if (shell->nb_pipe != 0) //si il y a des pipesa
+	if (shell->nb_pipe != 0) //si il y a des pipes
 		ft_dup(shell, pipex, command_path); //dup les pipes
 	if (is_built_ins) //si cest un built in
 	{
@@ -143,7 +140,10 @@ void ft_dup(t_shell *shell, t_pipe *pipex, char *command_path)
 		free(command_path);
 		exit(1);
 	}
-	ft_close_fdpipe(pipex);
+	if (pipex->in_fd != -1)
+		close(pipex->in_fd);
+	close(pipex->fdpipe[0]);
+	close(pipex->fdpipe[1]);
 }
 
 int	dup_pipe(t_shell *shell, t_pipe *pipex)
@@ -155,20 +155,21 @@ int	dup_pipe(t_shell *shell, t_pipe *pipex)
 	p = pipex->pipe_index;
 	if (p == FIRST_PIPE)
 	{
-		if (dup2(pipex->fdpipe[i + 1], STDOUT_FILENO) == -1)
+		if (dup2(pipex->fdpipe[1], STDOUT_FILENO) == -1) //peut etre changer pour eviter que ca ecrive pipe[1] si redir avant
 			return (-1);
 	}
 	else if (p == N_PIPE)
 	{
-		if (dup2(pipex->fdpipe[i - 2], STDIN_FILENO) == -1)
-			return (-1);
+		if (shell->fd_in == STDIN_FILENO)
+			if (dup2(pipex->in_fd, STDIN_FILENO) == -1)
+				return (-1);
 		if (shell->fd_out == STDOUT_FILENO)
-			if (dup2(pipex->fdpipe[i + 1], STDOUT_FILENO) == -1)
+			if (dup2(pipex->fdpipe[1], STDOUT_FILENO) == -1)
 				return (-1);
 	}
 	else if (p == LAST_PIPE)
 	{
-		if (dup2(pipex->fdpipe[i], STDIN_FILENO) == -1)
+		if (dup2(pipex->in_fd, STDIN_FILENO) == -1) //peut etre changer pour eviter que ca lise pipe[0] si redir avant
 			return (-1);
 	}
 	return (0);
