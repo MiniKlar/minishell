@@ -4,7 +4,7 @@ t_pipe	*set_struct_pipex(t_shell *shell)
 {
 	t_pipe *pipex;
 
-	pipex = init_struct_pipex(shell->nb_pipe);
+	pipex = init_struct_pipex();
 	if (!pipex)
 	{
 		printf("Error alloc pipex");

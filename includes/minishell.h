@@ -28,8 +28,8 @@
 
 typedef struct 	s_pipe
 {
-	int			*fdpipe;
-	int			*fdpipe2;
+	int			fdpipe[2];
+	int			in_fd;
 	int			fdpipe_index;
 	int			pipe_index;
 }				t_pipe;
@@ -85,12 +85,11 @@ char			*find_command_exist_executable(t_shell *shell, t_pipe *pipex);
 
 //pipex_utils
 
-t_pipe			*init_struct_pipex(size_t nb_pipe);
+t_pipe			*init_struct_pipex(void);
 t_pipe			*set_struct_pipex(t_shell *shell);
-char			*check_command_path(char *command, char **envp);
-void			ft_close_fdpipe(t_pipe *pipex);
 void			pipe_struct_update(t_shell *shell, t_pipe *pipex, size_t i);
 
+char			*check_command_path(char *command, char **envp);
 char			*recup_env(char **envp);
 char			*new_command_function(char **path, char *new_command);
 
@@ -104,7 +103,6 @@ bool			ft_is_last_fd_in(t_shell *shell);
 //FREE
 
 void			free_shell(t_shell *node);
-void			free_struct_pipe(t_pipe *pipex);
 void			free_all(t_shell *shell, t_pipe *pipex);
 
 //built-ins
