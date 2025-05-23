@@ -6,8 +6,7 @@ CLONE 			= git clone --depth=1
 
 CFLAGS 			= -Wall -Wextra -Werror -ggdb -I ./includes
 
-LIB_C_GIT_URL 	= git@github.com:MiniKlar/LIB_C.git
-LIB_C			= LIB_C
+LIB_SHELL			= LIB_SHELL
 
 SRC 			= ./main.c \
 				./parsing/token.c \
@@ -36,12 +35,8 @@ all: $(NAME)
 
 bonus: $(NAME)
 
-$(NAME): $(LIB_C) $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) ./LIB_C/LIB_C.a -o $(NAME) -lreadline -ltermcap
-
-$(LIB_C):
-	git clone $(LIB_C_GIT_URL) $(LIB_C)
-	$(MAKE) -C $(LIB_C)
+$(NAME): $(OBJ)
+	$(CC) $(CFLAGS) $(OBJ) ./LIB_SHELL/LIB_SHELL.a -o $(NAME) -lreadline -ltermcap
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@

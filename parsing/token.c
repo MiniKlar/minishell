@@ -1,6 +1,15 @@
-#include "minishell.h"
+#include "../LIB_SHELL/lib_shell.h"
+#include "../includes/parsing.h"
 
-t_redir *create_node_here_redir(char *arg)
+bool	is_metacharacter(char *str)
+{
+	if ((str[0] == '|' && str[1] == ' ') || str[0] == '<' || str[0] == '>' || str[0] == ' ')
+		return (true);
+	else
+		return (false);
+}
+
+t_redir	*create_node_here_redir(char *arg)
 {
 	t_redir	*shell;
 
@@ -13,7 +22,7 @@ t_redir *create_node_here_redir(char *arg)
 	return (shell);
 }
 
-t_redir *create_node_redir(char *arg)
+t_redir	*create_node_redir(char *arg)
 {
 	t_redir	*shell;
 
@@ -26,7 +35,7 @@ t_redir *create_node_redir(char *arg)
 	return (shell);
 }
 
-t_redir *create_node_redir_out(char *arg)
+t_redir	*create_node_redir_out(char *arg)
 {
 	t_redir	*shell;
 

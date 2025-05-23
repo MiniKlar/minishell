@@ -1,76 +1,8 @@
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#pragma once
 
-#include "../LIB_C/LIB_C.h"
-#include <sys/stat.h>
-#include <sys/wait.h>
-#include <sys/types.h>
-#include <signal.h>
-#include <curses.h>
-#include <term.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <limits.h>
-#include <stdbool.h>
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-
-# ifndef FIRST_PIPE
-	# define FIRST_PIPE		1
-# endif
-# ifndef N_PIPE
-	# define N_PIPE			2
-# endif
-# ifndef LAST_PIPE
-	# define LAST_PIPE		3
-# endif
-
-typedef struct 	s_pipe
-{
-	int			fdpipe[2];
-	int			in_fd;
-	int			fdpipe_index;
-	int			pipe_index;
-}				t_pipe;
-
-typedef	enum 	t_symbol
-{
-				REDIR_IN,
-				REDIR_OUT,
-				HERE_DOC,
-				APPEND,
-}				e_symbol;
-
-typedef struct 	s_redir
-{
-	e_symbol		symbol;
-	char			*str;
-	struct	s_redir *next;
-}				t_redir;
-
-typedef struct 	s_cmd
-{
-	char 			**cmd;
-	t_redir			*redir;
-	struct s_cmd	*next;
-}				t_cmd;
-
-typedef struct	s_shell
-{
-	char		**envp;
-	t_cmd		*cmd;
-	size_t		nb_pipe;
-	int			fd_in;
-	int			fd_out;
-	int			wstatus;
-}				t_shell;
-
-typedef struct s_envp
-{
-	char 		*envp;
-	void 		*next;
-}				t_envp;
+#include "../LIB_SHELL/lib_shell.h"
+#include "execution.h"
+#include "parsing.h"
 
 //MAIN FUNCTIONS
 
@@ -126,5 +58,5 @@ void			ft_delone_env(t_envp *lst, char *env_to_find);
 void			ft_add_back_redir(t_redir **lst, t_redir *new);
 void			ft_add_back_envp(t_envp **lst, t_envp *new);
 char			**ft_convert_node_to_envp(t_envp *env);
+t_envp			*ft_last_envp(t_envp *lst);
 
-#endif

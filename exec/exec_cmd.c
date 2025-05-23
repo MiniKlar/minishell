@@ -11,7 +11,7 @@ void	ft_dup_redir(t_shell *shell);
 
 int	exec_cmd(t_shell *shell)
 {
-	t_pipe	*pipex;		//déclaration de ma struct pipex pour stocker données pour mes piepes.
+	t_pipe	*pipex;		//déclaration de ma struct pipex pour stocker données pour mes pipes.
 	pid_t	*id_fork;	//déclaration init_fork pour stocker les pids de mes enfants.
 
 	if (shell->nb_pipe != 0)	//si le nombre de pipe est à 0 (donc je n'ai qu'un child a créer)

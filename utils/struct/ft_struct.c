@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static 	t_envp	*ft_last_envp(t_envp *lst);
+t_envp	*ft_last_envp(t_envp *lst);
 static 	t_redir	*ft_last_redir(t_redir *lst);
 
 void	ft_delone_env(t_envp *lst, char *env_to_find)
@@ -70,7 +70,7 @@ static t_redir	*ft_last_redir(t_redir *lst)
 	return (tmp);
 }
 
-static t_envp	*ft_last_envp(t_envp *lst)
+t_envp	*ft_last_envp(t_envp *lst)
 {
 	t_envp	*tmp;
 
