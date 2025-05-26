@@ -27,7 +27,7 @@ int parsing(t_shell *shell, char *line)
 		free_token_struct(tokens);
 		return (1);
 	}
-	if (!parse_tokens(tokens, shell))
+	if (!parse_tokens(shell, tokens))
 	{
 		free_token_struct(tokens);
 		free_shell(shell);
