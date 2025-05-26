@@ -2,7 +2,6 @@ NAME 			= minishell
 
 CC 				= cc
 RM				= rm -f
-CLONE 			= git clone --depth=1
 
 CFLAGS 			= -Wall -Wextra -Werror -ggdb -I ./includes
 
@@ -42,15 +41,11 @@ $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	$(RM) -r $(LIB_C)
 	$(RM) $(OBJ)
 
 fclean: clean
 	$(RM) $(NAME)
 
-clear: fclean
-	$(RM) -rf $(MLX)
-
 re: fclean all
 
-.PHONY:	all bonus clear clean fclean re
+.PHONY:	all bonus clean fclean re

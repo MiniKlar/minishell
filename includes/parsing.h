@@ -18,9 +18,10 @@ int		check_syntax(t_shell *shell, t_token *tokens);
 /* Utils */
 bool	is_metacharacter(char *c);
 int		is_redirection(t_token *token);
-int		handle_redirection(t_token **current, t_redir **redir);
+int		handle_redirection(t_token *current, t_cmd *cmd);
 void	handle_syntax_error(t_shell *shell, t_token **tokens, char c);
 int		handle_metacharacter(t_token **tokens, char *line, size_t i);
+int		handle_redirection_token(t_token *tokens, t_cmd *cmd);
 int		handle_regular_token(t_shell *shell, t_token **tokens, char *line, bool *in_quote);
 int		handle_pipe_token(t_cmd **current_cmd, char ***args, int *arg_count);
 /* Error */
