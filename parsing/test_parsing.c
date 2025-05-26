@@ -54,21 +54,28 @@ int	main(void)
 {
 	t_shell	*shell;
 	char	*line;
-
+	int		i;
 	shell = init_shell();
 	while (1)
 	{
 		line = readline("minishell$ ");
 		if (!line)
 			break ;
-		parsing(shell, line);
-		// if (*line)
-		// {
-		// 	if (parsing(line, shell) == 0)
-		// 		print_shell(shell);
-			free_shell(shell);
-		// 	add_history(line);
-		// }
+		shell = parsing(shell, line);
+		if (shell)
+		{
+			while (shell->cmd != NULL)
+			{
+				i = 0;
+				while (shell->cmd->cmd[i] != 0)
+				{
+					printf("COMMAND[%d] = %s\n", i, shell->cmd->cmd[i]);
+					i++;
+				}
+				shell->cmd = shell->cmd->next;
+			}
+		}
+		free_shell(shell);
 		free(line);
 	}
 	printf("exit\n");

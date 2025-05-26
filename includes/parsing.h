@@ -2,7 +2,7 @@
 
 # include "minishell.h"
 
-int		parsing(t_shell *shell, char *line);
+t_shell	*parsing(t_shell *shell, char *line);
 
 /* Lexer */
 t_token	*tokenisation(t_shell *shell, char *line);
@@ -10,10 +10,10 @@ t_token	*token_new(char *value);
 void	add_token(t_token **tokens, char *str, size_t i);
 
 /* Parser */
-int		parse_tokens(t_shell *shell, t_token *tokens);
+t_shell	*parse_tokens(t_shell *shell, t_token *tokens);
 
 /* Syntax */
-int		check_syntax(t_shell *shell, t_token *tokens);
+bool	check_syntax(t_shell *shell, t_token *tokens);
 
 /* Utils */
 bool	is_metacharacter(char *c);

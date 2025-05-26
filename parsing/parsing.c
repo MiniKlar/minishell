@@ -1,16 +1,22 @@
 #include "../LIB_SHELL/lib_shell.h"
 #include "../includes/parsing.h"
 
-int parsing(t_shell *shell, char *line)
+t_shell	*parsing(t_shell *shell, char *line)
 {
 	t_token *tokens;
 	t_token *tmp;
 
 	if (!shell || !line)
-		return (1);
+	{
+		printf("!shell || !line \n");
+		return (NULL);
+	}
 	tokens = tokenisation(shell, line);
 	if (!tokens)
-		return (1);
+	{
+		printf("!tokens \n");
+		return (NULL);
+	}
 	else
 	{
 		tmp = tokens;
@@ -24,15 +30,18 @@ int parsing(t_shell *shell, char *line)
 	printf("\n --------------------------------------- \n");
 	if (!check_syntax(shell, tokens))
 	{
+		printf("Error syntax \n");
 		free_token_struct(tokens);
-		return (1);
+		return (NULL);
 	}
-	if (!parse_tokens(shell, tokens))
+	shell = parse_tokens(shell, tokens);
+	if (!shell)
 	{
+		printf("!shell PAS REMPLi\n");
 		free_token_struct(tokens);
 		free_shell(shell);
-		return (1);
+		return (NULL);
 	}
 	free_token_struct(tokens);
-	return (0);
+	return (shell);
 }

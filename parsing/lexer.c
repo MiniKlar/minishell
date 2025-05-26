@@ -35,32 +35,28 @@ int	handle_metacharacter(t_token **tokens, char *line, size_t i)
 {
 	if (line[i] == '>' && line[i + 1] == '>')
 	{
-		add_token(tokens, &line[i], 0);
+		add_token(tokens, &line[i], 2);
 		return (i + 1);
 	}
 	else if (line[i] == '<' && line[i + 1] == '<')
 	{
-		add_token(tokens, &line[i], 0);
+		add_token(tokens, &line[i], 2);
 		return (i + 1);
 	}
-	else
+	else if (line[i] == '>' && line[i + 1] == ' ')
 	{
-		add_token(tokens, &line[i], 0);
-		return (i);
+		add_token(tokens, &line[i], 1);
+		return (i + 1);
 	}
+	else if (line[i] == '<' && line[i + 1] == ' ')
+	{
+		add_token(tokens, &line[i], 1);
+		return (i + 1);
+	}
+	else if (line[i] == '|' && line[i + 1] == ' ')
+	{
+		add_token(tokens, &line[i], 1);
+		return (i + 1);
+	}
+	return (i);
 }
-
-// void	check_if_token_in_quote(char *line, size_t *i, t_token **tokens,
-// 					char *current_quote)
-// {
-// 	size_t	start;
-
-// 	start = *i;
-// 	while ((line[*i] && ((!is_metacharacter(line[*i]) || *current_quote)
-// 				&& !ft_isspace(line[*i]))) || *current_quote)
-// 	{
-// 		in_quote(line[*i], current_quote);
-// 		(*i)++;
-// 	}
-// 	add_token(tokens, line + start, 0);
-// }
