@@ -17,17 +17,21 @@ int	is_redirection(t_token *token)
 {
 	if (!token)
 		return (0);
-	return (
-		ft_strncmp(token->value, "<", ft_strlen(token->value))
-		|| ft_strncmp(token->value, ">", ft_strlen(token->value))
-		|| ft_strncmp(token->value, "<<", ft_strlen(token->value))
-		|| ft_strncmp(token->value, ">>", ft_strlen(token->value)));
+	else if (ft_strncmp(token->value, "<", ft_strlen(token->value)) == 0)
+		return (1);
+	else if (ft_strncmp(token->value, ">", ft_strlen(token->value)) == 0)
+		return (2);
+	else if (ft_strncmp(token->value, "<<", ft_strlen(token->value)) == 0)
+		return (3);
+	else if (ft_strncmp(token->value, ">>", ft_strlen(token->value)) == 0)
+		return (4);
+	else
+		return (0);
 }
 
 static void	add_redir(t_cmd *cmd, t_symbol symbol, char *filename)
 {
 	t_redir	*new_redir;
-	t_redir	*tmp;
 
 	new_redir = malloc(sizeof(t_redir));
 	if (!new_redir)
@@ -41,7 +45,7 @@ static void	add_redir(t_cmd *cmd, t_symbol symbol, char *filename)
 	{
 		while (cmd->redir->next != NULL)
 			cmd = cmd->next;
-		cmd->next = new_redir;
+		cmd->redir = new_redir;
 	}
 }
 
