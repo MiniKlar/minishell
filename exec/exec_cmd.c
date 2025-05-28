@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	create_child(t_shell *node, t_pipe *pipex);
+void	create_child(t_shell *shell, t_pipe *pipex, pid_t *id_fork);
 void	create_children(t_shell *shell, pid_t *id_fork, t_pipe *pipex);
 int		ft_wait(t_shell *shell, pid_t *id_fork, size_t nb_pipes);
 pid_t	*fork_cmd(t_shell *shell, t_pipe *pipex);
@@ -21,9 +21,13 @@ int	exec_cmd(t_shell *shell)
 	id_fork = fork_cmd(shell, pipex); //init du nombres d'enfants
 	shell->wstatus = ft_wait(shell, id_fork, shell->nb_pipe);
 	if (WIFEXITED(shell->wstatus) && WEXITSTATUS(shell->wstatus))
+	{
+		free(pipex);
+		free(id_fork);
 		return (WEXITSTATUS(shell->wstatus));
-	free(id_fork);
+	}
 	free(pipex);
+	free(id_fork);
 	return (0);
 }
 
@@ -51,14 +55,17 @@ pid_t	*fork_cmd(t_shell *shell, t_pipe *pipex)
 void	create_children(t_shell *shell, pid_t *id_fork, t_pipe *pipex)
 {
 	size_t	i; //declaration index
+	t_cmd	*tmp;
 
 	i = 0; //init a 0 index.
+	tmp = shell->cmd;
 	while (shell->cmd != NULL) //tant qu'il y a des commandes
 	{
 		if (shell->nb_pipe > 0)
 		{
 			if (pipe(pipex->fdpipe) == -1)
 			{
+				free(id_fork);
 				free_all(shell, pipex);
 				exit(EXIT_FAILURE);
 			}
@@ -71,22 +78,23 @@ void	create_children(t_shell *shell, pid_t *id_fork, t_pipe *pipex)
 			free_all(shell, pipex); //on free tout
 		}
 		else if (id_fork[i] == 0) //si c'est 0
-			create_child(shell, pipex); //on cree lenfant
+			create_child(shell, pipex, id_fork); //on cree lenfant
 		if (shell->nb_pipe > 0)
 			pipe_struct_update(shell, pipex, i); //on met a jour la struct pipe pour la prochaine commande.
 		shell->cmd = shell->cmd->next; //on avant dans les commandes.
 		i++; //on avance dans l'index des id fork.
 	}
+	shell->cmd = tmp;
 }
 
-void	create_child(t_shell *shell, t_pipe *pipex)
+void	create_child(t_shell *shell, t_pipe *pipex, pid_t *id_fork)
 {
 	char	*command_path; //on initialise la string pour placer notre path de commande
 	bool	is_built_ins;	//on crée un boolean pour savoir si cest un built in
 
 	is_built_ins = is_cmd_built_ins(shell);	//on check si cest un builtin
 	if (!is_built_ins) //si ce nest pas un built in
-		command_path = find_command_exist_executable(shell, pipex); //on va check la commande si elle existe
+		command_path = find_command_exist_executable(shell, pipex, id_fork); //on va check la commande si elle existe
 	redir_cmd_input_output(shell); //redirection in et out (infile, outfile, heredoc)
 	ft_dup_redir(shell); //dup le fd_in et fd_out
 	if (shell->nb_pipe != 0) //si il y a des pipes
@@ -99,6 +107,7 @@ void	create_child(t_shell *shell, t_pipe *pipex)
 	else if (execve(command_path, &shell->cmd->cmd[0], shell->envp) == -1) //sinon execve
 	{
 		perror("ERROR EXEC VE");
+		free(id_fork);
 		free_all(shell, pipex);
 		free(command_path);
 		exit(126);
@@ -108,7 +117,7 @@ void	create_child(t_shell *shell, t_pipe *pipex)
 void	redir_cmd_input_output(t_shell *shell)
 {
 	char		*heredoc_name;
-	e_symbol	type_redir;
+	t_symbol	type_redir;
 	int			i;
 
 	i = 0;

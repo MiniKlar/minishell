@@ -160,7 +160,7 @@ char	*get_cd_argument(char *cmd, char **envp)
 			new_arg = join_args(arg, new_arg);
 			i++;
 		}
-		free_tab(arg_tab);
+		free_array(arg_tab);
 	}
 	else
 	{

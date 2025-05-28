@@ -44,7 +44,7 @@ static void	add_redir(t_cmd *cmd, t_symbol symbol, char *filename)
 	else
 	{
 		while (cmd->redir->next != NULL)
-			cmd = cmd->next;
+			cmd->redir = cmd->redir->next;
 		cmd->redir = new_redir;
 	}
 }

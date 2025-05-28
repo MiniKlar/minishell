@@ -13,7 +13,7 @@ t_pipe	*set_struct_pipex(t_shell *shell)
 	}
 	return (pipex);
 }
-char	*find_command_exist_executable(t_shell *shell, t_pipe *pipex)
+char	*find_command_exist_executable(t_shell *shell, t_pipe *pipex, pid_t *id)
 {
 	char *command_path;
 
@@ -21,7 +21,10 @@ char	*find_command_exist_executable(t_shell *shell, t_pipe *pipex)
 	if (command_path == NULL)
 	{
 		printf("bash: %s: command not found\n", shell->cmd->cmd[0]);
+		free(id);
+		free_array(shell->envp);
 		free_all(shell, pipex);
+		free(shell);
 		exit(127);
 	}
 	else

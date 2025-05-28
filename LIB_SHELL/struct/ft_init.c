@@ -6,20 +6,23 @@
 /*   By: lomont <lomont@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 16:25:30 by lomont            #+#    #+#             */
-/*   Updated: 2025/05/22 16:27:34 by lomont           ###   ########.fr       */
+/*   Updated: 2025/05/28 01:42:58 by lomont           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lib_shell.h"
 
-t_shell	*init_shell(void)
+t_shell	*init_shell(char **envp)
 {
 	t_shell	*shell;
 
 	shell = malloc(sizeof(t_shell));
 	if (!shell)
-		return (NULL);
-	shell->envp = NULL;
+	{
+		ft_putstr_fd("Error allocation shell struct!", 2);
+		exit(EXIT_FAILURE);
+	}
+	shell->envp = ft_malloc_envp(envp);
 	shell->cmd = NULL;
 	shell->nb_pipe = 0;
 	shell->fd_in = STDIN_FILENO;

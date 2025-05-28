@@ -50,6 +50,7 @@ SRC =  ./convert/ft_atoi.c \
 	./str/ft_substr.c \
 	./struct/ft_addback.c \
 	./struct/ft_init.c \
+	./struct/ft_envp.c \
 	./free/free_array.c \
 	./free/free_shell.c \
 	./free/free_redir_struct.c \

@@ -43,12 +43,12 @@ int	handle_metacharacter(t_token **tokens, char *line, size_t i)
 		add_token(tokens, &line[i], 2);
 		return (i + 1);
 	}
-	else if (line[i] == '>' && line[i + 1] == ' ')
+	else if (line[i] == '>' && (line[i + 1] == ' ' || line[i + 1] == '\0'))
 	{
 		add_token(tokens, &line[i], 1);
 		return (i + 1);
 	}
-	else if (line[i] == '<' && line[i + 1] == ' ')
+	else if (line[i] == '<' && (line[i + 1] == ' ' || line[i + 1] == '\0'))
 	{
 		add_token(tokens, &line[i], 1);
 		return (i + 1);

@@ -6,7 +6,7 @@
 /*   By: lomont <lomont@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 22:57:19 by lomont            #+#    #+#             */
-/*   Updated: 2025/05/22 19:54:58 by lomont           ###   ########.fr       */
+/*   Updated: 2025/05/28 00:21:35 by lomont           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,12 +94,20 @@ void		cmd_add_back(t_cmd **head, t_cmd *new);
 t_cmd		*add_cmd_to_shell(t_shell *shell, char **cmd_args);
 bool		add_redir_to_cmd(t_cmd *cmd, char *str, t_symbol symbol);
 
+// ENVP STRUCT FUNCTIONS
+
+char		**ft_malloc_envp(char **envp);
+t_envp		*create_node_envp(char *env);
+t_envp		*fill_envp(t_envp *node, char **envp);
+void		ft_add_back_envp(t_envp **lst, t_envp *new);
+t_envp		*ft_last_envp(t_envp *lst);
+
 // INIT FUNCTION
 
 t_cmd		*init_cmd(char **cmd_args);
 t_redir		*init_redir(char *str, t_symbol symbol);
 t_token		*init_token(char *value);
-t_shell		*init_shell(void);
+t_shell		*init_shell(char **envp);
 
 // SHELL FUNCTIONS
 

@@ -2,6 +2,11 @@
 
 void	exec(t_shell *shell)
 {
+	if (shell->cmd->cmd == NULL)
+	{
+		shell->wstatus = 0;
+		return ;
+	}
 	if (shell->cmd->next == NULL && is_cmd_built_ins(shell) == true)
 		exec_built_in(shell);
 	else

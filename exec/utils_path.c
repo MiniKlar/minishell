@@ -57,7 +57,7 @@ char	*new_command_function(char **path, char *new_command)
 			free(command_path);
 		i++;
 	}
-	free_tab(path);
+	free_array(path);
 	free(new_command);
 	return (NULL);
 }
