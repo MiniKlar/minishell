@@ -18,6 +18,8 @@ t_token	*tokenisation(t_shell *shell, char *line)
 	tokens = NULL;
 	in_quote = false;
 	i = 0;
+	if (line[0] == '\0' || line[0] == ':' || line[0] == '!')
+		return (NULL);
 	while (line[i] != '\0')
 	{
 		if ((line[i] == '"' || line[i] == '\'') && !in_quote)
@@ -52,6 +54,8 @@ size_t	calcul_len_tokens(t_token *tokens)
 	{
 		if (ft_strncmp(tokens->value, "|", ft_strlen(tokens->value)) == 0)
 				break;
+		else if (is_redirection(tokens) != 0)
+			tokens->next = tokens->next;
 		else
 			i++;
 		tokens = tokens->next;
@@ -69,21 +73,17 @@ void	fill_cmd(t_shell **shell, t_token *tokens)
 		return ;
 	else
 	{
-		array = NULL;
 		i = 0;
 		len_array = calcul_len_tokens(tokens);
+		printf("VOICI LEN_ARRAY = %zu\n", len_array);
+		array = malloc(sizeof(char *) * (len_array + 1));
+		if (!array)
+			return ;
+		array[len_array] = 0;
 		while (i != len_array)
 		{
-			if (!array)
-			{
-				array = malloc(sizeof(char *) * (len_array + 1));
-				array[len_array] = 0;
-			}
 			if (is_redirection(tokens) != 0)
-			{
 				tokens = tokens->next->next;
-				i++;
-			}
 			array[i] = ft_strdup(tokens->value);
 			i++;
 			tokens = tokens->next;
@@ -100,17 +100,15 @@ int	process_token(t_shell **shell, t_token *tokens)
 	tmp = (*shell)->cmd;
 	while (tokens != NULL)
 	{
-		printf("VOICI LE TOKEN QUI VA ETRE PROCESS = %s\n", tokens->value);
 		if (ft_strncmp(tokens->value, "|", ft_strlen(tokens->value)) == 0)
 		{
 			(*shell)->nb_pipe++;
+			(*shell)->cmd->next = init_cmd(NULL);
 			(*shell)->cmd = (*shell)->cmd->next;
-			(*shell)->cmd = init_cmd(NULL);
 			next_tokens(&tokens, 1);
 		}
 		else if (is_redirection(tokens) != 0)
 		{
-			printf("CEST UNE REDIR");
 			handle_redirection_token(tokens, (*shell)->cmd);
 			next_tokens(&tokens, 2);
 		}
@@ -133,7 +131,7 @@ void next_tokens(t_token **tokens, int i)
 		return ;
 	if (i == 1)
 		*tokens = (*tokens)->next; // apres un pipe
-	if (i == 2)
+	else if (i == 2)
 	{
 		while (index != i)
 		{
@@ -147,7 +145,7 @@ void next_tokens(t_token **tokens, int i)
 	}
 	else
 	{
-		while (tokens)
+		while (*tokens)
 		{
 			if (is_redirection((*tokens)) != 0 || ft_strncmp((*tokens)->value, "|", ft_strlen((*tokens)->value)) == 0)
 				break;

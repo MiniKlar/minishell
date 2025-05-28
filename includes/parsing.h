@@ -2,7 +2,7 @@
 
 # include "minishell.h"
 
-t_shell	*parsing(t_shell *shell, char *line);
+bool	parsing(t_shell *shell, char *line);
 
 /* Lexer */
 t_token	*tokenisation(t_shell *shell, char *line);

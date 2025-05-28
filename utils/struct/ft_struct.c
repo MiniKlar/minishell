@@ -43,36 +43,9 @@ void	ft_add_back_redir(t_redir **lst, t_redir *new)
 	}
 }
 
-void	ft_add_back_envp(t_envp **lst, t_envp *new)
-{
-	t_envp	*current;
-
-	if (*lst == NULL)
-		*lst = new;
-	else
-	{
-		current = ft_last_envp(*lst);
-		current->next = new;
-	}
-}
-
 static t_redir	*ft_last_redir(t_redir *lst)
 {
 	t_redir	*tmp;
-
-	if (lst == NULL)
-		return (lst);
-	while (lst != NULL)
-	{
-		tmp = lst;
-		lst = lst->next;
-	}
-	return (tmp);
-}
-
-t_envp	*ft_last_envp(t_envp *lst)
-{
-	t_envp	*tmp;
 
 	if (lst == NULL)
 		return (lst);

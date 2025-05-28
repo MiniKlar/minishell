@@ -10,6 +10,6 @@ int	ft_env(t_shell *shell)
 		return (1);
 	}
 	else
-		print_tab(shell->envp);
+		print_array(shell->envp);
 	return (0);
 }

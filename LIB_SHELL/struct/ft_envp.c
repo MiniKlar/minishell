@@ -1,32 +1,4 @@
-#include "../LIB_SHELL/lib_shell.h"
-#include "../includes/parsing.h"
-
-t_envp	*ft_last_envp(t_envp *lst)
-{
-	t_envp	*tmp;
-
-	if (lst == NULL)
-		return (lst);
-	while (lst != NULL)
-	{
-		tmp = lst;
-		lst = lst->next;
-	}
-	return (tmp);
-}
-
-void	ft_add_back_envp(t_envp **lst, t_envp *new)
-{
-	t_envp	*current;
-
-	if (*lst == NULL)
-		*lst = new;
-	else
-	{
-		current = ft_last_envp(*lst);
-		current->next = new;
-	}
-}
+#include "lib_shell.h"
 
 char	**ft_malloc_envp(char **envp)
 {
@@ -36,9 +8,10 @@ char	**ft_malloc_envp(char **envp)
 	i = 0;
 	while (envp[i])
 		i++;
-	alloc_envp = malloc(sizeof(char *) * (i));
+	alloc_envp = malloc(sizeof(char *) * (i + 1));
 	if (!alloc_envp)
 		return (NULL);
+	alloc_envp[i] = NULL;
 	i = 0;
 	while (envp[i])
 	{
@@ -52,7 +25,6 @@ char	**ft_malloc_envp(char **envp)
 		alloc_envp[i][k] = '\0';
 		i++;
 	}
-	alloc_envp[i - 1] = NULL;
 	return (alloc_envp);
 }
 
@@ -81,4 +53,31 @@ t_envp	*fill_envp(t_envp *node, char **envp)
 		i++;
 	}
 	return (node);
+}
+
+void	ft_add_back_envp(t_envp **lst, t_envp *new)
+{
+	t_envp	*current;
+
+	if (*lst == NULL)
+		*lst = new;
+	else
+	{
+		current = ft_last_envp(*lst);
+		current->next = new;
+	}
+}
+
+t_envp	*ft_last_envp(t_envp *lst)
+{
+	t_envp	*tmp;
+
+	if (lst == NULL)
+		return (lst);
+	while (lst != NULL)
+	{
+		tmp = lst;
+		lst = lst->next;
+	}
+	return (tmp);
 }

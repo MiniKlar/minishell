@@ -46,13 +46,11 @@ bool	check_syntax(t_shell *shell, t_token *tokens)
 	tmp = NULL;
 	if (!tokens)
 		return (false);
-	if (tokens->value[0] == '|')
-		return (unexpected_token(shell, "|"));
 	while (tokens)
 	{
 		if (is_redirection(tokens) != 0)
 		{
-			if (!tokens->next)
+			if (is_metacharacter(tokens->value) && tokens->next == NULL)
 				return (unexpected_token(shell, NULL));
 			if (is_metacharacter(tokens->next->value))
 				return (unexpected_token(shell, tokens->next->value));

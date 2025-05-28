@@ -12,8 +12,7 @@ void			exec(t_shell *shell);
 int				exec_cmd(t_shell *shell);
 int				exec_built_in(t_shell *shell);
 int				ft_wait(t_shell *shell, pid_t *id_fork, size_t nb_pipes);
-char			**ft_malloc_envp(char **envp);
-char			*find_command_exist_executable(t_shell *shell, t_pipe *pipex);
+char			*find_command_exist_executable(t_shell *shell, t_pipe *pipex, pid_t *id);
 
 //pipex_utils
 

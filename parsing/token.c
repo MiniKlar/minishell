@@ -4,10 +4,7 @@
 bool	is_metacharacter(char *str)
 {
 	if ((str[0] == '|' && str[1] == ' ') || str[0] == '<' || str[0] == '>' || str[0] == ' ')
-	{
-		printf("c'est un metacharacter");
 		return (true);
-	}
 	else
 		return (false);
 }
