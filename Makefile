@@ -1,11 +1,14 @@
 NAME 			= minishell
 
+
 CC 				= cc
 RM				= rm -f
 
 CFLAGS 			= -Wall -Wextra -Werror -ggdb -I ./includes
 
 LIB_SHELL		= LIB_SHELL
+
+MAKE			= make
 
 SRC 			= ./main.c \
 				./built-ins/cd.c \
@@ -39,7 +42,10 @@ all: $(NAME)
 
 bonus: $(NAME)
 
-$(NAME): $(OBJ)
+$(LIB_SHELL):
+	$(MAKE) -C LIB_SHELL all
+
+$(NAME): $(LIB_SHELL) $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) ./LIB_SHELL/lib_shell.a -o $(NAME) -lreadline -ltermcap
 
 %.o: %.c
@@ -50,7 +56,8 @@ clean:
 
 fclean: clean
 	$(RM) $(NAME)
+	$(MAKE) -C LIB_SHELL fclean
 
 re: fclean all
 
-.PHONY:	all bonus clean fclean re
+.PHONY:	all bonus clean fclean re LIB_SHELL

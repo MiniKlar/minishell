@@ -35,7 +35,10 @@ int	ft_echo(t_shell *shell)
 	else
 	{
 		while (shell->cmd->cmd[++i])
+		{
 			printf("%s",shell->cmd->cmd[i]);
+			printf(" ");
+		}
 	}
 	if (!has_arg)
 		printf("\n");

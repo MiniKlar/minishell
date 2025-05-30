@@ -39,13 +39,47 @@ int	unexpected_quote(t_shell *shell, t_token *token, char *str)
 	return (1);
 }
 
+bool	is_directory(char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '.' || str[i] == '/')
+			i++;
+		else
+			return (false);
+	}
+	return (true);
+}
+
 bool	check_syntax(t_shell *shell, t_token *tokens)
 {
-	t_token *tmp;
-
-	tmp = NULL;
 	if (!tokens)
 		return (false);
+	if (is_directory(tokens->value))
+	{
+		if (tokens->value[0] == '.' && tokens->value[1] == '\0')
+		{
+			ft_putstr_fd("bash: ",2);
+			ft_putstr_fd(tokens->value ,2);
+			ft_putstr_fd(": filename argument required ",2);
+			ft_putchar_fd('\n', 2);
+			ft_putstr_fd(tokens->value ,2);
+			ft_putstr_fd(": usage: . filename [arguments]",2);
+			return (false);
+		}
+		else
+		{
+			ft_putstr_fd("bash: ", 2);
+			ft_putstr_fd(tokens->value, 2);
+			ft_putstr_fd(": Is directory", 2);
+		}
+		return (false);
+	}
+	if (tokens->value[0] == '|' && tokens->value[1] == '\0')
+		return (unexpected_token(shell, tokens->value));
 	while (tokens)
 	{
 		if (is_redirection(tokens) != 0)
@@ -55,9 +89,12 @@ bool	check_syntax(t_shell *shell, t_token *tokens)
 			if (is_metacharacter(tokens->next->value))
 				return (unexpected_token(shell, tokens->next->value));
 		}
-		if (tokens->value[0] == '|' && tmp && tmp->value[0] == '|')
+		if (tokens->value[0] == '|' && tokens->value[1] == '|') //surement creer une boucle a linterieur du char * pour verifier que ya pas doubles pipes
+			return (unexpected_token(shell, "||"));
+		if (tokens->value[0] == '&' && tokens->value[1] == '&') //surement creer une boucle a linterieur du char * pour verifier que ya pas doubles pipes
+			return (unexpected_token(shell, "&&"));
+		if (tokens->value[0] == '|' && tokens->value[1] != '\0')
 			return (unexpected_token(shell, "|"));
-		tmp = tokens;
 		tokens = tokens->next;
 	}
 	return (true);

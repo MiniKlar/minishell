@@ -157,10 +157,8 @@ void ft_dup(t_shell *shell, t_pipe *pipex, char *command_path)
 
 int	dup_pipe(t_shell *shell, t_pipe *pipex)
 {
-	int	i;
 	int	p;
 
-	i = pipex->fdpipe_index;
 	p = pipex->pipe_index;
 	if (p == FIRST_PIPE)
 	{
