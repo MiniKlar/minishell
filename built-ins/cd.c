@@ -26,9 +26,7 @@ int	exec_cd(char *arg)
 int ft_cd(t_shell *shell)
 {
 	char *arg;
-	size_t	i;
 
-	i = 0;
 	if (shell->cmd->cmd[1] == NULL)
 	{
 		arg = get_specific_env(shell->envp, "HOME");

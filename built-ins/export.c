@@ -49,10 +49,8 @@ char	*remove_char_arg(char *arg)
 {
 	char	*new_arg;
 	size_t	i;
-	size_t	k;
 
 	i = 0;
-	k = 0;
 	new_arg = malloc(sizeof(char) * (ft_strlen(arg)));
 	if (!new_arg)
 		return (NULL);
