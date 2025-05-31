@@ -7,7 +7,7 @@ bool	parsing(t_shell *shell, char *line);
 /* Lexer */
 t_token	*tokenisation(t_shell *shell, char *line);
 t_token	*token_new(char *value);
-void	add_token(t_token **tokens, char *str, size_t i);
+void	add_token(t_token **tokens, char *str, size_t i, size_t k);
 
 /* Parser */
 t_shell	*parse_tokens(t_shell *shell, t_token *tokens);
@@ -26,4 +26,4 @@ int		handle_regular_token(t_shell *shell, t_token **tokens, char *line, bool *in
 int		handle_pipe_token(t_cmd **current_cmd, char ***args, int *arg_count);
 /* Error */
 int		syntax_error(char *msg);
-int		unexpected_quote(t_shell *shell, t_token *tokens, char *str);
+int		unexpected_quote(t_shell *shell, t_token *tokens, char quote);

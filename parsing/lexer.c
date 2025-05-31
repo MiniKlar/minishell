@@ -16,7 +16,7 @@ bool	in_quote(char c, char *current_quote)
 	return (*current_quote != 0);
 }
 
-void	add_token(t_token **tokens, char *str, size_t i)
+void	add_token(t_token **tokens, char *str, size_t i, size_t k)
 {
 	char *tmp;
 
@@ -25,7 +25,7 @@ void	add_token(t_token **tokens, char *str, size_t i)
 		token_add_back(tokens, token_new(ft_strdup(str)));
 	else
 	{
-		tmp = ft_substr(str, 0, i);
+		tmp = ft_substr(str, k, i);
 		token_add_back(tokens, token_new(ft_strdup(tmp)));
 		free(tmp);
 	}
@@ -35,27 +35,27 @@ int	handle_metacharacter(t_token **tokens, char *line, size_t i)
 {
 	if (line[i] == '>' && line[i + 1] == '>')
 	{
-		add_token(tokens, &line[i], 2);
+		add_token(tokens, &line[i], 2, 0);
 		return (i + 1);
 	}
 	else if (line[i] == '<' && line[i + 1] == '<')
 	{
-		add_token(tokens, &line[i], 2);
+		add_token(tokens, &line[i], 2, 0);
 		return (i + 1);
 	}
 	else if (line[i] == '>' && (line[i + 1] == ' ' || line[i + 1] == '\0'))
 	{
-		add_token(tokens, &line[i], 1);
+		add_token(tokens, &line[i], 1, 0);
 		return (i + 1);
 	}
 	else if (line[i] == '<' && (line[i + 1] == ' ' || line[i + 1] == '\0'))
 	{
-		add_token(tokens, &line[i], 1);
+		add_token(tokens, &line[i], 1, 0);
 		return (i + 1);
 	}
 	else if (line[i] == '|' && line[i + 1] == ' ')
 	{
-		add_token(tokens, &line[i], 1);
+		add_token(tokens, &line[i], 1, 0);
 		return (i + 1);
 	}
 	return (i);
