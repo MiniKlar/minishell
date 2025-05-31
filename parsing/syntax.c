@@ -29,10 +29,10 @@ bool	unexpected_token(t_shell *shell, char *token)
 	return (false);
 }
 
-int	unexpected_quote(t_shell *shell, t_token *token, char *str)
+int	unexpected_quote(t_shell *shell, t_token *token, char quote)
 {
 	ft_putstr_fd("bash: syntax error near unexpected quote `", 2);
-	ft_putstr_fd(str, 2);
+	ft_putchar_fd(quote, 2);
 	ft_putendl_fd("'", 2);
 	free_token_struct(token);
 	shell->wstatus = 2;

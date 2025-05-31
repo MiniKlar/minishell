@@ -14,10 +14,12 @@ t_token	*tokenisation(t_shell *shell, char *line)
 	t_token	*tokens;
 	bool	in_quote;
 	size_t	i;
+	size_t	k;
 
 	tokens = NULL;
 	in_quote = false;
 	i = 0;
+	k = 0;
 	if (line[0] == '\0' || line[0] == ':' || line[0] == '!')
 		return (NULL);
 	while (line[i] != '\0')
@@ -36,7 +38,13 @@ t_token	*tokenisation(t_shell *shell, char *line)
 		if (is_metacharacter(line + i) && !in_quote) //si cest un metacharacter et que cest pas une quote
 			i = handle_metacharacter(&tokens, line, i); //on gere les metacharacter et on les tokenise
 		else
-			i += handle_regular_token(shell, &tokens, line + i, &in_quote);
+		{
+			k = handle_regular_token(shell, &tokens, line + i, &in_quote);
+			if (k == 0)
+				return (NULL);
+			else
+				i += k;
+		}
 		if (line[i])
 			i++;
 	}
