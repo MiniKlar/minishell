@@ -6,11 +6,10 @@
 
 //MAIN FUNCTIONS
 
-bool			exec_built_in_inside_child(t_shell *shell);
 bool			is_cmd_built_ins(t_shell *shell);
 void			exec(t_shell *shell);
 int				exec_cmd(t_shell *shell);
-int				exec_built_in(t_shell *shell);
+int				exec_built_in(t_shell *shell, bool is_child);
 int				ft_wait(t_shell *shell, pid_t *id_fork, size_t nb_pipes);
 char			*find_command_exist_executable(t_shell *shell, t_pipe *pipex, pid_t *id);
 
@@ -30,6 +29,8 @@ void			redir_outfile(t_shell *shell);
 void			redir_infile(t_shell *shell);
 char 			*here_doc(t_shell *shell, int i);
 bool			ft_is_last_fd_in(t_shell *shell);
+void			redir_cmd_input_output(t_shell *shell);
+void			ft_dup_redir(t_shell *shell);
 
 //FREE
 

@@ -9,6 +9,6 @@ void	ft_exit(t_shell *shell)
 	free_array(shell->envp);
 	free_shell(shell);
 	free(shell);
-	rl_clear_history();
+	clear_history();
 	exit(exit_code);
 }

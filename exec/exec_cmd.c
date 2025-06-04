@@ -101,15 +101,16 @@ void	create_child(t_shell *shell, t_pipe *pipex, pid_t *id_fork)
 		ft_dup(shell, pipex, command_path); //dup les pipes
 	if (is_built_ins) //si cest un built in
 	{
-		exec_built_in(shell); //exec built in
+		exec_built_in(shell, true); //exec built in
 		exit(shell->wstatus); // exit wstatus
 	}
 	else if (execve(command_path, &shell->cmd->cmd[0], shell->envp) == -1) //sinon execve
 	{
 		perror("ERROR EXEC VE");
 		free(id_fork);
+		free_array(shell->envp);
 		free_all(shell, pipex);
-		free(command_path);
+		free(shell);
 		exit(126);
 	}
 }
@@ -124,6 +125,7 @@ void	redir_cmd_input_output(t_shell *shell)
 	heredoc_name = NULL;
 	while (shell->cmd->redir != NULL)
 	{
+		printf("tu es ici\n");
 		type_redir = shell->cmd->redir->symbol;
 		if (type_redir == REDIR_IN)
 			redir_infile(shell);
