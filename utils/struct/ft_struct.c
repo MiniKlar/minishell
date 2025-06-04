@@ -3,6 +3,21 @@
 t_envp	*ft_last_envp(t_envp *lst);
 static 	t_redir	*ft_last_redir(t_redir *lst);
 
+void	ft_del_first_raw_tokens(t_token **tokens)
+{
+	t_token *tmp;
+
+	if (!tokens)
+		return ;
+	else
+	{
+		tmp = (*tokens)->next;
+		free((*tokens)->value);
+		free(*tokens);
+		(*tokens) = tmp;
+	}
+}
+
 void	ft_delone_env(t_envp *lst, char *env_to_find)
 {
 	t_envp *node_before_env_to_find;

@@ -30,7 +30,7 @@ SRC 			= ./main.c \
 				./parsing/parsing.c \
 				./parsing/lexer.c \
 				./parsing/parser.c \
-				./parsing/parsing_leo1.c \
+				./parsing/tokenisation.c \
 				./parsing/syntax.c \
 				./parsing/utils_parsing.c \
 				./utils/free.c \

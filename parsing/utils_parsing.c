@@ -17,13 +17,13 @@ int	is_redirection(t_token *token)
 {
 	if (!token)
 		return (0);
-	else if (ft_strncmp(token->value, "<", ft_strlen(token->value)) == 0)
+	else if (ft_strncmp(token->value, "<", 2) == 0)
 		return (1);
-	else if (ft_strncmp(token->value, ">", ft_strlen(token->value)) == 0)
+	else if (ft_strncmp(token->value, ">", 2) == 0)
 		return (2);
-	else if (ft_strncmp(token->value, "<<", ft_strlen(token->value)) == 0)
+	else if (ft_strncmp(token->value, "<<", 2) == 0)
 		return (3);
-	else if (ft_strncmp(token->value, ">>", ft_strlen(token->value)) == 0)
+	else if (ft_strncmp(token->value, ">>", 2) == 0)
 		return (4);
 	else
 		return (0);

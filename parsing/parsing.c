@@ -3,29 +3,34 @@
 
 bool	parsing(t_shell *shell, char *line)
 {
+	t_token *raw_tokens;
 	t_token *tokens;
 	t_token *tmp;
 
-	tokens = tokenisation(shell, line);
-	if (!tokens)
+	raw_tokens = tokenisation(shell, line);
+	if (!raw_tokens)
 		return (false);
 	else
 	{
-		tmp = tokens;
-		while (tokens != NULL)
+		tmp = raw_tokens;
+		while (raw_tokens != NULL)
 		{
-			printf("Voici tokens = [%s]\n", tokens->value);
-			tokens = tokens->next;
+			printf("Voici tokens = [%s]\n", raw_tokens->value);
+			raw_tokens = raw_tokens->next;
 		}
 	}
-	tokens = tmp;
+	raw_tokens = tmp;
 	printf("\n --------------------------------------- \n");
-	if (!check_syntax(shell, tokens))
+	if (!check_syntax(shell, raw_tokens))
 	{
 		printf("Error syntax \n");
-		free_token_struct(tokens);
+		free_token_struct(raw_tokens);
 		return (false);
 	}
+	tokens = proccess_raw_tokens(raw_tokens);
+	free_token_struct(raw_tokens);
+	if (!tokens)
+		return (false);
 	shell = parse_tokens(shell, tokens);
 	if (!shell)
 	{
