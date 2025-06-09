@@ -7,7 +7,7 @@ void	ft_exit(t_shell *shell)
 	exit_code = shell->wstatus;
 	ft_putstr_fd("exit\n", 1);
 	free_array(shell->envp);
-	free_shell(shell);
+	free_all(shell);
 	free(shell);
 	clear_history();
 	exit(exit_code);

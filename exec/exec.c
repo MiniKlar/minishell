@@ -5,12 +5,27 @@ void	exec(t_shell *shell)
 	if (shell->cmd->cmd == NULL)
 	{
 		shell->wstatus = 0;
-		return ;
+		if (shell->cmd->redir)
+		{
+			redir_cmd_input_output(shell);
+			ft_dup_redir(shell);
+			ft_dup_std_back(shell);
+		}
+		else
+			return ;
 	}
-	if (shell->cmd->next == NULL && is_cmd_built_ins(shell) == true)
+	else if (shell->cmd->next == NULL && is_cmd_built_ins(shell) == true)
+	{
+		printf("tu exec built in\n");
+		shell->is_child = false;
 		exec_built_in(shell, false);
+	}
 	else
+	{
+		printf("tu exec cmd\n");
+		shell->is_child = true;
 		exec_cmd(shell);
+	}
 }
 
 bool	built_ins_2(t_shell *shell)
@@ -28,6 +43,8 @@ bool	built_ins_2(t_shell *shell)
 
 bool	built_ins_1(t_shell *shell)
 {
+	if (shell->cmd->cmd == NULL)
+		return (false);
 	if (ft_strncmp(shell->cmd->cmd[0], "export", 5) == 0)
 		shell->wstatus = ft_export(shell);
 	else if (ft_strncmp(shell->cmd->cmd[0], "cd", 3) == 0)
@@ -43,32 +60,23 @@ bool	built_ins_1(t_shell *shell)
 
 int	exec_built_in(t_shell *shell, bool is_child)
 {
-	int	tmp_stdin;
-	int	tmp_stdout;
-
 	if (!is_cmd_built_ins(shell))
 		return (1);
 	if (!is_child)
-	{
-		tmp_stdin = dup(STDIN_FILENO);
-		tmp_stdout = dup(STDOUT_FILENO);
-	}
-	redir_cmd_input_output(shell); //redirection in et out (infile, outfile, heredoc)
-	ft_dup_redir(shell); //dup le fd_in et fd_out
+		ft_dup_std(shell);
+	redir_cmd_input_output(shell);
+	ft_dup_redir(shell);
 	built_ins_1(shell);
 	if (!is_child)
-	{
-		dup2(tmp_stdin, STDIN_FILENO);
-		dup2(tmp_stdout, STDOUT_FILENO);
-		close(tmp_stdin);
-		close(tmp_stdout);
-	}
+		ft_dup_std_back(shell);
 	return (0);
 }
 
 bool	is_cmd_built_ins(t_shell *shell)
 {
-	if (ft_strncmp(shell->cmd->cmd[0], "export", 7) == 0)
+	if (shell->cmd->cmd == NULL)
+		return (false);
+	else if (ft_strncmp(shell->cmd->cmd[0], "export", 7) == 0)
 		return (true);
 	else if (ft_strncmp(shell->cmd->cmd[0], "pwd", 4) == 0)
 		return (true);

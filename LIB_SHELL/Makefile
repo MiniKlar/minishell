@@ -25,6 +25,7 @@ SRC =  ./convert/ft_atoi.c \
 	./print/ft_print_hexaptr.c \
 	./print/ft_print_nbr.c \
 	./print/ft_print_str.c \
+	./print/ft_print_array.c \
 	./printf/ft_printf.c \
 	./put/ft_put_unsigned.c \
 	./put/ft_putchar_fd.c \
@@ -56,7 +57,7 @@ SRC =  ./convert/ft_atoi.c \
 	./free/free_redir_struct.c \
 	./free/free_cmd.c \
 	./free/free_tokens.c \
-	./print/ft_print_tab.c \
+	./free/free_env.c \
 	./shell/ft_env.c \
 	./shell/ft_cmd.c \
 

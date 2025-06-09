@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_struct.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/06 04:32:07 by miniklar          #+#    #+#             */
+/*   Updated: 2025/06/06 04:32:08 by miniklar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 t_envp	*ft_last_envp(t_envp *lst);
@@ -32,7 +44,6 @@ void	ft_delone_env(t_envp *lst, char *env_to_find)
 		{
 			if (ft_strncmp(lst->envp, env_to_find, ft_strlen(env_to_find)) == 0)
 			{
-				printf("VOICI ENVP %s\n", lst->envp);
 				tmp = lst->next;
 				break ;
 			}
