@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lib_shell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomont <lomont@student.42.fr>              +#+  +:+       +#+        */
+/*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 22:57:19 by lomont            #+#    #+#             */
-/*   Updated: 2025/05/28 00:21:35 by lomont           ###   ########.fr       */
+/*   Updated: 2025/06/06 04:35:35 by miniklar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ void		free_cmd_struct(t_cmd *cmd);
 void		free_redir_struct(t_redir *redir);
 void		free_shell(t_shell *shell);
 void		free_token_struct(t_token *token);
+void		free_env(t_envp *env);
 
 // GET_NEXT_LINE
 

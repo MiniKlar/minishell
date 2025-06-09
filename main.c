@@ -1,13 +1,12 @@
 #include "minishell.h"
 
-int main(int argc, char **argv, char **envp)
+int main(void)
 {
-	(void)argc;
-	(void)argv;
 	t_shell *shell;
 	char *command;
 
-	shell = init_shell(envp);
+	shell = init_shell(environ);
+	// set_signal_action();
 	while (1)
 	{
 		command = readline("bash-5.1$ ");
@@ -21,6 +20,9 @@ int main(int argc, char **argv, char **envp)
 		if (ft_strncmp(command, "", 1) != 0)
 			add_history(command);
 		free(command);
+		shell->fd_in = STDIN_FILENO;
+		shell->fd_out = STDOUT_FILENO;
+		environ = shell->envp;
 	}
 	return (shell->wstatus);
 }

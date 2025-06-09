@@ -1,171 +1,77 @@
 #include "minishell.h"
 
-char	*get_prev_pwd(char **envp);
-char	*join_args(char *arg, char *new_arg);
-char	*check_arg(char *arg, char **envp);
-char	*get_cd_argument(char *cmd, char **envp);
-char	*get_specific_env(char **envp, char *env);
-char	*get_prev_pwd(char **envp);
 int		check_arg_nbr(t_shell *shell);
-void	update_pwd(t_shell *shell, char *arg);
+void	update_pwd(t_shell *shell);
 
-int	exec_cd(char *arg)
+int	exec_cd(t_shell *shell, char *arg)
 {
 	if (chdir(arg) == -1)
 	{
 		perror("cd");
+		free(arg);
 		return (1);
 	}
 	else
 	{
-		printf("Success! You changed the directory\n");
+		update_pwd(shell);
+		free(arg);
 		return (0);
 	}
+}
+
+char	*handle_specific_case(char *directory)
+{
+	char	*arg;
+
+	arg = NULL;
+	if (directory == NULL)
+		arg = getenv("PWD=");
+	else if (ft_strncmp(directory, ".", 2) == 0)
+		arg = getenv("PWD=");
+	else if (ft_strncmp(directory, "..", 3) == 0)
+		arg = ft_strdup("..");
+	else if (ft_strncmp(directory, "~", 2) == 0)
+		arg = getenv("HOME=");
+	else if (ft_strncmp(directory, "-", 2) == 0)
+		arg = getenv("OLDPWD=");
+	return (arg);
 }
 
 int ft_cd(t_shell *shell)
 {
-	char *arg;
+	char	*arg;
+	char	*directory;
 
-	if (shell->cmd->cmd[1] == NULL)
-	{
-		arg = get_specific_env(shell->envp, "HOME");
-		return (exec_cd(arg));
-	}
+	directory = shell->cmd->cmd[1];
 	if (check_arg_nbr(shell) == -1)
 		return (1);
-	arg = get_cd_argument(shell->cmd->cmd[1], shell->envp);
-	if (arg == NULL)
-		return (1);
+	arg = handle_specific_case(directory);
+	if (arg != NULL)
+		return (exec_cd(shell, arg));
 	else
-	{
-		exec_cd(arg);
-		if (ft_strncmp(shell->cmd->cmd[1], "-\0", 2) == 0)
-			ft_pwd(true);
-		update_pwd(shell, arg);
-		return (0);
-	}
+		return (exec_cd(shell, ft_strdup(directory)));
 }
 
-void	find_change_env(t_envp *env, char *new_env, char *env_to_replace)
+void	update_pwd(t_shell *shell)
 {
-	while (env)
-	{
-		if (ft_strncmp(env->envp, env_to_replace, ft_strlen(env_to_replace)) == 0)
-		{
-			env->envp = new_env;
-			break ;
-		}
-		env = env->next;
-	}
-}
-
-char	**ft_convert_node_to_envp(t_envp *env)
-{
-	char *tmp;
-	char *envp;
-	char **final_envp;
-
-	envp = NULL;
-	if (!envp)
-		envp = ft_strdup("");
-	if (!envp)
-		return (NULL);
-	while (env)
-	{
-		tmp = envp;
-		envp = ft_strjoin(envp, env->envp);
-		free(tmp);
-		tmp = envp;
-		envp = ft_strjoin(envp, " ");
-		free(tmp);
-		env = env->next;
-	}
-	final_envp = ft_split(envp, ' ');
-	free(envp);
-	return(final_envp);
-}
-
-void	update_pwd(t_shell *shell, char *arg)
-{
-	char *oldpwd;
-	char *oldpwd_tmp;
-	char *new_env;
-	char **tmp;
 	t_envp	*env;
+	char	*new_pwd;
+	char	*new_env;
 
 	env = NULL;
-	oldpwd_tmp = get_specific_env(shell->envp, "PWD=");
-	oldpwd = ft_substr(oldpwd_tmp, 0, ft_strlen(oldpwd_tmp));
-	free(oldpwd_tmp);
-	oldpwd_tmp = ft_strjoin("OLDPWD=", oldpwd);
-	free(oldpwd);
-	new_env = ft_strjoin("PWD=", arg);
 	env = fill_envp(env, shell->envp);
-	find_change_env(env, new_env, "PWD");
-	find_change_env(env, oldpwd_tmp, "OLDPWD");
-	tmp = shell->envp;
+	new_pwd = getcwd(NULL, 0);
+	new_env = ft_strjoin("OLDPWD=", getenv("PWD"));
+	if (!find_change_env(env, new_env, "OLDPWD="))
+	{
+		ft_add_back_envp(&env, create_node_envp(new_env));
+		free(new_env);
+	}
+	find_change_env(env, ft_strjoin("PWD=", new_pwd), "PWD=");
+	free_array(shell->envp);
 	shell->envp = ft_convert_node_to_envp(env);
-	free(new_env);
-	free(tmp);
-}
-
-char *join_args(char *arg, char *new_arg)
-{
-	char *tmp;
-
-	if (!new_arg)
-		new_arg = ft_strdup("");
-	if (!new_arg)
-		return (NULL);
-	tmp = new_arg;
-	new_arg = ft_strjoin(new_arg, arg);
-	free(tmp);
-	tmp = new_arg;
-	new_arg = ft_strjoin(new_arg, "/");
-	free(tmp);
-	free(arg);
-	return (new_arg);
-}
-
-char *check_arg(char *arg, char **envp)
-{
-	if (ft_strncmp(arg, ".", 2) == 0)
-		arg = get_specific_env(envp, "PWD=");
-	else if (ft_strncmp(arg, "..", 3) == 0)
-		arg = get_prev_pwd(envp);
-	else if (ft_strncmp(arg, "~", 2) == 0)
-		arg = get_specific_env(envp, "HOME=");
-	else if (ft_strncmp(arg, "-", 2) == 0)
-		arg = get_specific_env(envp, "OLDPWD=");
-	return (arg);
-}
-
-char	*get_cd_argument(char *cmd, char **envp)
-{
-	size_t	i;
-	char *arg;
-	char *new_arg;
-	char **arg_tab;
-
-	i = 0;
-	if (ft_strchr(cmd, '/') != NULL)
-	{
-		arg_tab = ft_split(cmd, '/');
-		while (arg_tab[i])
-		{
-			arg = check_arg(arg_tab[i], envp);
-			new_arg = join_args(arg, new_arg);
-			i++;
-		}
-		free_array(arg_tab);
-	}
-	else
-	{
-		arg_tab = NULL;
-		new_arg = check_arg(cmd, envp);
-	}
-	return (new_arg);
+	free_env(env);
+	free(new_pwd);
 }
 
 int	check_arg_nbr(t_shell *shell)
@@ -177,41 +83,9 @@ int	check_arg_nbr(t_shell *shell)
 		i++;
 	if (i > 2)
 	{
-		ft_putstr_fd("bash: cd: too many arguments", 2);
+		ft_putstr_fd("bash: cd: too many arguments\n", 2);
 		return (-1);
 	}
 	else
 		return (0);
 }
-
-char *get_specific_env(char **envp, char *env)
-{
-	size_t	i;
-
-	i = 0;
-	if (!envp)
-		return (NULL);
-	while (envp[i])
-	{
-		if (ft_strncmp(envp[i], env, ft_strlen(env)) == 0)
-			return (ft_substr(envp[i], ft_strlen(env), ft_strlen(envp[i]) - ft_strlen(env)));
-		i++;
-	}
-	return (NULL);
-}
-
-char *get_prev_pwd(char **envp)
-{
-	size_t	i;
-	char	*current_pwd;
-
-	current_pwd = get_specific_env(envp, "PWD");
-	if (ft_strncmp(current_pwd, "/home\0", ft_strlen(current_pwd)) == 0)
-		return (ft_strdup("/"));
-	i = ft_strlen(current_pwd);
-	while (current_pwd[i] != '/')
-		i--;
-	return (ft_substr(current_pwd, 0, i));
-}
-
-

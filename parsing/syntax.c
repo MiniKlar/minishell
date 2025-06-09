@@ -39,26 +39,19 @@ int	unexpected_quote(t_shell *shell, t_token *token, char quote)
 	return (1);
 }
 
-bool	is_directory(char *str)
+bool	is_directory(char character)
 {
-	size_t	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '.' || str[i] == '/')
-			i++;
-		else
-			return (false);
-	}
-	return (true);
+	if (character == '.' || character == '/')
+		return (true);
+	else
+		return (false);
 }
 
 bool	check_syntax(t_shell *shell, t_token *tokens)
 {
 	if (!tokens)
 		return (false);
-	if (is_directory(tokens->value))
+	if (is_directory(tokens->value[0]))
 	{
 		if (tokens->value[0] == '.' && tokens->value[1] == '\0')
 		{
@@ -74,7 +67,7 @@ bool	check_syntax(t_shell *shell, t_token *tokens)
 		{
 			ft_putstr_fd("bash: ", 2);
 			ft_putstr_fd(tokens->value, 2);
-			ft_putstr_fd(": Is directory", 2);
+			ft_putstr_fd(": Is directory\n", 2);
 		}
 		return (false);
 	}

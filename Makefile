@@ -26,6 +26,7 @@ SRC 			= ./main.c \
 				./exec/pipex_utils.c \
 				./exec/utils_path.c   \
 				./exec/utils_exec.c	   \
+				./parsing/expansion.c   \
 				./parsing/token.c \
 				./parsing/parsing.c \
 				./parsing/lexer.c \
@@ -34,14 +35,13 @@ SRC 			= ./main.c \
 				./parsing/syntax.c \
 				./parsing/utils_parsing.c \
 				./utils/free.c \
+				./utils/signal.c \
 				./utils/struct/ft_struct.c \
+				./utils/struct/ft_env_struct.c \
 
 OBJ 			= $(SRC:.c=.o)
 
 all: $(NAME)
-
-bonus: $(NAME)
-
 $(LIB_SHELL):
 	$(MAKE) -C LIB_SHELL all
 
@@ -60,4 +60,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY:	all bonus clean fclean re LIB_SHELL
+.PHONY:	all clean fclean re LIB_SHELL

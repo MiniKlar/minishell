@@ -2,14 +2,16 @@
 
 void	read_heredoc(t_shell *shell, int fd);
 int		ft_tmp_open_heredoc(char *name, int i);
-bool	ft_is_last_in(t_shell *shell);
 
 char	*here_doc(t_shell *shell, int i)
 {
 	int		fd;
 	char	*name;
+	char	*index_tmp;
 
-	name = ft_strjoin("/tmp/tmp", ft_itoa(i));
+	index_tmp = ft_itoa(i);
+	name = ft_strjoin("/tmp/tmp", index_tmp);
+	free(index_tmp);
 	if (!name)
 		return (NULL);
 	fd = ft_tmp_open_heredoc(name, i);
@@ -64,24 +66,4 @@ int	ft_tmp_open_heredoc(char *name, int i)
 		exit(1);
 	}
 	return (fd);
-}
-
-bool	ft_is_last_fd_in(t_shell *shell)
-{
-	t_shell *tmp;
-
-	tmp = shell;
-	while (shell->cmd->redir->next != NULL)
-	{
-		if (shell->cmd->redir->next->symbol == HERE_DOC
-			|| shell->cmd->redir->next->symbol == REDIR_IN)
-		{
-			shell = tmp;
-			return (false);
-		}
-		else
-			shell->cmd->redir = shell->cmd->redir->next;
-	}
-	shell = tmp;
-	return (true);
 }

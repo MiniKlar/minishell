@@ -1,25 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_print_tab.c                                     :+:      :+:    :+:   */
+/*   free_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomont <lomont@student.42.fr>              +#+  +:+       +#+        */
+/*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/17 10:23:33 by lomont            #+#    #+#             */
-/*   Updated: 2025/05/27 21:12:52 by lomont           ###   ########.fr       */
+/*   Created: 2025/06/06 04:28:29 by miniklar          #+#    #+#             */
+/*   Updated: 2025/06/06 04:28:49 by miniklar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lib_shell.h"
 
-void	print_array(char **array)
+void	free_env(t_envp *env)
 {
-	size_t	i;
+	t_envp	*tmp;
 
-	i = 0;
-	while (array[i])
+	if (!env)
+		return ;
+	else
 	{
-		printf("%s\n", array[i]);
-		i++;
+		while (env != NULL)
+		{
+			tmp = env;
+			free(env->envp);
+			env = env->next;
+			free(tmp);
+		}
 	}
 }

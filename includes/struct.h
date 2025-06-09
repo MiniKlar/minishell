@@ -6,7 +6,7 @@
 /*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 19:52:35 by lomont            #+#    #+#             */
-/*   Updated: 2025/06/02 19:51:37 by miniklar         ###   ########.fr       */
+/*   Updated: 2025/06/07 00:48:29 by miniklar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,15 @@
 
 # include <stdio.h>
 # include <stdbool.h>
+# include <unistd.h>
+
+typedef struct 	s_pipe
+{
+	int			fdpipe[2];
+	int			in_fd;
+	int			fdpipe_index;
+	int			pipe_index;
+}				t_pipe;
 
 typedef enum s_symbol
 {
@@ -40,8 +49,14 @@ typedef struct 	s_cmd
 typedef struct	s_shell
 {
 	char		**envp;
+	t_cmd		*first_cmd;
 	t_cmd		*cmd;
+	t_pipe		*pipex;
+	pid_t		*id_fork;
 	size_t		nb_pipe;
+	bool		is_child;
+	int			tmp_stdin;
+	int			tmp_stdout;
 	int			fd_in;
 	int			fd_out;
 	int			wstatus;

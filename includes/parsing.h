@@ -12,6 +12,9 @@ size_t	find_corresponding_quote(char *line, char quote_to_find);
 
 /* Parser */
 t_shell	*parse_tokens(t_shell *shell, t_token *tokens);
+char	*check_getenv(char *str);
+char	*check_env_variable(char *str, char quote);
+char	*handle_env_variable(char *str, size_t *index_parsing);
 
 /* Syntax */
 bool	check_syntax(t_shell *shell, t_token *tokens);

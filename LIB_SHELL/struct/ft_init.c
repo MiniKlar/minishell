@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_init.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lomont <lomont@student.42.fr>              +#+  +:+       +#+        */
+/*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 16:25:30 by lomont            #+#    #+#             */
-/*   Updated: 2025/05/28 01:42:58 by lomont           ###   ########.fr       */
+/*   Updated: 2025/06/07 00:49:21 by miniklar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,15 @@ t_shell	*init_shell(char **envp)
 	}
 	shell->envp = ft_malloc_envp(envp);
 	shell->cmd = NULL;
+	shell->id_fork = NULL;
+	shell->pipex = NULL;
 	shell->nb_pipe = 0;
 	shell->fd_in = STDIN_FILENO;
 	shell->fd_out = STDOUT_FILENO;
 	shell->wstatus = 0;
+	shell->is_child = false;
+	shell->tmp_stdin = 0;
+	shell->tmp_stdout = 0;
 	return (shell);
 }
 

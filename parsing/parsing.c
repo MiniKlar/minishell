@@ -21,16 +21,15 @@ bool	parsing(t_shell *shell, char *line)
 	}
 	raw_tokens = tmp;
 	printf("\n --------------------------------------- \n");
-	if (!check_syntax(shell, raw_tokens))
-	{
-		printf("Error syntax \n");
-		free_token_struct(raw_tokens);
-		return (false);
-	}
 	tokens = proccess_raw_tokens(raw_tokens);
 	free_token_struct(raw_tokens);
 	if (!tokens)
 		return (false);
+	if (!check_syntax(shell, tokens))
+	{
+		free_token_struct(tokens);
+		return (false);
+	}
 	shell = parse_tokens(shell, tokens);
 	if (!shell)
 	{

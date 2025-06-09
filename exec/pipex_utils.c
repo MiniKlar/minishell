@@ -13,18 +13,18 @@ t_pipe	*init_struct_pipex(void)
 	return (pipex);
 }
 
-void	pipe_struct_update(t_shell *shell, t_pipe *pipex, size_t i)
+void	pipe_struct_update(t_shell *shell, size_t i)
 {
 	if (i < shell->nb_pipe - 1)
 	{
-		pipex->pipe_index = N_PIPE;
-		pipex->fdpipe_index += 2;
+		shell->pipex->pipe_index = N_PIPE;
+		shell->pipex->fdpipe_index += 2;
 	}
 	else
-		pipex->pipe_index = LAST_PIPE;
-	if (pipex->in_fd != -1)
-		close(pipex->in_fd);
-	pipex->in_fd = dup(pipex->fdpipe[0]);
-	close(pipex->fdpipe[0]);
-	close(pipex->fdpipe[1]);
+		shell->pipex->pipe_index = LAST_PIPE;
+	if (shell->pipex->in_fd != -1)
+		close(shell->pipex->in_fd);
+	shell->pipex->in_fd = dup(shell->pipex->fdpipe[0]);
+	close(shell->pipex->fdpipe[0]);
+	close(shell->pipex->fdpipe[1]);
 }
