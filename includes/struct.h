@@ -6,7 +6,7 @@
 /*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 19:52:35 by lomont            #+#    #+#             */
-/*   Updated: 2025/06/07 00:48:29 by miniklar         ###   ########.fr       */
+/*   Updated: 2025/06/10 01:21:29 by miniklar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ typedef struct 	s_pipe
 {
 	int			fdpipe[2];
 	int			in_fd;
-	int			fdpipe_index;
 	int			pipe_index;
 }				t_pipe;
 

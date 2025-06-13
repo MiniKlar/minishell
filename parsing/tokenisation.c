@@ -50,7 +50,7 @@ t_token	*fill_raw_tokens(t_shell *shell, t_token **raw_tokens, char *line)
 	i = 0;
 	k = 0;
 	*raw_tokens = init_token(""); //peut etre supprimer la toute premiere node.
-	if (line[0] == '\0' || line[0] == ':' || line[0] == '!')
+	if (line[0] == '\0' || line[0] == ':' || line[0] == '!' || line[0] == '\t')
 	{
 		free((*raw_tokens)->value);
 		free(*raw_tokens);
@@ -61,9 +61,9 @@ t_token	*fill_raw_tokens(t_shell *shell, t_token **raw_tokens, char *line)
 	k = i;
 	while (line[i])
 	{
-		if (line[i] == ' ')
+		if (ft_isspace(line[i]) == true)
 		{
-			if (line[i - 1] != ' ')
+			if (ft_isspace(line[i - 1]) == false)
 				add_token(raw_tokens, line + k, i - k, false);
 			k = i + 1;
 		}
@@ -87,7 +87,7 @@ t_token	*fill_raw_tokens(t_shell *shell, t_token **raw_tokens, char *line)
 		}
 		i++;
 	}
-	if (line[i - 1] != ' ')
+	if (ft_isspace(line[i - 1]) == false)
 		add_token(raw_tokens, line + k, i, true);
 	return (*raw_tokens);
 }
@@ -135,7 +135,7 @@ void	fill_cmd(t_shell **shell, t_token *tokens)
 	{
 		i = 0;
 		len_array = calcul_len_tokens(tokens);
-		printf("len_array = %zu\n", len_array);
+		//printf("len_array = %zu\n", len_array);
 		array = malloc(sizeof(char *) * (len_array + 1));
 		if (!array)
 			return ;
@@ -175,7 +175,7 @@ int	process_token(t_shell **shell, t_token *tokens)
 		}
 		else
 		{
-			printf("tu vas fill cmd\n");
+			//printf("tu vas fill cmd\n");
 			fill_cmd(shell, tokens);
 			next_tokens(&tokens, 0);
 		}
@@ -242,7 +242,7 @@ bool	check_if_quote_exist(char *line)
 
 }
 
-char	*fill_str_without_quote(char *line, size_t *index)
+char	*fill_str_without_quote(char *line, size_t *index, int exit_code)
 {
 	size_t	i;
 	size_t	k;
@@ -269,9 +269,14 @@ char	*fill_str_without_quote(char *line, size_t *index)
 				free(tmp);
 				free(tmp_env);
 			}
+			if (line[i + 1] == '\0')
+			{
+				tmp_env = ft_strdup("$");
+				i++;
+			}
+			else
+				tmp_env = handle_env_variable(line + i + 1, &i, exit_code);
 			tmp = str;
-			printf("TU ES ICI\n");
-			tmp_env = handle_env_variable(line + i + 1, &i);
 			k = i + 1;
 			str = ft_strjoin(str, tmp_env);
 			free(tmp);
@@ -281,16 +286,15 @@ char	*fill_str_without_quote(char *line, size_t *index)
 			i++;
 	}
 	tmp = str;
-	tmp_env = ft_substr(line + k, 0, i);
+	tmp_env = ft_substr(line + k, 0, i - k);
 	str = ft_strjoin(str, tmp_env);
 	free(tmp);
 	free(tmp_env);
 	*index += i;
-	printf("VOICI LA STR FINALE = %s\n", str);
 	return (str);
 }
 
-char	*fill_str_with_quote(char *line, size_t *index)
+char	*fill_str_with_quote(char *line, size_t *index, int exit_code)
 {
 	size_t	i;
 	size_t	k;
@@ -306,7 +310,7 @@ char	*fill_str_with_quote(char *line, size_t *index)
 	if (line[0] == line[i])
 	{
 		*index += i + 1;
-		return (ft_strdup(""));
+		return (str);
 	}
 	while (line[i])
 	{
@@ -315,8 +319,6 @@ char	*fill_str_with_quote(char *line, size_t *index)
 			if (str)
 			{
 				tmp = str;
-				printf("voici l\'index i = %zu et le char line[i] = %c", i, line[i]);
-				printf("voici l\'index k = %zu et le char line[k] = %c", k, line[k]);
 				tmp_env_variable = ft_substr(line + k, 0, i - k);
 				str = ft_strjoin(str, tmp_env_variable);
 				free(tmp);
@@ -332,10 +334,12 @@ char	*fill_str_with_quote(char *line, size_t *index)
 		}
 		else if (line[i] == '$' && line[0] == '"')
 		{
-			tmp_env_variable = handle_env_variable(line + i + 1, &i);
+			if (ft_isalnum(line[i + 1]) == 0 && line[i + 1] != '?')
+				tmp_env_variable = ft_strdup("$");
+			else
+				tmp_env_variable = handle_env_variable(line + i + 1, &i, exit_code);
 			tmp = str;
 			str = ft_strjoin(str, tmp_env_variable);
-			printf("voici str après join handle env = %s\n",str);
 			i++;
 			k = i;
 			free(tmp);
@@ -355,7 +359,7 @@ char	*fill_str_with_quote(char *line, size_t *index)
 	return (NULL);
 }
 
-char	*handle_quote(char *str_to_parse)
+char	*handle_quote(char *str_to_parse, int exit_code)
 {
 	char	*line;
 	char	*str;
@@ -373,26 +377,21 @@ char	*handle_quote(char *str_to_parse)
 		quote = str_to_parse[i];
 		if (quote == '\'' || quote == '"')
 		{
-			str = fill_str_with_quote(str_to_parse + i, &i);
-			printf("voici str with quote = %s\n", str);
+			str = fill_str_with_quote(str_to_parse + i, &i, exit_code);
 			if (!str)
 				return (NULL);
 		}
 		else
-		{
-			printf("tu es ici\n");
-			str = fill_str_without_quote(str_to_parse + i, &i);
-		}
+			str = fill_str_without_quote(str_to_parse + i, &i, exit_code);
 		tmp = line;
 		line = ft_strjoin(line, str);
 		free(tmp);
 		free(str);
 	}
-	printf("voici la line finale de la fonction globale = %s\n", line);
 	return (line);
 }
 
-t_token	*proccess_raw_tokens(t_token *raw_tokens)
+t_token	*proccess_raw_tokens(t_token *raw_tokens, int exit_code)
 {
 	t_token	*tokens;
 	char	*str;
@@ -400,7 +399,7 @@ t_token	*proccess_raw_tokens(t_token *raw_tokens)
 	tokens = init_token("");
 	while (raw_tokens)
 	{
-		str = handle_quote(raw_tokens->value);
+		str = handle_quote(raw_tokens->value, exit_code);
 		free(raw_tokens->value);
 		raw_tokens->value = str;
 		add_token(&tokens, str, 0, true);

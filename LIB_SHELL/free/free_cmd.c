@@ -6,7 +6,7 @@
 /*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 16:18:53 by lomont            #+#    #+#             */
-/*   Updated: 2025/06/06 22:56:08 by miniklar         ###   ########.fr       */
+/*   Updated: 2025/06/12 00:05:02 by miniklar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	free_cmd_struct(t_cmd *cmd)
 		if (cmd->redir != NULL)
 		{
 			free_redir_struct(cmd->redir);
-			printf("tu rentres ici pour free struct\n");
+			//printf("tu rentres ici pour free struct\n");
 		}
 		free(cmd);
 		cmd = tmp;

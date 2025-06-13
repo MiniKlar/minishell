@@ -9,7 +9,7 @@
 bool			is_cmd_built_ins(t_shell *shell);
 void			exec(t_shell *shell);
 int				exec_cmd(t_shell *shell);
-int				exec_built_in(t_shell *shell, bool is_child);
+bool			exec_built_in(t_shell *shell, bool is_child);
 int				ft_wait(t_shell *shell, size_t nb_pipes);
 char			*find_command_exist_executable(t_shell *shell);
 
@@ -29,9 +29,10 @@ void			redir_outfile(t_shell *shell);
 void			redir_infile(t_shell *shell);
 char 			*here_doc(t_shell *shell, int i);
 void			redir_cmd_input_output(t_shell *shell);
-void			ft_dup_redir(t_shell *shell);
+void			ft_dup_redir(t_shell *shell, bool is_child);
 void			ft_dup_std(t_shell *shell);
 void			ft_dup_std_back(t_shell *shell);
+void			ft_dup(t_shell *shell, char *command_path);
 
 //built-ins
 
@@ -44,5 +45,5 @@ int				ft_unset(t_shell *shell);
 int				ft_export(t_shell *shell);
 
 //Signal
-void set_signal_action(void);
-void sig_handler(int signal);
+// void set_signal_action(void);
+// void sig_handler(int signal);

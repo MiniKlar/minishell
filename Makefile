@@ -1,6 +1,5 @@
 NAME 			= minishell
 
-
 CC 				= cc
 RM				= rm -f
 
@@ -35,9 +34,9 @@ SRC 			= ./main.c \
 				./parsing/syntax.c \
 				./parsing/utils_parsing.c \
 				./utils/free.c \
-				./utils/signal.c \
 				./utils/struct/ft_struct.c \
 				./utils/struct/ft_env_struct.c \
+				#./utils/signal.c \#
 
 OBJ 			= $(SRC:.c=.o)
 

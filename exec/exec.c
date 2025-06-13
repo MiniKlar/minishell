@@ -1,28 +1,55 @@
 #include <minishell.h>
 
-void	exec(t_shell *shell)
+bool	built_ins_1(t_shell *shell);
+
+bool	exec_no_command(t_shell *shell)
 {
 	if (shell->cmd->cmd == NULL)
 	{
 		shell->wstatus = 0;
 		if (shell->cmd->redir)
 		{
+			//printf("TU RENTRES ICI ET CEST LA MERDE\n");
 			redir_cmd_input_output(shell);
-			ft_dup_redir(shell);
+			ft_dup_redir(shell, false);
 			ft_dup_std_back(shell);
 		}
-		else
-			return ;
-	}
-	else if (shell->cmd->next == NULL && is_cmd_built_ins(shell) == true)
-	{
-		printf("tu exec built in\n");
-		shell->is_child = false;
-		exec_built_in(shell, false);
+		return(true);
 	}
 	else
+		return(false);
+}
+
+bool	exec_built_in(t_shell *shell, bool is_child)
+{
+	if (!is_child)
+		shell->is_child = false;
+	else
+		shell->is_child = true;
+	if (!is_cmd_built_ins(shell) && is_child == false) //si ce n'est pas un built-in
+		return (false);	//je retourne false
+	if (!is_child) //si ce n'est pas un child
 	{
-		printf("tu exec cmd\n");
+		ft_dup_std(shell); //on dup stdin et stdout pour les sauvegarder.
+		redir_cmd_input_output(shell); //redirection in et out (infile, outfile, heredoc)
+		ft_dup_redir(shell, false);
+	}
+	built_ins_1(shell);
+	if (!is_child)
+		ft_dup_std_back(shell);
+	return (true);
+
+	//REVOIR LE FONCTIONNEMENT DES REDIR TOTALS avec built-ins.
+}
+
+void	exec(t_shell *shell)
+{
+	if (exec_no_command(shell) == true)
+		return ;
+	else if (shell->nb_pipe == 0 && exec_built_in(shell, false) == true)
+		return ;
+	else
+	{
 		shell->is_child = true;
 		exec_cmd(shell);
 	}
@@ -56,20 +83,6 @@ bool	built_ins_1(t_shell *shell)
 	else if (built_ins_2(shell) == false)
 		return (false);
 	return (true);
-}
-
-int	exec_built_in(t_shell *shell, bool is_child)
-{
-	if (!is_cmd_built_ins(shell))
-		return (1);
-	if (!is_child)
-		ft_dup_std(shell);
-	redir_cmd_input_output(shell);
-	ft_dup_redir(shell);
-	built_ins_1(shell);
-	if (!is_child)
-		ft_dup_std_back(shell);
-	return (0);
 }
 
 bool	is_cmd_built_ins(t_shell *shell)

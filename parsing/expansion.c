@@ -40,21 +40,28 @@ char	*append_single_quotes(char *str)
 	return (new_str);
 }
 
-char *handle_env_variable(char *str, size_t *index_parsing)
+char *handle_env_variable(char *str, size_t *index_parsing, int exit_code)
 {
 	char	*env_variable;
 	size_t	i;
 
 	i = 0;
-	printf("voici str = %c\n", str[i]);
-	while (str[i])
+	if (str[0] == '?')
 	{
-		if (ft_isalnum(str[i]) == 0)
-			break;
-		else
-			i++;
+		env_variable = ft_itoa(exit_code);
+		i++;
 	}
-	env_variable = check_getenv(ft_substr(str, 0, i));
+	else
+	{
+		while (str[i])
+		{
+			if (ft_isalnum(str[i]) == 0)
+				break;
+			else
+				i++;
+		}
+		env_variable = check_getenv(ft_substr(str, 0, i));
+	}
 	if (index_parsing)
 		*index_parsing += i;
 	if (!env_variable)

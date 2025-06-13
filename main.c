@@ -20,8 +20,8 @@ int main(void)
 		if (ft_strncmp(command, "", 1) != 0)
 			add_history(command);
 		free(command);
-		shell->fd_in = STDIN_FILENO;
-		shell->fd_out = STDOUT_FILENO;
+		shell->fd_in = -1;
+		shell->fd_out = -1;
 		environ = shell->envp;
 	}
 	return (shell->wstatus);
