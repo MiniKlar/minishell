@@ -22,6 +22,13 @@ char	*find_command_exist_executable(t_shell *shell)
 	{
 		printf("bash: %s: command not found\n", shell->cmd->cmd[0]);
 		free_array(shell->envp);
+		if (shell->pipex)
+		{
+			if (shell->pipex->in_fd != -1)
+				close(shell->pipex->in_fd);
+			close(shell->pipex->fdpipe[0]);
+			close(shell->pipex->fdpipe[1]);
+		}
 		free_all(shell);
 		free(shell);
 		exit(127);
@@ -32,22 +39,17 @@ char	*find_command_exist_executable(t_shell *shell)
 
 int	ft_wait(t_shell *shell, size_t nb_pipes)
 {
-	// size_t	i;
+	size_t	i;
 
-	// i = 0;
-	(void)nb_pipes;
-	if (waitpid(shell->id_fork[0], &shell->wstatus, 0) == -1)
-		perror("waitpid error");
-	if (waitpid(shell->id_fork[1], &shell->wstatus, 0) == -1)
-		perror("waitpid error");
-	// while (i < nb_pipes + 1)
-	// {
-	// 	if (waitpid(shell->id_fork[0], &shell->wstatus, 0) == -1)
-	// 	{
-	// 		perror("waitpid error");
-	// 		exit(1);
-	// 	}
-	// 	i++;
-	// }
+	i = 0;
+	while (i != nb_pipes + 1)
+	{
+		if (waitpid(shell->id_fork[i], &shell->wstatus, 0) == -1)
+		{
+			perror("waitpid error");
+			exit(1);
+		}
+		i++;
+	}
 	return (shell->wstatus);
 }

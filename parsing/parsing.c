@@ -5,23 +5,11 @@ bool	parsing(t_shell *shell, char *line)
 {
 	t_token *raw_tokens;
 	t_token *tokens;
-	t_token *tmp;
 
 	raw_tokens = tokenisation(shell, line);
 	if (!raw_tokens)
 		return (false);
-	else
-	{
-		tmp = raw_tokens;
-		while (raw_tokens != NULL)
-		{
-			printf("Voici tokens = [%s]\n", raw_tokens->value);
-			raw_tokens = raw_tokens->next;
-		}
-	}
-	raw_tokens = tmp;
-	printf("\n --------------------------------------- \n");
-	tokens = proccess_raw_tokens(raw_tokens);
+	tokens = proccess_raw_tokens(raw_tokens, shell->wstatus);
 	free_token_struct(raw_tokens);
 	if (!tokens)
 		return (false);

@@ -88,6 +88,8 @@ bool	check_syntax(t_shell *shell, t_token *tokens)
 			return (unexpected_token(shell, "&&"));
 		if (tokens->value[0] == '|' && tokens->value[1] != '\0')
 			return (unexpected_token(shell, "|"));
+		if (tokens->value[0] == '<' && tokens->value[1] == '>')
+			return (unexpected_token(shell, "<>"));
 		tokens = tokens->next;
 	}
 	return (true);

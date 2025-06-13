@@ -14,7 +14,6 @@ int	exec_cd(t_shell *shell, char *arg)
 	else
 	{
 		update_pwd(shell);
-		free(arg);
 		return (0);
 	}
 }
@@ -25,15 +24,15 @@ char	*handle_specific_case(char *directory)
 
 	arg = NULL;
 	if (directory == NULL)
-		arg = getenv("PWD=");
+		arg = getenv("PWD");
 	else if (ft_strncmp(directory, ".", 2) == 0)
-		arg = getenv("PWD=");
+		arg = getenv("PWD");
 	else if (ft_strncmp(directory, "..", 3) == 0)
 		arg = ft_strdup("..");
 	else if (ft_strncmp(directory, "~", 2) == 0)
-		arg = getenv("HOME=");
+		arg = getenv("HOME");
 	else if (ft_strncmp(directory, "-", 2) == 0)
-		arg = getenv("OLDPWD=");
+		arg = getenv("OLDPWD");
 	return (arg);
 }
 
@@ -43,8 +42,8 @@ int ft_cd(t_shell *shell)
 	char	*directory;
 
 	directory = shell->cmd->cmd[1];
-	if (check_arg_nbr(shell) == -1)
-		return (1);
+	// if (check_arg_nbr(shell) == -1)
+	// 	return (1);
 	arg = handle_specific_case(directory);
 	if (arg != NULL)
 		return (exec_cd(shell, arg));
@@ -74,18 +73,18 @@ void	update_pwd(t_shell *shell)
 	free(new_pwd);
 }
 
-int	check_arg_nbr(t_shell *shell)
-{
-	size_t i;
+// int	check_arg_nbr(t_shell *shell)
+// {
+// 	size_t i;
 
-	i = 0;
-	while (shell->cmd->cmd[i])
-		i++;
-	if (i > 2)
-	{
-		ft_putstr_fd("bash: cd: too many arguments\n", 2);
-		return (-1);
-	}
-	else
-		return (0);
-}
+// 	i = 0;
+// 	while (shell->cmd->cmd[i])
+// 		i++;
+// 	if (i > 2)
+// 	{
+// 		ft_putstr_fd("bash: cd: too many arguments\n", 2);
+// 		return (-1);
+// 	}
+// 	else
+// 		return (0);
+// }

@@ -10,9 +10,12 @@ void	echo_w_arg(t_shell *shell)
 	while (shell->cmd->cmd[++i])
 	{
 		if (shell->cmd->cmd[i + 1] == NULL)
-			printf("%s",shell->cmd->cmd[i]);
+			ft_putstr_fd(shell->cmd->cmd[i], STDOUT_FILENO);
 		else
-			printf("%s ",shell->cmd->cmd[i]);
+		{
+			ft_putstr_fd(shell->cmd->cmd[i], STDOUT_FILENO);
+			ft_putchar_fd(' ', STDOUT_FILENO);
+		}
 	}
 }
 
@@ -25,7 +28,7 @@ int	ft_echo(t_shell *shell)
 	has_arg = false;
 	if (shell->cmd->cmd[1] == NULL)
 	{
-		printf("\n");
+		ft_putchar_fd('\n', STDOUT_FILENO);
 		return (0);
 	}
 	else if (strncmp(shell->cmd->cmd[1], "-n", 3) == 0)
@@ -36,11 +39,12 @@ int	ft_echo(t_shell *shell)
 	{
 		while (shell->cmd->cmd[++i])
 		{
-			printf("%s",shell->cmd->cmd[i]);
-			printf(" ");
+			ft_putstr_fd(shell->cmd->cmd[i], STDOUT_FILENO);
+			if (shell->cmd->cmd[i + 1])
+				ft_putchar_fd(' ', STDOUT_FILENO);
 		}
 	}
 	if (!has_arg)
-		printf("\n");
+		ft_putchar_fd('\n', STDOUT_FILENO);
 	return (0);
 }

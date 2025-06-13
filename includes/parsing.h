@@ -13,12 +13,12 @@ size_t	find_corresponding_quote(char *line, char quote_to_find);
 /* Parser */
 t_shell	*parse_tokens(t_shell *shell, t_token *tokens);
 char	*check_getenv(char *str);
-char	*check_env_variable(char *str, char quote);
-char	*handle_env_variable(char *str, size_t *index_parsing);
+char	*check_env_variable(char *str, char quote, int exit_code);
+char	*handle_env_variable(char *str, size_t *index_parsing, int exit_code);
 
 /* Syntax */
 bool	check_syntax(t_shell *shell, t_token *tokens);
-t_token	*proccess_raw_tokens(t_token *raw_tokens);
+t_token	*proccess_raw_tokens(t_token *raw_tokens, int exit_code);
 
 /* Utils */
 bool	is_metacharacter(char *c);

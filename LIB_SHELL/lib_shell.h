@@ -6,7 +6,7 @@
 /*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 22:57:19 by lomont            #+#    #+#             */
-/*   Updated: 2025/06/06 04:35:35 by miniklar         ###   ########.fr       */
+/*   Updated: 2025/06/10 23:35:30 by miniklar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <stdio.h>
 # include <stdarg.h>
 # include <stdbool.h>
-# include <signal.h>
+//# include <signal.h>
 # include <unistd.h>
 # include <term.h>
 # include <sys/stat.h>

@@ -22,7 +22,7 @@ void	redir_infile(t_shell *shell)
 		perror("Cannot open file");
 		exit(EXIT_FAILURE);
 	}
-	if (shell->fd_in != STDIN_FILENO)
+	if (shell->fd_in != -1)
 	{
 		close(shell->fd_in);
 		shell->fd_in = fd;
