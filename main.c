@@ -1,5 +1,7 @@
 #include "minishell.h"
 
+volatile sig_atomic_t g_child_running = 0;  //ajoutee pour signaux
+
 int main(void)
 {
 	t_shell *shell;
