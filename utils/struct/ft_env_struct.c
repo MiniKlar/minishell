@@ -6,7 +6,7 @@
 /*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 04:30:54 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/06 04:34:11 by miniklar         ###   ########.fr       */
+/*   Updated: 2025/06/19 03:37:38 by miniklar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ bool	find_change_env(t_envp *env, char *new_env, char *target_env)
 		if (ft_strncmp(env->envp, target_env, ft_strlen(target_env)) == 0)
 		{
 			free(env->envp);
-			env->envp = new_env;
+			env->envp = ft_strdup(new_env);
 			return (true);
 		}
 		env = env->next;

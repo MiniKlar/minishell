@@ -1,5 +1,16 @@
-#include "../LIB_SHELL/lib_shell.h"
-#include "../includes/parsing.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/16 21:21:28 by miniklar          #+#    #+#             */
+/*   Updated: 2025/06/18 00:27:43 by miniklar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "parsing.h"
 
 void	add_pipe_to_shell(t_shell *shell, t_cmd *cmd)
 {
@@ -26,8 +37,3 @@ size_t	find_corresponding_quote(char *line, char quote_to_find)
 	}
 	return (0);
 }
-
-//int	handle_regular_token(t_shell *shell, t_token **tokens, char *line, bool *in_quote)
-//{
-
-//}

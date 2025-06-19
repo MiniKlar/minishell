@@ -3,7 +3,9 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -I ../includes/ -I ./
 SRC =  ./convert/ft_atoi.c \
 	./convert/ft_atol.c \
+	./convert/ft_atoll.c \
 	./convert/ft_itoa.c \
+	./convert/ft_lltoa.c \
 	./convert/ft_tolower.c \
 	./convert/ft_toupper.c \
 	./gnl/get_next_line.c \
@@ -52,6 +54,7 @@ SRC =  ./convert/ft_atoi.c \
 	./struct/ft_addback.c \
 	./struct/ft_init.c \
 	./struct/ft_envp.c \
+	./struct/ft_redir.c \
 	./free/free_array.c \
 	./free/free_shell.c \
 	./free/free_redir_struct.c \

@@ -16,14 +16,11 @@ char	*here_doc(t_shell *shell, int i)
 		return (NULL);
 	fd = ft_tmp_open_heredoc(name, i);
 	read_heredoc(shell, fd);
-	fd = ft_tmp_open_heredoc(name, i);
-	if (shell->fd_in != -1)
-	{
+	if (shell->cmd->cmd)
+		fd = ft_tmp_open_heredoc(name, i);
+	if (shell->fd_in > -1)
 		close(shell->fd_in);
-		shell->fd_in = fd;
-	}
-	else
-		shell->fd_in = fd;
+	shell->fd_in = fd;
 	return (name);
 }
 

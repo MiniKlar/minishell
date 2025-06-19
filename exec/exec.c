@@ -2,22 +2,15 @@
 
 bool	built_ins_1(t_shell *shell);
 
-bool	exec_no_command(t_shell *shell)
+void	exec_no_command(t_shell *shell)
 {
-	if (shell->cmd->cmd == NULL)
+	if (shell->cmd->redir)
 	{
-		shell->wstatus = 0;
-		if (shell->cmd->redir)
-		{
-			//printf("TU RENTRES ICI ET CEST LA MERDE\n");
-			redir_cmd_input_output(shell);
-			ft_dup_redir(shell, false);
-			ft_dup_std_back(shell);
-		}
-		return(true);
+		ft_dup_std(shell);
+		redir_cmd_input_output(shell);
+		ft_dup_redir(shell, false);
+		ft_dup_std_back(shell);
 	}
-	else
-		return(false);
 }
 
 bool	exec_built_in(t_shell *shell, bool is_child)
@@ -26,26 +19,24 @@ bool	exec_built_in(t_shell *shell, bool is_child)
 		shell->is_child = false;
 	else
 		shell->is_child = true;
-	if (!is_cmd_built_ins(shell) && is_child == false) //si ce n'est pas un built-in
-		return (false);	//je retourne false
-	if (!is_child) //si ce n'est pas un child
+	if (!is_cmd_built_ins(shell) && is_child == false)
+		return (false);
+	if (!is_child)
 	{
-		ft_dup_std(shell); //on dup stdin et stdout pour les sauvegarder.
-		redir_cmd_input_output(shell); //redirection in et out (infile, outfile, heredoc)
+		ft_dup_std(shell);
+		redir_cmd_input_output(shell);
 		ft_dup_redir(shell, false);
 	}
 	built_ins_1(shell);
 	if (!is_child)
 		ft_dup_std_back(shell);
 	return (true);
-
-	//REVOIR LE FONCTIONNEMENT DES REDIR TOTALS avec built-ins.
 }
 
 void	exec(t_shell *shell)
 {
-	if (exec_no_command(shell) == true)
-		return ;
+	if ((!shell->cmd->cmd && shell->nb_pipe == 0) || check_if_directory(shell))
+		return (exec_no_command(shell));
 	else if (shell->nb_pipe == 0 && exec_built_in(shell, false) == true)
 		return ;
 	else
@@ -58,11 +49,11 @@ void	exec(t_shell *shell)
 bool	built_ins_2(t_shell *shell)
 {
 	if (ft_strncmp(shell->cmd->cmd[0], "pwd", 4) == 0)
-		shell->wstatus = ft_pwd(true);
+		shell->exit_code = ft_pwd(shell, true);
 	else if ((ft_strncmp(shell->cmd->cmd[0], "echo", 5) == 0))
-		shell->wstatus = ft_echo(shell);
+		shell->exit_code = ft_echo(shell);
 	else if (ft_strncmp(shell->cmd->cmd[0], "env", 4) == 0)
-		shell->wstatus = ft_env(shell);
+		shell->exit_code = ft_env(shell);
 	else
 		return (false);
 	return (true);
@@ -73,11 +64,11 @@ bool	built_ins_1(t_shell *shell)
 	if (shell->cmd->cmd == NULL)
 		return (false);
 	if (ft_strncmp(shell->cmd->cmd[0], "export", 5) == 0)
-		shell->wstatus = ft_export(shell);
+		shell->exit_code = ft_export(shell);
 	else if (ft_strncmp(shell->cmd->cmd[0], "cd", 3) == 0)
-		shell->wstatus = ft_cd(shell);
+		shell->exit_code = ft_cd(shell);
 	else if (ft_strncmp(shell->cmd->cmd[0], "unset", 6) == 0)
-		shell->wstatus = ft_unset(shell);
+		shell->exit_code = ft_unset(shell);
 	else if (ft_strncmp(shell->cmd->cmd[0], "exit", 5) == 0)
 		ft_exit(shell);
 	else if (built_ins_2(shell) == false)

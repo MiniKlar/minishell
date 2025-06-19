@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   unset.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/18 03:49:10 by miniklar          #+#    #+#             */
+/*   Updated: 2025/06/19 01:16:24 by miniklar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-bool	check_if_in_envp(char **envp, char *str)
+static bool	check_if_in_envp(char **envp, char *str)
 {
 	size_t	i;
 
@@ -21,8 +33,8 @@ int	ft_unset(t_shell *shell)
 	t_envp	*env;
 	size_t	i;
 
-	i = 1;
-	while (shell->cmd->cmd[i] != 0)
+	i = 0;
+	while (shell->cmd->cmd[++i] != 0)
 	{
 		tmp = NULL;
 		env = NULL;
@@ -33,10 +45,9 @@ int	ft_unset(t_shell *shell)
 			ft_delone_env(env, shell->cmd->cmd[i]);
 			tmp = shell->envp;
 			shell->envp = ft_convert_node_to_envp(env);
-			free(tmp);
-			free(env);
+			free_array(tmp);
+			free_env(env);
 		}
-		i++;
 	}
 	return (0);
 }

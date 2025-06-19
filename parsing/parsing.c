@@ -1,5 +1,47 @@
-#include "../LIB_SHELL/lib_shell.h"
-#include "../includes/parsing.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/16 21:21:34 by miniklar          #+#    #+#             */
+/*   Updated: 2025/06/18 22:44:20 by miniklar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "parsing.h"
+
+t_shell	*parse_tokens(t_shell *shell, t_token *tokens)
+{
+	shell->cmd = init_cmd(NULL);
+	if (!shell->cmd)
+	{
+		ft_putstr_fd("Error memory allocation shell->cmd", 2);
+		exit(EXIT_FAILURE);
+	}
+	process_token(&shell, tokens);
+	return (shell);
+}
+
+t_token	*proccess_raw_tokens(t_token *raw_tokens, int exit_code)
+{
+	t_token	*tokens;
+	char	*str;
+
+	tokens = init_token("");
+	while (raw_tokens)
+	{
+		str = handle_quote(raw_tokens->value, exit_code);
+		free(raw_tokens->value);
+		raw_tokens->value = str;
+		if (str)
+			add_token(&tokens, str, 0, true);
+		raw_tokens = raw_tokens->next;
+	}
+	ft_del_first_raw_tokens(&tokens);
+	return (tokens);
+}
 
 bool	parsing(t_shell *shell, char *line)
 {
@@ -9,7 +51,7 @@ bool	parsing(t_shell *shell, char *line)
 	raw_tokens = tokenisation(shell, line);
 	if (!raw_tokens)
 		return (false);
-	tokens = proccess_raw_tokens(raw_tokens, shell->wstatus);
+	tokens = proccess_raw_tokens(raw_tokens, shell->exit_code);
 	free_token_struct(raw_tokens);
 	if (!tokens)
 		return (false);
@@ -21,11 +63,11 @@ bool	parsing(t_shell *shell, char *line)
 	shell = parse_tokens(shell, tokens);
 	if (!shell)
 	{
-		printf("!shell PAS REMPLi\n");
 		free_token_struct(tokens);
 		free_shell(shell);
 		return (false);
 	}
+	shell->first_cmd = shell->cmd;
 	free_token_struct(tokens);
 	return (true);
 }

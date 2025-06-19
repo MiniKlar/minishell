@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	redir_outfile(t_shell *shell)
+bool	redir_outfile(t_shell *shell)
 {
 	int	fd;
 	char *str;
@@ -13,13 +13,10 @@ void	redir_outfile(t_shell *shell)
 	if (fd == -1)
 	{
 		perror("Cannot open file");
-		exit(EXIT_FAILURE);
+		return (false);
 	}
-	if (shell->fd_out != STDOUT_FILENO)
-	{
+	if (shell->fd_out > -1)
 		close(shell->fd_out);
-		shell->fd_out = fd;
-	}
-	else
-		shell->fd_out = fd;
+	shell->fd_out = fd;
+	return (true);
 }

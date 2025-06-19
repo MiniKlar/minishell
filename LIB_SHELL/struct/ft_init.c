@@ -6,7 +6,7 @@
 /*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 16:25:30 by lomont            #+#    #+#             */
-/*   Updated: 2025/06/12 00:02:13 by miniklar         ###   ########.fr       */
+/*   Updated: 2025/06/19 02:26:55 by miniklar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ t_shell	*init_shell(char **envp)
 	shell->id_fork = NULL;
 	shell->pipex = NULL;
 	shell->nb_pipe = 0;
+	shell->exit_code = 0;
+	shell->is_child = false;
 	shell->fd_in = -1;
 	shell->fd_out = -1;
-	shell->wstatus = 0;
-	shell->is_child = false;
 	shell->tmp_stdin = -1;
 	shell->tmp_stdout = -1;
 	return (shell);

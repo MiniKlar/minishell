@@ -1,7 +1,34 @@
-#include "../LIB_SHELL/lib_shell.h"
-#include "../includes/parsing.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expansion.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/16 21:21:17 by miniklar          #+#    #+#             */
+/*   Updated: 2025/06/18 01:46:20 by miniklar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-char	*check_getenv(char *str)
+#include "parsing.h"
+
+static void	loop_env_variable(char *str, size_t *i)
+{
+	while (str[*i])
+	{
+		if (*i == 0 && ft_isdigit(str[*i]) == true)
+		{
+			*i = 1;
+			break;
+		}
+		else if (ft_isalnum(str[*i]) == 0)
+			break;
+		else
+			*i += 1;
+	}
+}
+
+static char	*check_getenv(char *str)
 {
 	char	*env;
 
@@ -13,7 +40,6 @@ char	*check_getenv(char *str)
 		env = getenv(str);
 		if (!env)
 		{
-			printf("ENV NOT FOUND\n");
 			free(str);
 			return (NULL);
 		}
@@ -23,21 +49,6 @@ char	*check_getenv(char *str)
 			return (ft_strdup(env));
 		}
 	}
-}
-
-char	*append_single_quotes(char *str)
-{
-	char	*new_str;
-	char	*tmp;
-	if (!str)
-		return (NULL);
-	tmp = NULL;
-	new_str = ft_strjoin("\'", str);
-	tmp = new_str;
-	new_str = ft_strjoin(new_str, "\'");
-	free(tmp);
-	free(str);
-	return (new_str);
 }
 
 char *handle_env_variable(char *str, size_t *index_parsing, int exit_code)
@@ -53,17 +64,11 @@ char *handle_env_variable(char *str, size_t *index_parsing, int exit_code)
 	}
 	else
 	{
-		while (str[i])
-		{
-			if (ft_isalnum(str[i]) == 0)
-				break;
-			else
-				i++;
-		}
+		loop_env_variable(str, &i);
 		env_variable = check_getenv(ft_substr(str, 0, i));
 	}
 	if (index_parsing)
-		*index_parsing += i;
+		*index_parsing += i + 1;
 	if (!env_variable)
 		return (NULL);
 	return (env_variable);
