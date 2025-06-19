@@ -6,7 +6,7 @@ int main(void)
 	char *command;
 
 	shell = init_shell(environ);
-	// set_signal_action();
+	set_signals_interactive(); //ajoutee pour signaux
 	while (1)
 	{
 		command = readline("bash-5.1$ ");
@@ -20,9 +20,7 @@ int main(void)
 		if (ft_strncmp(command, "", 1) != 0)
 			add_history(command);
 		free(command);
-		shell->fd_in = -1;
-		shell->fd_out = -1;
 		environ = shell->envp;
 	}
-	return (shell->wstatus);
+	return (shell->exit_code);
 }
