@@ -6,7 +6,7 @@ char	*check_command_path(char *command, char **envp)
 	char	*new_command;
 	char	*path;
 
-	if (!command || !envp[0])
+	if (!command || !envp[0] || ft_strncmp(command, "Makefile", 9) == 0)
 		return (NULL);
 	if (access(command, F_OK | X_OK) == 0)
 		return (command);
@@ -32,9 +32,7 @@ char	*recup_env(char **envp)
 	while (envp[i])
 	{
 		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-		{
 			return (ft_strtrim(envp[i], "PATH="));
-		}
 		else
 			path = NULL;
 		i++;
@@ -52,7 +50,11 @@ char	*new_command_function(char **path, char *new_command)
 	{
 		command_path = ft_strjoin(path[i], new_command);
 		if (access(command_path, F_OK) == 0)
+		{
+			free_array(path);
+			free(new_command);
 			return (command_path);
+		}
 		else
 			free(command_path);
 		i++;

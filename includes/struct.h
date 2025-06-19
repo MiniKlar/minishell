@@ -6,7 +6,7 @@
 /*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 19:52:35 by lomont            #+#    #+#             */
-/*   Updated: 2025/06/10 01:21:29 by miniklar         ###   ########.fr       */
+/*   Updated: 2025/06/19 00:26:22 by miniklar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,13 @@ typedef struct	s_shell
 	int			tmp_stdout;
 	int			fd_in;
 	int			fd_out;
-	int			wstatus;
+	int			exit_code;
 }				t_shell;
 
 typedef struct s_envp
 {
-	char 		*envp;
-	void 		*next;
+	char			*envp;
+	struct s_envp	*next;
 }				t_envp;
 
 typedef struct s_token

@@ -25,17 +25,23 @@ SRC 			= ./main.c \
 				./exec/pipex_utils.c \
 				./exec/utils_path.c   \
 				./exec/utils_exec.c	   \
+				./parsing/raw_tokens.c \
+				./parsing/fill_str_with_quote.c \
+				./parsing/fill_str_without_quote.c \
 				./parsing/expansion.c   \
-				./parsing/token.c \
+				./parsing/tokens.c \
 				./parsing/parsing.c \
 				./parsing/lexer.c \
 				./parsing/parser.c \
 				./parsing/tokenisation.c \
 				./parsing/syntax.c \
 				./parsing/utils_parsing.c \
+				./parsing/error_message.c \
 				./utils/free.c \
 				./utils/struct/ft_struct.c \
 				./utils/struct/ft_env_struct.c \
+				./utils/built-ins/built-ins_utils.c \
+				./utils/built-ins/cd_utils.c \
 				#./utils/signal.c \#
 
 OBJ 			= $(SRC:.c=.o)
@@ -52,6 +58,7 @@ $(NAME): $(LIB_SHELL) $(OBJ)
 
 clean:
 	$(RM) $(OBJ)
+	$(MAKE) -C LIB_SHELL clean
 
 fclean: clean
 	$(RM) $(NAME)

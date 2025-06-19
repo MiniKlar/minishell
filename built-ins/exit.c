@@ -1,41 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/18 03:49:02 by miniklar          #+#    #+#             */
+/*   Updated: 2025/06/18 19:23:35 by miniklar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static bool	check_if_int_out_of_range(char *cmd)
-{
-	long long 	nbr;
-	char		*str;
-	size_t		i;
-
-	i = 0;
-	nbr = atoll(cmd);
-	if (nbr != 0)
-	{
-		str = ft_itoa(nbr);
-		printf("voici str = %s\n", str);
-		while (str && cmd)
-		{
-			if (str[i] == cmd[i])
-				i++;
-			else
-				return (true);
-		}
-	}
-	if (str[i] == '\0' && cmd[i] != '\0')
-		return (true);
-	else
-		return (false);
-}
-
-static void	exit_status_free(t_shell *shell, int code)
-{
-	free_array(shell->envp);
-	free_all(shell);
-	free(shell);
-	clear_history();
-	exit(code);
-}
-
-static void	print_error(t_shell *shell, char *cmd, int error, int *code)
+static void	print_error_exit(t_shell *shell, char *cmd, int error, int *code)
 {
 	if (error == 0)
 	{
@@ -54,6 +31,33 @@ static void	print_error(t_shell *shell, char *cmd, int error, int *code)
 		*code = 255;
 		exit_status_free(shell, *code);
 	}
+}
+
+static void	check_over_or_underflow(long long val, t_shell *shell, int *code)
+{
+	char	*str;
+	char	sign;
+
+	str = shell->cmd->cmd[1];
+	sign = '\0';
+	if (ft_isdigit(str[0]) == true || str[0] == '+')
+		sign = '+';
+	else if (str[0] == '-')
+		sign = '-';
+	if ((sign == '+' && val < 0) || (sign == '-' && val > 0))
+		print_error_exit(shell, shell->cmd->cmd[1], 1, code);
+}
+
+static int	ft_size_array(char **array)
+{
+	size_t	i;
+
+	i = 0;
+	if (!array || !array[0])
+		return (0);
+	while (array[i])
+		i++;
+	return (i);
 }
 
 static void	check_if_number(char *cmd, int *is_number)
@@ -76,7 +80,7 @@ static void	check_if_number(char *cmd, int *is_number)
 			else
 			{
 				*is_number = 2;
-				break;
+				break ;
 			}
 			i++;
 		}
@@ -85,29 +89,25 @@ static void	check_if_number(char *cmd, int *is_number)
 
 void	ft_exit(t_shell *shell)
 {
-	int	code;
-	int is_number;
+	int			code;
+	int			exit_code;
+	int			is_number;
+	long long	val;
+
 	ft_putstr_fd("exit\n", 1);
+	if (ft_size_array(shell->cmd->cmd) > 2)
+		print_error_exit(shell, shell->cmd->cmd[1], 0, &code);
+	if (!shell->cmd->cmd[1])
+		exit_status_free(shell, shell->exit_code);
 	check_if_number(shell->cmd->cmd[1], &is_number);
 	if (is_number == 1)
-		shell->wstatus = atoi(shell->cmd->cmd[1]);
-	if (shell->wstatus == -1)
 	{
-		if (check_if_int_out_of_range(shell->cmd->cmd[1]) == true)
-			print_error(shell, shell->cmd->cmd[1], 1, &code);
+		val = ft_atoll(shell->cmd->cmd[1]);
+		check_over_or_underflow(val, shell, &code);
+		exit_code = (int)(val);
+		code = exit_code & 0xFF;
 	}
-	printf("Voici wstatus = %d\n", shell->wstatus);
-	code = shell->wstatus;
 	if (is_number == 2)
-		print_error(shell, shell->cmd->cmd[1], 1, &code);
-	else
-	{
-		if (shell->cmd->cmd[1] != 0)
-		{
-			print_error(shell, shell->cmd->cmd[2], 0, &code);
-			if (shell->cmd->cmd[1][0] == '-' && is_number == 1)
-				code = 256 + shell->wstatus;
-		}
-	}
+		print_error_exit(shell, shell->cmd->cmd[1], 1, &code);
 	exit_status_free(shell, code);
 }

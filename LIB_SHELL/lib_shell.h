@@ -6,7 +6,7 @@
 /*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 22:57:19 by lomont            #+#    #+#             */
-/*   Updated: 2025/06/10 23:35:30 by miniklar         ###   ########.fr       */
+/*   Updated: 2025/06/17 01:06:48 by miniklar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,13 @@ void		ft_putendl_fd(char *s, int fd);
 
 // CONVERT FUNCTIONS
 
+char		*ft_lltoa(long long n);
 char		*ft_itoa(int n);
 int			ft_tolower(int c);
 int			ft_toupper(int c);
 int			ft_atoi(const char *str);
 long		ft_atol(const char *str);
+long long	ft_atoll(const char *str);
 
 // STR FUNCTIONS
 
@@ -101,6 +103,12 @@ t_envp		*create_node_envp(char *env);
 t_envp		*fill_envp(t_envp *node, char **envp);
 void		ft_add_back_envp(t_envp **lst, t_envp *new);
 t_envp		*ft_last_envp(t_envp *lst);
+
+// REDIR STRUCT FUNCTIONS
+
+t_redir			*create_node_redir(char *arg);
+t_redir			*create_node_redir_out(char *arg);
+t_redir			*create_node_here_redir(char *arg);
 
 // INIT FUNCTION
 

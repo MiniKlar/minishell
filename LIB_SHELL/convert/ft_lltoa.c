@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*   ft_lltoa.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/31 18:25:10 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/14 04:32:19 by miniklar         ###   ########.fr       */
+/*   Created: 2025/06/16 00:19:05 by miniklar          #+#    #+#             */
+/*   Updated: 2025/06/16 00:23:14 by miniklar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lib_shell.h"
 
-static int	count_digit(long n)
+static int	count_digit(long long n)
 {
 	int	counter;
 
@@ -29,13 +29,13 @@ static int	count_digit(long n)
 	return (counter);
 }
 
-char	*ft_itoa(int n)
+char	*ft_lltoa(long long n)
 {
 	char	*str;
 	size_t	len_n;
 	size_t	i;
 	int		neg;
-	long	n1;
+	long long	n1;
 
 	n1 = n;
 	neg = ft_isnegative(n1);
@@ -56,10 +56,3 @@ char	*ft_itoa(int n)
 	str[len_n] = 0;
 	return (str);
 }
-/*int	main(void)
-{
-	char *str;
-
-	str = ft_itoa(-10004);
-	printf("%s\n", str);
-}*/
