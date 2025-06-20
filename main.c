@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-volatile sig_atomic_t g_child_running = 0;  //ajoutee pour signaux
+volatile sig_atomic_t g_child_running = 0;
 
 int main(void)
 {
@@ -8,10 +8,10 @@ int main(void)
 	char *command;
 
 	shell = init_shell(environ);
-	set_signals_interactive(); //ajoutee pour signaux
+	set_signals_interactive();
 	while (1)
 	{
-		command = readline("bash-5.1$ ");
+		command = readline("minishell$ ");
 		if (command == NULL)
 			exit(EXIT_FAILURE);
 		if (parsing(shell, command) == true)
