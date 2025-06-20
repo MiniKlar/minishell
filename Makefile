@@ -42,7 +42,7 @@ SRC 			= ./main.c \
 				./utils/struct/ft_env_struct.c \
 				./utils/built-ins/built-ins_utils.c \
 				./utils/built-ins/cd_utils.c \
-				#./utils/signal.c \#
+				./utils/signal.c \
 
 OBJ 			= $(SRC:.c=.o)
 
