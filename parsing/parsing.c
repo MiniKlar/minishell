@@ -6,11 +6,41 @@
 /*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 21:21:34 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/18 22:44:20 by miniklar         ###   ########.fr       */
+/*   Updated: 2025/06/23 02:51:04 by miniklar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+
+t_shell	*process_heredoc(t_shell **shell)
+{
+	int		i;
+	t_redir	*tmp_redir;
+
+	i = 0;
+	(*shell)->first_cmd = (*shell)->cmd;
+	while ((*shell)->cmd)
+	{
+		tmp_redir = (*shell)->cmd->redir;
+		while ((*shell)->cmd->redir)
+		{
+			if ((*shell)->cmd->redir->symbol != HERE_DOC)
+				;
+			else if (!here_doc((*shell)->cmd, i))
+			{
+				(*shell)->cmd = (*shell)->first_cmd;
+				free_shell((*shell));
+				return (NULL);
+			}
+			(*shell)->cmd->redir = (*shell)->cmd->redir->next;
+			i++;
+		}
+		(*shell)->cmd->redir = tmp_redir;
+		(*shell)->cmd = (*shell)->cmd->next;
+	}
+	(*shell)->cmd = (*shell)->first_cmd;
+	return (*shell);
+}
 
 t_shell	*parse_tokens(t_shell *shell, t_token *tokens)
 {
@@ -21,6 +51,7 @@ t_shell	*parse_tokens(t_shell *shell, t_token *tokens)
 		exit(EXIT_FAILURE);
 	}
 	process_token(&shell, tokens);
+	process_heredoc(&shell);
 	return (shell);
 }
 
@@ -67,7 +98,6 @@ bool	parsing(t_shell *shell, char *line)
 		free_shell(shell);
 		return (false);
 	}
-	shell->first_cmd = shell->cmd;
 	free_token_struct(tokens);
 	return (true);
 }
