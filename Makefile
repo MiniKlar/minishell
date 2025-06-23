@@ -20,7 +20,6 @@ SRC 			= ./main.c \
 				./exec/exec.c  \
 				./exec/infile.c \
 				./exec/outfile.c \
-				./exec/here_doc.c \
 				./exec/exec_cmd.c  \
 				./exec/pipex_utils.c \
 				./exec/utils_path.c   \
@@ -35,6 +34,8 @@ SRC 			= ./main.c \
 				./parsing/parser.c \
 				./parsing/tokenisation.c \
 				./parsing/syntax.c \
+				./parsing/here_doc.c \
+				./parsing/redir.c \
 				./parsing/utils_parsing.c \
 				./parsing/error_message.c \
 				./utils/free.c \
