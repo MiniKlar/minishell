@@ -65,8 +65,8 @@ void	create_children(t_shell *shell)
 	t_cmd	*tmp;
 
 	i = 0;
-	set_signals_exec(); //ajoutee pour signaux
-	g_child_running = 1; //ajoutee pour signaux
+	set_signals_exec();
+	g_child_running = 1;
 	tmp = shell->cmd;
 	while (shell->cmd != NULL)
 	{
@@ -96,7 +96,7 @@ void	create_children(t_shell *shell)
 			close(shell->pipex->in_fd);
 	}
 	shell->cmd = tmp;
-	set_signals_interactive(); //ajoutee pour signaux
+	set_signals_interactive();
 }
 
 void	create_child(t_shell *shell)
@@ -106,15 +106,20 @@ void	create_child(t_shell *shell)
 
 	command_path = NULL;
 	is_built_ins = is_cmd_built_ins(shell);
-	if (!is_built_ins && shell->cmd->cmd)
-		command_path = find_command_exist_executable(shell);
 	if (!redir_cmd_input_output(shell))
 	{
 		free_child(shell, command_path);
-		exit(1);
+		exit(EXIT_FAILURE);
+	}
+	if (!is_built_ins && shell->cmd->cmd)
+		command_path = find_command_exist_executable(shell);
+	if (shell->pipex)
+	{
+		if (shell->pipex->pipe_index != FIRST_PIPE)
+			ft_dup(shell, command_path);
 	}
 	ft_dup_redir(shell, true);
-	if (shell->nb_pipe > 0)
+	if (shell->nb_pipe > 0 && shell->pipex->pipe_index == FIRST_PIPE)
 		ft_dup(shell, command_path);
 	if (is_built_ins)
 	{
@@ -126,7 +131,7 @@ void	create_child(t_shell *shell)
 	{
 		if (execve(command_path, &shell->cmd->cmd[0], shell->envp) == -1)
 		{
-			perror("ERROR EXEC VE");
+			perror("Error execve");
 			free_child(shell, command_path);
 			exit(126);
 		}
@@ -149,50 +154,6 @@ void	ft_dup_std(t_shell *shell)
 {
 	shell->tmp_stdin = dup(STDIN_FILENO);
 	shell->tmp_stdout = dup(STDOUT_FILENO);
-}
-
-bool	redir_cmd_input_output(t_shell *shell)
-{
-	char		*heredoc_name;
-	t_symbol	type_redir;
-	t_redir		*tmp_redir;
-	int			i;
-
-	i = 0;
-	heredoc_name = NULL;
-	if (!shell->cmd->redir)
-		return (true);
-	else
-		tmp_redir = shell->cmd->redir;
-	while (shell->cmd->redir != NULL)
-	{
-		type_redir = shell->cmd->redir->symbol;
-		if (type_redir == REDIR_IN)
-		{
-			if (!redir_infile(shell))
-				return (false);
-		}
-		else if (type_redir == REDIR_OUT || type_redir == APPEND)
-		{
-			if (!redir_outfile(shell))
-				return (false);
-		}
-		else if (type_redir == HERE_DOC)
-		{
-			heredoc_name = here_doc(shell, i);
-			if (heredoc_name)
-			{
-				unlink(heredoc_name);
-				free(heredoc_name);
-			}
-			else
-				return (false);
-			i++;
-		}
-		shell->cmd->redir = shell->cmd->redir->next;
-	}
-	shell->cmd->redir = tmp_redir;
-	return (true);
 }
 
 void	ft_dup(t_shell *shell, char *command_path)
@@ -223,7 +184,7 @@ int	dup_pipe(t_shell *shell)
 	p = shell->pipex->pipe_index;
 	if (p == FIRST_PIPE)
 	{
-		if (shell->fd_out == -1)
+		if (shell->cmd->fd_out == -1)
 		{
 			if (dup2(shell->pipex->fdpipe[1], STDOUT_FILENO) == -1)
 			{
@@ -234,7 +195,7 @@ int	dup_pipe(t_shell *shell)
 	}
 	else if (p == N_PIPE)
 	{
-		if (shell->fd_in == -1)
+		if (shell->cmd->fd_in == -1)
 		{
 			if (dup2(shell->pipex->in_fd, STDIN_FILENO) == -1)
 				{
@@ -242,7 +203,7 @@ int	dup_pipe(t_shell *shell)
 					return (-1);
 				}
 		}
-		if (shell->fd_out == -1)
+		if (shell->cmd->fd_out == -1)
 		{
 			if (dup2(shell->pipex->fdpipe[1], STDOUT_FILENO) == -1)
 				{
@@ -253,7 +214,7 @@ int	dup_pipe(t_shell *shell)
 	}
 	else if (p == LAST_PIPE)
 	{
-		if (shell->fd_in == -1)
+		if (shell->cmd->fd_in == -1)
 		{
 			if (dup2(shell->pipex->in_fd, STDIN_FILENO) == -1)
 			{
@@ -267,17 +228,17 @@ int	dup_pipe(t_shell *shell)
 
 void	ft_dup_redir(t_shell *shell, bool is_child)
 {
-	if (shell->fd_in > -1)
+	if (shell->cmd->fd_in > -1)
 	{
-		dup2(shell->fd_in, STDIN_FILENO);
-		close(shell->fd_in);
-		shell->fd_in = -1;
+		dup2(shell->cmd->fd_in, STDIN_FILENO);
+		close(shell->cmd->fd_in);
+		shell->cmd->fd_in = -1;
 	}
-	if (shell->fd_out > -1)
+	if (shell->cmd->fd_out > -1)
 	{
-		dup2(shell->fd_out, STDOUT_FILENO);
-		close(shell->fd_out);
-		shell->fd_out = -1;
+		dup2(shell->cmd->fd_out, STDOUT_FILENO);
+		close(shell->cmd->fd_out);
+		shell->cmd->fd_out = -1;
 	}
 	if (shell->tmp_stdin > -1 && is_child == true)
 	{
