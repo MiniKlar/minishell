@@ -6,7 +6,7 @@
 /*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 16:25:30 by lomont            #+#    #+#             */
-/*   Updated: 2025/06/19 02:26:55 by miniklar         ###   ########.fr       */
+/*   Updated: 2025/06/21 00:46:34 by miniklar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ t_shell	*init_shell(char **envp)
 	shell->nb_pipe = 0;
 	shell->exit_code = 0;
 	shell->is_child = false;
-	shell->fd_in = -1;
-	shell->fd_out = -1;
 	shell->tmp_stdin = -1;
 	shell->tmp_stdout = -1;
 	return (shell);
@@ -85,5 +83,7 @@ t_cmd	*init_cmd(char **cmd_args)
 	new->cmd = cmd_args;
 	new->redir = NULL;
 	new->next = NULL;
+	new->fd_in = -1;
+	new->fd_out = -1;
 	return (new);
 }
