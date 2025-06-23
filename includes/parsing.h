@@ -36,8 +36,16 @@ int		handle_metacharacter(t_token **tokens, char *line, size_t i);
 int		handle_redirection_token(t_token *tokens, t_cmd *cmd);
 void	ft_del_first_raw_tokens(t_token **tokens);
 char	*ft_join_str(char *line, char *to_append);
+
 /* Error */
 
 bool	unexpected_token(t_shell *shell, char *token);
 int		unexpected_quote(t_shell *shell, char quote);
 void	handle_syntax_error(t_shell *shell, t_token **tokens, char c);
+
+//REDIRECTIONS
+
+bool			redir_outfile(t_shell *shell);
+bool			redir_infile(t_shell *shell);
+bool			redir_cmd_input_output(t_shell *shell);
+bool			here_doc(t_cmd *cmd, int i);
