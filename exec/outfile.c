@@ -15,8 +15,8 @@ bool	redir_outfile(t_shell *shell)
 		perror("Cannot open file");
 		return (false);
 	}
-	if (shell->fd_out > -1)
-		close(shell->fd_out);
-	shell->fd_out = fd;
+	if (shell->cmd->fd_out > -1)
+		close(shell->cmd->fd_out);
+	shell->cmd->fd_out = fd;
 	return (true);
 }
