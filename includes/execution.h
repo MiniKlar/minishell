@@ -28,14 +28,11 @@ char			*new_command_function(char **path, char *new_command);
 
 //REDIRECTIONS
 
-bool			redir_outfile(t_shell *shell);
-bool			redir_infile(t_shell *shell);
-bool			redir_cmd_input_output(t_shell *shell);
-char 			*here_doc(t_shell *shell, int i);
 void			ft_dup_redir(t_shell *shell, bool is_child);
 void			ft_dup_std(t_shell *shell);
 void			ft_dup_std_back(t_shell *shell);
 void			ft_dup(t_shell *shell, char *command_path);
+bool			ft_tmp_open_heredoc(t_cmd *cmd);
 
 //built-ins
 
@@ -55,7 +52,3 @@ void		exit_status_free(t_shell *shell, int code);
 
 //Directory
 bool		check_if_directory(t_shell *shell);
-
-//Signal
-// void set_signal_action(void);
-// void sig_handler(int signal);
