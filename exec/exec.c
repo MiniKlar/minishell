@@ -6,8 +6,8 @@ void	exec_no_command(t_shell *shell)
 {
 	if (shell->cmd->redir)
 	{
-		ft_dup_std(shell);
 		redir_cmd_input_output(shell);
+		ft_dup_std(shell);
 		ft_dup_redir(shell, false);
 		ft_dup_std_back(shell);
 	}
@@ -21,10 +21,10 @@ bool	exec_built_in(t_shell *shell, bool is_child)
 		shell->is_child = true;
 	if (!is_cmd_built_ins(shell) && is_child == false)
 		return (false);
+	redir_cmd_input_output(shell);
 	if (!is_child)
 	{
 		ft_dup_std(shell);
-		redir_cmd_input_output(shell);
 		ft_dup_redir(shell, false);
 	}
 	built_ins_1(shell);
