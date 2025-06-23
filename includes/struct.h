@@ -6,7 +6,7 @@
 /*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 19:52:35 by lomont            #+#    #+#             */
-/*   Updated: 2025/06/19 00:26:22 by miniklar         ###   ########.fr       */
+/*   Updated: 2025/06/22 18:13:17 by miniklar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ typedef struct 	s_cmd
 {
 	char 			**cmd;
 	t_redir			*redir;
+	int				fd_in;
+	int				fd_out;
 	struct s_cmd	*next;
 }				t_cmd;
 
@@ -56,8 +58,6 @@ typedef struct	s_shell
 	bool		is_child;
 	int			tmp_stdin;
 	int			tmp_stdout;
-	int			fd_in;
-	int			fd_out;
 	int			exit_code;
 }				t_shell;
 
