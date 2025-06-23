@@ -18,4 +18,3 @@ void	free_child(t_shell *shell, char *command_path)
 	free_all(shell);
 	free(shell);
 }
-

@@ -5,6 +5,7 @@ char	**ft_malloc_envp(char **envp)
 	char	**alloc_envp;
 	int		i;
 	int		k;
+
 	i = 0;
 	while (envp[i])
 		i++;
@@ -42,7 +43,7 @@ t_envp	*create_node_envp(char *env)
 
 t_envp	*fill_envp(t_envp *node, char **envp)
 {
-	t_envp *new_node;
+	t_envp	*new_node;
 	size_t	i;
 
 	i = 0;

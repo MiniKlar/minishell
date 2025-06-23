@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lpatin <lpatin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 21:21:34 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/18 22:44:20 by miniklar         ###   ########.fr       */
+/*   Updated: 2025/06/23 18:30:44 by lpatin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ t_token	*proccess_raw_tokens(t_token *raw_tokens, int exit_code)
 
 bool	parsing(t_shell *shell, char *line)
 {
-	t_token *raw_tokens;
-	t_token *tokens;
+	t_token	*raw_tokens;
+	t_token	*tokens;
 
 	raw_tokens = tokenisation(shell, line);
 	if (!raw_tokens)

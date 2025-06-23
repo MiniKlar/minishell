@@ -1,14 +1,11 @@
 #include "minishell.h"
 
-volatile sig_atomic_t g_child_running = 0;  //ajoutee pour signaux
-
 int main(void)
 {
 	t_shell *shell;
 	char *command;
 
 	shell = init_shell(environ);
-	set_echoctl(0);
 	get_shell_context(shell);
 	set_signals_interactive(); //ajoutee pour signaux
 	while (1)

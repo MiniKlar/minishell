@@ -73,7 +73,6 @@ void	create_children(t_shell *shell)
 
 	i = 0;
 	set_signals_exec();
-	g_child_running = 1;
 	tmp = shell->cmd;
 	while (shell->cmd != NULL)
 	{

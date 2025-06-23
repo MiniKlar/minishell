@@ -43,6 +43,7 @@ SRC 			= ./main.c \
 				./utils/built-ins/built-ins_utils.c \
 				./utils/built-ins/cd_utils.c \
 				./utils/signal.c \
+				./utils/signals_bis.c \
 
 OBJ 			= $(SRC:.c=.o)
 

@@ -111,6 +111,5 @@ int	ft_wait(t_shell *shell, size_t nb_pipes, int *wstatus)
 		}
 		i++;
 	}
-	g_child_running = 0;
 	return (0);
 }

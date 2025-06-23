@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lpatin <lpatin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 01:14:40 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/18 22:48:32 by miniklar         ###   ########.fr       */
+/*   Updated: 2025/06/23 18:32:28 by lpatin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static size_t	calcul_len_tokens(t_token *tokens)
 	while (tokens)
 	{
 		if (ft_strncmp(tokens->value, "|", 2) == 0)
-				break;
+			break ;
 		else if (is_redirection(tokens) > 0)
 			tokens = tokens->next;
 		else
@@ -50,7 +50,8 @@ static void	fill_cmd(t_shell **shell, t_token *tokens)
 		array[len_array] = 0;
 		while (++i <= len_array - 1 && tokens)
 		{
-			if (is_redirection(tokens) > 0 || ft_strncmp(tokens->value, "|", 2) == 0)
+			if (is_redirection(tokens) > 0 || ft_strncmp(tokens->value, "|", 2)
+				== 0)
 				tokens = tokens->next;
 			if (tokens)
 				array[i] = ft_strdup(tokens->value);
@@ -63,11 +64,11 @@ static void	fill_cmd(t_shell **shell, t_token *tokens)
 static void	forward_tokens(t_token **tokens, int *index, int *i)
 {
 	while (*index != *i)
-		{
-			if ((*tokens) != NULL)
-				(*tokens) = (*tokens)->next;
-			*index += 1;
-		}
+	{
+		if ((*tokens) != NULL)
+			(*tokens) = (*tokens)->next;
+		*index += 1;
+	}
 }
 
 static void	next_tokens(t_token **tokens, int i)
@@ -85,9 +86,9 @@ static void	next_tokens(t_token **tokens, int i)
 	{
 		while (*tokens)
 		{
-			if (is_redirection((*tokens)) > 0 ||
-				ft_strncmp((*tokens)->value, "|", 2) == 0)
-				break;
+			if (is_redirection((*tokens)) > 0
+				|| ft_strncmp((*tokens)->value, "|", 2) == 0)
+				break ;
 			else
 				*tokens = (*tokens)->next;
 		}
@@ -96,7 +97,7 @@ static void	next_tokens(t_token **tokens, int i)
 
 int	process_token(t_shell **shell, t_token *tokens)
 {
-	t_cmd *tmp;
+	t_cmd	*tmp;
 
 	tmp = (*shell)->cmd;
 	while (tokens != NULL)

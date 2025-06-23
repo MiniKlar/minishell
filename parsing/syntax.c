@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lpatin <lpatin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 21:21:36 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/19 03:25:00 by miniklar         ###   ########.fr       */
+/*   Updated: 2025/06/23 18:30:25 by lpatin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ static bool	check_pipe_syntax(t_shell *shell, t_token *tokens)
 		}
 		if (i > 0)
 		{
-			if (tokens->value[i] == '|' && is_metacharacter(tokens->value + (i - 1)))
+			if (tokens->value[i] == '|' && is_metacharacter(tokens->value
+					+ (i - 1)))
 			{
 				unexpected_token(shell, "|");
 				return (false);
@@ -94,9 +95,11 @@ bool	check_syntax(t_shell *shell, t_token *tokens)
 			return (false);
 		if (tokens->value[0] == '&' && tokens->value[1] == '&')
 			return (unexpected_token(shell, "&&"));
-		if (tokens->value[0] == '|' && ((tokens->value[1] != '\0') || !tokens->next))
+		if (tokens->value[0] == '|' && ((tokens->value[1] != '\0')
+				|| !tokens->next))
 			return (unexpected_token(shell, "|"));
-		if (tokens->value[0] == '<' && tokens->value[1] == '>' && tokens->value[2] == '\0')
+		if (tokens->value[0] == '<' && tokens->value[1] == '>'
+			&& tokens->value[2] == '\0')
 			return (unexpected_token(shell, NULL));
 		tokens = tokens->next;
 	}

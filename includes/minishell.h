@@ -5,7 +5,7 @@
 #include "parsing.h"
 
 extern char						**environ;
-extern volatile sig_atomic_t	g_child_running;
+
 //FREE
 
 void			free_shell(t_shell *node);
@@ -29,4 +29,3 @@ void			set_signals_exec(void);
 void			set_signals_interactive(void);
 void			set_signals_default(void);
 t_shell			*get_shell_context(t_shell *shell);
-void			set_echoctl(int enable);
