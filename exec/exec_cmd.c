@@ -21,6 +21,7 @@ void	create_fdpipe(t_shell *shell)
 int	exec_cmd(t_shell *shell)
 {
 	int	wstatus;
+	int	sig;
 
 	if (shell->nb_pipe > 0)
 		shell->pipex = set_struct_pipex(shell);
@@ -29,12 +30,18 @@ int	exec_cmd(t_shell *shell)
 	shell->id_fork = fork_cmd(shell);
 	create_children(shell);
 	ft_wait(shell, shell->nb_pipe, &wstatus);
-	if (WIFEXITED(wstatus) == true && WEXITSTATUS(wstatus))
+	if (WIFSIGNALED(wstatus))
 	{
-		free(shell->pipex);
-		free(shell->id_fork);
+		sig = WTERMSIG(wstatus);
+		shell->exit_code = 128 + sig;
+		if (sig == SIGQUIT)
+			write(STDOUT_FILENO, "Quit (core dumped)\n", 19);
+		else if (sig == SIGINT)
+			write(STDOUT_FILENO, "\n", 1);
+	}
+	else if (WIFEXITED(wstatus))
+	{
 		shell->exit_code = WEXITSTATUS(wstatus);
-		return (0);
 	}
 	free(shell->pipex);
 	free(shell->id_fork);
@@ -65,8 +72,8 @@ void	create_children(t_shell *shell)
 	t_cmd	*tmp;
 
 	i = 0;
-	set_signals_exec(); //ajoutee pour signaux
-	g_child_running = 1; //ajoutee pour signaux
+	set_signals_exec();
+	g_child_running = 1;
 	tmp = shell->cmd;
 	while (shell->cmd != NULL)
 	{
@@ -96,7 +103,7 @@ void	create_children(t_shell *shell)
 			close(shell->pipex->in_fd);
 	}
 	shell->cmd = tmp;
-	set_signals_interactive(); //ajoutee pour signaux
+	set_signals_interactive();
 }
 
 void	create_child(t_shell *shell)
@@ -237,18 +244,18 @@ int	dup_pipe(t_shell *shell)
 		if (shell->fd_in == -1)
 		{
 			if (dup2(shell->pipex->in_fd, STDIN_FILENO) == -1)
-				{
-					printf("Error dup2 --> N_PIPE STDIN\n");
-					return (-1);
-				}
+			{
+				printf("Error dup2 --> N_PIPE STDIN\n");
+				return (-1);
+			}
 		}
 		if (shell->fd_out == -1)
 		{
 			if (dup2(shell->pipex->fdpipe[1], STDOUT_FILENO) == -1)
-				{
-					printf("Error dup2 --> N_PIPE STDOUT\n");
-					return (-1);
-				}
+			{
+				printf("Error dup2 --> N_PIPE STDOUT\n");
+				return (-1);
+			}
 		}
 	}
 	else if (p == LAST_PIPE)

@@ -3,32 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   lib_shell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lpatin <lpatin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 22:57:19 by lomont            #+#    #+#             */
-/*   Updated: 2025/06/17 01:06:48 by miniklar         ###   ########.fr       */
+/*   Updated: 2025/06/19 20:26:16 by lpatin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-# include "struct.h"
-# include <curses.h>
-# include <fcntl.h>
-# include <limits.h>
-# include <stdlib.h>
-# include <string.h>
-# include <stdio.h>
-# include <stdarg.h>
-# include <stdbool.h>
+#include "struct.h"
+#include <curses.h>
+#include <fcntl.h>
+#include <limits.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdarg.h>
+#include <stdbool.h>
+#include <termios.h>
 //# include <signal.h>
-# include <unistd.h>
-# include <term.h>
-# include <sys/stat.h>
-# include <sys/wait.h>
-# include <sys/types.h>
-# include <readline/readline.h>
-# include <readline/history.h>
+#include <unistd.h>
+#include <term.h>
+#include <sys/stat.h>
+#include <sys/wait.h>
+#include <sys/types.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 // IS FUNCTIONS
 
@@ -44,13 +45,8 @@ int			ft_isnegative(long c);
 
 void		ft_bzero(void *s, size_t n);
 void		*ft_memset(void *s, int c, size_t n);
-void		*ft_calloc(size_t nmemb, size_t size);
-void		*ft_memchr(const void *s, int c, size_t n);
 void		*ft_memcpy(void *dest, const void *src, size_t n);
 void		*ft_memmove(void *dest, const void *src, size_t n);
-
-int			ft_memcmp(const void *s1, const void *s2, size_t n);
-
 // PUT FUNCTIONS
 
 void		ft_putnbr_fd(int n, int fd);
@@ -71,21 +67,14 @@ long long	ft_atoll(const char *str);
 // STR FUNCTIONS
 
 size_t		ft_strlen(const char *string);
-size_t		ft_strlcat(char *dst, const char *src, size_t size);
-size_t		ft_strlcpy(char *dest, const char *src, size_t size);
 
 char		*ft_strdup(const char *s);
 char		*ft_strchr(const char *s, int c);
-char		*ft_strrchr(const char *s, int c);
 char		**ft_split(const char *s, char c);
 char		*ft_strjoin(const char *s1, const char *s2);
 char		*ft_strtrim(const char *s1, const char *set);
 char		*ft_substr(char const *s, unsigned int start, size_t len);
-char		*ft_strmapi(const char *s, char (*f)(unsigned int, char));
 char		*ft_strnstr(const char *big, const char *little, size_t len);
-
-void		ft_striteri(char *s, void (*f)(unsigned int, char*));
-
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
 
 // STRUCTS FUNCTIONS
@@ -106,9 +95,9 @@ t_envp		*ft_last_envp(t_envp *lst);
 
 // REDIR STRUCT FUNCTIONS
 
-t_redir			*create_node_redir(char *arg);
-t_redir			*create_node_redir_out(char *arg);
-t_redir			*create_node_here_redir(char *arg);
+t_redir		*create_node_redir(char *arg);
+t_redir		*create_node_redir_out(char *arg);
+t_redir		*create_node_here_redir(char *arg);
 
 // INIT FUNCTION
 
@@ -134,10 +123,6 @@ void		free_env(t_envp *env);
 
 // GET_NEXT_LINE
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
-# endif
-
 char		*get_next_line(int fd);
 
 // PRINTF
@@ -152,3 +137,5 @@ int			ft_puthexa_upper(unsigned int n);
 int			ft_puthexa_lower(unsigned int n);
 int			ft_printf(const char *string, ...);
 int			ft_puthexa_ptr(unsigned long address);
+
+#define BUFFER_SIZE 42

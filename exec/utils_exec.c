@@ -8,7 +8,7 @@ static bool	is_directory(char *str, DIR *dir)
 	while (str[++i])
 	{
 		if (str[i] == '/')
-			break;
+			break ;
 	}
 	if (str[i] == '\0')
 		return (false);
@@ -37,17 +37,17 @@ bool	check_if_directory(t_shell *shell)
 	{
 		ft_putstr_fd("bash: ", 2);
 		ft_putstr_fd(shell->cmd->cmd[0], 2);
-		ft_putstr_fd(": filename argument required ",2);
+		ft_putstr_fd(": filename argument required ", 2);
 		ft_putchar_fd('\n', 2);
 		ft_putstr_fd(shell->cmd->cmd[0], 2);
-		ft_putstr_fd(": usage: . filename [arguments]\n",2);
+		ft_putstr_fd(": usage: . filename [arguments]\n", 2);
 		shell->exit_code = 2;
 		return (true);
 	}
 	else
 	{
-		if ((access(shell->cmd->cmd[0], X_OK) == -1) &&
-			is_directory(shell->cmd->cmd[0], NULL))
+		if ((access(shell->cmd->cmd[0], X_OK) == -1)
+			&& is_directory(shell->cmd->cmd[0], NULL))
 		{
 			shell->exit_code = 126;
 			return (true);
@@ -58,7 +58,7 @@ bool	check_if_directory(t_shell *shell)
 
 t_pipe	*set_struct_pipex(t_shell *shell)
 {
-	t_pipe *pipex;
+	t_pipe	*pipex;
 
 	pipex = init_struct_pipex();
 	if (!pipex)
@@ -69,9 +69,10 @@ t_pipe	*set_struct_pipex(t_shell *shell)
 	}
 	return (pipex);
 }
+
 char	*find_command_exist_executable(t_shell *shell)
 {
-	char *command_path;
+	char	*command_path;
 
 	command_path = check_command_path(shell->cmd->cmd[0], shell->envp);
 	if (command_path == NULL)

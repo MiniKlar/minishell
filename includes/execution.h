@@ -2,9 +2,9 @@
 
 #include <dirent.h>
 
-# define FIRST_PIPE		1
-# define N_PIPE			2
-# define LAST_PIPE		3
+#define FIRST_PIPE	1
+#define N_PIPE		2
+#define LAST_PIPE	3
 
 //MAIN FUNCTIONS
 
@@ -31,7 +31,7 @@ char			*new_command_function(char **path, char *new_command);
 bool			redir_outfile(t_shell *shell);
 bool			redir_infile(t_shell *shell);
 bool			redir_cmd_input_output(t_shell *shell);
-char 			*here_doc(t_shell *shell, int i);
+char			*here_doc(t_shell *shell, int i);
 void			ft_dup_redir(t_shell *shell, bool is_child);
 void			ft_dup_std(t_shell *shell);
 void			ft_dup_std_back(t_shell *shell);
@@ -48,13 +48,13 @@ int				ft_unset(t_shell *shell);
 int				ft_export(t_shell *shell);
 
 //built-ins utils
-char		*gethome_without_env(void);
-bool		check_has_options(char *arg, char *cmd);
-void		print_error(char *str);
-void		exit_status_free(t_shell *shell, int code);
+char			*gethome_without_env(void);
+bool			check_has_options(char *arg, char *cmd);
+void			print_error(char *str);
+void			exit_status_free(t_shell *shell, int code);
 
 //Directory
-bool		check_if_directory(t_shell *shell);
+bool			check_if_directory(t_shell *shell);
 
 //Signal
 // void set_signal_action(void);

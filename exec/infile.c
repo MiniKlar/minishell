@@ -2,8 +2,8 @@
 
 bool	redir_infile(t_shell *shell)
 {
-	int	fd;
-	char *str;
+	int		fd;
+	char	*str;
 
 	str = shell->cmd->redir->str;
 	if (access(str, F_OK) != 0)

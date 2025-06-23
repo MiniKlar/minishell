@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lpatin <lpatin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 03:49:05 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/19 00:48:51 by miniklar         ###   ########.fr       */
+/*   Updated: 2025/06/19 19:58:42 by lpatin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static bool	search_if_env_exist(t_envp *new_envp, t_envp **env)
 	while (new_envp->envp[++i])
 	{
 		if (new_envp->envp[i] == '=')
-			break;
+			break ;
 	}
 	while (*env)
 	{
@@ -64,11 +64,11 @@ int	ft_export(t_shell *shell)
 		export_all(shell->envp);
 	if (shell->cmd->cmd[i])
 	{
-		if (ft_strncmp(shell->cmd->cmd[i], "-", 1) == 0 &&
-			ft_strlen(shell->cmd->cmd[i]) > 1)
+		if (ft_strncmp(shell->cmd->cmd[i], "-", 1) == 0
+			&& ft_strlen(shell->cmd->cmd[i]) > 1)
 		{
-				error_export(shell->cmd->cmd[i], 1);
-				return (1);
+			error_export(shell->cmd->cmd[i], 1);
+			return (1);
 		}
 	}
 	while (shell->cmd->cmd[i])
@@ -136,7 +136,7 @@ static char	*remove_extra_char_before_egal(char *arg)
 	while (arg[i] != '\0')
 	{
 		if (arg[i + 1] == '=' && (arg[i] == '+'
-			|| arg[i] == '_' || arg[i] == '<' || arg[i] == '>'))
+				|| arg[i] == '_' || arg[i] == '<' || arg[i] == '>'))
 			remove_char = true;
 		i++;
 	}
@@ -145,7 +145,7 @@ static char	*remove_extra_char_before_egal(char *arg)
 	return (ft_strdup(arg));
 }
 
-static bool	check_arg_export_syntax(char *arg)
+static	bool	check_arg_export_syntax(char *arg)
 {
 	size_t	i;
 	bool	egal_seen;
@@ -161,10 +161,11 @@ static bool	check_arg_export_syntax(char *arg)
 			egal_seen = true;
 			break ;
 		}
-		else if (ft_isalnum(arg[i]) != true && arg[i + 1] != '=' && arg[i] != '_')
+		else if (ft_isalnum(arg[i]) != true && arg[i + 1] != '=' && arg[i]
+			!= '_')
 			return (error_export(arg, 0));
-		else if (ft_isalnum(arg[i]) != true && arg[i + 1] == '=' && arg[i] != '+'
-					&& arg[i] != '_' && arg[i] != '<' && arg[i] != '>')
+		else if (ft_isalnum(arg[i]) != true && arg[i + 1] == '=' && arg[i]
+			!= '+' && arg[i] != '_' && arg[i] != '<' && arg[i] != '>')
 			return (error_export(arg, 0));
 	}
 	if (egal_seen)

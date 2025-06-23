@@ -8,12 +8,20 @@ int main(void)
 	char *command;
 
 	shell = init_shell(environ);
+	set_echoctl(0);
+	get_shell_context(shell);
 	set_signals_interactive(); //ajoutee pour signaux
 	while (1)
 	{
 		command = readline("bash-5.1$ ");
 		if (command == NULL)
-			exit(EXIT_FAILURE);
+		{
+			free_all(shell);
+			free_array(shell->envp);
+			free(shell);
+			write(STDOUT_FILENO, "exit\n", 5);
+			exit(0);
+		}
 		if (parsing(shell, command) == true)
 		{
 			exec(shell);

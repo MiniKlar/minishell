@@ -1,6 +1,6 @@
 #pragma once
 
-# include "minishell.h"
+#include "minishell.h"
 
 bool	parsing(t_shell *shell, char *line);
 

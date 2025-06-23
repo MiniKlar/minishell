@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lpatin <lpatin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 03:48:58 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/19 01:40:43 by miniklar         ###   ########.fr       */
+/*   Updated: 2025/06/19 19:55:30 by lpatin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	del_first_arg_cmd(t_shell *shell)
 	cmd = malloc(sizeof(char *) * size_cmd);
 	cmd[size_cmd - 1] = NULL;
 	i = 1;
-	while(shell->cmd->cmd[i])
+	while (shell->cmd->cmd[i])
 	{
 		cmd[i - 1] = ft_strdup(shell->cmd->cmd[i]);
 		i++;
@@ -42,7 +42,7 @@ static bool	check_arg_is_command(t_shell *shell)
 	char	*cmd_path;
 
 	i = 1;
-	while(shell->cmd->cmd[i])
+	while (shell->cmd->cmd[i])
 	{
 		if (ft_strncmp(shell->cmd->cmd[i], "env", 4) != 0)
 		{
@@ -57,7 +57,8 @@ static bool	check_arg_is_command(t_shell *shell)
 			}
 			else
 			{
-				if (ft_strncmp(cmd_path, shell->cmd->cmd[0], ft_strlen(cmd_path)) == 0)
+				if (ft_strncmp(cmd_path, shell->cmd->cmd[0],
+						ft_strlen(cmd_path)) == 0)
 					free(cmd_path);
 				exec(shell);
 			}
