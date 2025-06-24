@@ -6,7 +6,7 @@
 /*   By: lpatin <lpatin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 21:21:34 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/24 17:41:53 by lpatin           ###   ########.fr       */
+/*   Updated: 2025/06/24 19:21:35 by lpatin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	error_heredoc_creation(t_shell **shell)
 {
 	(*shell)->cmd = (*shell)->first_cmd;
 	free_shell((*shell));
-	return (NULL);
+	return ;
 }
 
 t_shell	*process_heredoc(t_shell **shell)

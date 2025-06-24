@@ -6,13 +6,13 @@
 /*   By: lpatin <lpatin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:11:27 by lpatin            #+#    #+#             */
-/*   Updated: 2025/06/24 17:11:28 by lpatin           ###   ########.fr       */
+/*   Updated: 2025/06/24 19:14:19 by lpatin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*remove_char_arg(char *arg)
+char	*remove_char_arg(char *arg)
 {
 	char	*new_arg;
 	size_t	i;
@@ -29,7 +29,7 @@ static char	*remove_char_arg(char *arg)
 	return (new_arg);
 }
 
-static char	*remove_extra_char_before_egal(char *arg)
+char	*remove_extra_char_before_egal(char *arg)
 {
 	size_t	i;
 	bool	remove_char;
@@ -48,7 +48,7 @@ static char	*remove_extra_char_before_egal(char *arg)
 	return (ft_strdup(arg));
 }
 
-static bool	check_arg_export_syntax(char *arg)
+bool	check_arg_export_syntax(char *arg)
 {
 	size_t	i;
 	bool	egal_seen;
@@ -76,7 +76,7 @@ static bool	check_arg_export_syntax(char *arg)
 	return (false);
 }
 
-static bool	error_export(char *arg, int error_code)
+bool	error_export(char *arg, int error_code)
 {
 	if (error_code == 1)
 	{
@@ -94,7 +94,7 @@ static bool	error_export(char *arg, int error_code)
 	return (false);
 }
 
-static void	export_all(char **envp)
+void	export_all(char **envp)
 {
 	size_t	i;
 	size_t	k;

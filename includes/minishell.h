@@ -13,11 +13,16 @@ void			free_all(t_shell *shell);
 
 //UTILS FUNCTIONS
 
-static char		*remove_char_arg(char *arg);
-static char		*remove_extra_char_before_egal(char *arg);
-static bool		check_arg_export_syntax(char *arg);
-static bool		error_export(char *arg, int error_code);
-static void		export_all(char **envp);
+char		*remove_char_arg(char *arg);
+char		*remove_extra_char_before_egal(char *arg);
+bool		check_arg_export_syntax(char *arg);
+bool		error_export(char *arg, int error_code);
+void		export_all(char **envp);
+void		create_fdpipe(t_shell *shell);
+int			dup_pipe(t_shell *shell);
+bool		built_ins_1(t_shell *shell);
+bool		built_ins_2(t_shell *shell);
+bool		is_cmd_built_ins(t_shell *shell);
 
 //Struct functions
 

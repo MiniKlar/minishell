@@ -6,16 +6,12 @@
 /*   By: lpatin <lpatin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 03:49:05 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/24 17:07:07 by lpatin           ###   ########.fr       */
+/*   Updated: 2025/06/24 19:15:41 by lpatin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static bool	check_arg_export_syntax(char *arg);
-static char	*remove_extra_char_before_egal(char *arg);
-static bool	error_export(char *arg, int error_code);
-static void	export_all(char **envp);
 static void	export_arg_to_env(t_shell *shell, char *arg);
 
 static void	replace_env(t_envp *previous_env, t_envp *new_envp)

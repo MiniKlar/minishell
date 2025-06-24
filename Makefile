@@ -18,7 +18,7 @@ SRC 			= ./main.c \
 				./built-ins/unset.c \
 				./built-ins/export.c \
 				./built-ins/export_utils.c \
-				./exec/exec.builtins.c \
+				./exec/exec_builtins.c \
 				./exec/exec_cmd_child.c \
 				./exec/exec_cmd_utils.c \
 				./exec/exec_dup_pipe.c \
@@ -41,7 +41,7 @@ SRC 			= ./main.c \
 				./parsing/syntax.c \
 				./parsing/here_doc.c \
 				./parsing/redir.c \
-				./parsing/redirs.utils.c \
+				./parsing/redirs_utils.c \
 				./parsing/utils_parsing.c \
 				./parsing/error_message.c \
 				./utils/free.c \
@@ -50,6 +50,7 @@ SRC 			= ./main.c \
 				./utils/built-ins/built-ins_utils.c \
 				./utils/built-ins/cd_utils.c \
 				./utils/signal.c \
+				./utils/signals_bis.c \
 
 OBJ 			= $(SRC:.c=.o)
 

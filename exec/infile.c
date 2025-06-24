@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	error_infile(char *str)
+bool	error_infile(char *str)
 {
 	perror("File not accessible");
 	ft_putstr_fd(str, 2);

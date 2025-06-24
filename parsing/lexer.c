@@ -6,7 +6,7 @@
 /*   By: lpatin <lpatin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 21:21:20 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/24 17:37:51 by lpatin           ###   ########.fr       */
+/*   Updated: 2025/06/24 19:21:53 by lpatin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	add_token(t_token **tokens, char *str, size_t i, bool full_str)
 		token_add_back(tokens, token_new(ft_strdup(str)));
 }
 
-void	last_case(t_token **tokens, char *line, size_t i)
+int	last_case(t_token **tokens, char *line, size_t i)
 {
 	add_token(tokens, &line[i], 1, false);
 	return (i + 1);

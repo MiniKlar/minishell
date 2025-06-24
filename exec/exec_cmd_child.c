@@ -6,7 +6,7 @@
 /*   By: lpatin <lpatin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:14:42 by lpatin            #+#    #+#             */
-/*   Updated: 2025/06/24 17:26:25 by lpatin           ###   ########.fr       */
+/*   Updated: 2025/06/24 19:17:04 by lpatin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ void	create_children(t_shell *shell)
 
 	i = 0;
 	set_signals_exec();
-	g_child_running = 1;
 	tmp = shell->cmd;
 	while (shell->cmd != NULL)
 	{
