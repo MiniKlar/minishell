@@ -3,13 +3,10 @@
 #include "minishell.h"
 
 bool	parsing(t_shell *shell, char *line);
-
-/* Lexer */
-
 t_token	*tokenisation(t_shell *shell, char *line);
 t_token	*token_new(char *value);
 void	add_token(t_token **tokens, char *str, size_t i, bool full_str);
-size_t	find_corresponding_quote(char *line, char quote_to_find);
+void	next_tokens(t_token **tokens, int i);
 
 /* Parser */
 
@@ -20,6 +17,8 @@ char	*handle_quote(char *str_to_parse, int exit_code);
 char	find_next_quote(char *line);
 char	*fill_str_with_quote(char *line, size_t *index, int exit_code);
 char	*fill_str_without_quote(char *line, size_t *index, int exit_code);
+bool	is_quote(t_shell *shell, char *line, int *i, int *k);
+bool	check_redir_delimiter(char *str, int *idx_str);
 
 /* Syntax */
 
@@ -47,5 +46,5 @@ void	handle_syntax_error(t_shell *shell, t_token **tokens, char c);
 
 bool	redir_outfile(t_shell *shell);
 bool	redir_infile(t_shell *shell);
-bool	redir_cmd_input_output(t_shell *shell);
+bool	redir_cmd_input_output(t_shell *shell, bool *error);
 bool	here_doc(t_cmd *cmd, int i);

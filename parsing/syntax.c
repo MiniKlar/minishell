@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpatin <lpatin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lomont <lomont@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 21:21:36 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/24 17:48:16 by lpatin           ###   ########.fr       */
+/*   Updated: 2025/06/24 23:38:32 by lomont           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,10 @@ static bool	check_pipe_syntax(t_shell *shell, t_token *tokens)
 	i = 0;
 	while (tokens->value[i])
 	{
-		if (tokens->value[i] == '|' && tokens->value[i + 1] == '|')
-			return (unexpected_token(shell, "||"));
-		if (tokens->value[i] == '|' && is_metacharacter(tokens->value + 1))
-		{
-			unexpected_token(shell, "|");
-			return (false);
-		}
-		if (i > 0)
-		{
-			if (tokens->value[i] == '|' && is_metacharacter(tokens->value
-					+ (i - 1)))
-			{
-				unexpected_token(shell, "|");
-				return (false);
-			}
-		}
+		if (tokens->value[i] == '|' && tokens->next->value[0] == '|')
+			return (unexpected_token(shell, "||"), false);
+		else if (tokens->value[i] == '|' && tokens->value[i + 1] == '|')
+			return (unexpected_token(shell, "||"), false);
 		i++;
 	}
 	return (true);
@@ -85,7 +73,7 @@ bool	check_syntax(t_shell *shell, t_token *tokens)
 {
 	if (!tokens)
 		return (false);
-	if (tokens->value[0] == '|' && tokens->value[1] == '\0')
+	if (tokens->value[0] == '|' && !tokens->next)
 		return (unexpected_token(shell, tokens->value));
 	while (tokens)
 	{
@@ -97,7 +85,7 @@ bool	check_syntax(t_shell *shell, t_token *tokens)
 			return (unexpected_token(shell, "&&"));
 		if (tokens->value[0] == '|' && ((tokens->value[1] != '\0')
 				|| !tokens->next))
-			return (unexpected_token(shell, "|"));
+			return (unexpected_token(shell, "||"));
 		if (tokens->value[0] == '<' && tokens->value[1] == '>'
 			&& tokens->value[2] == '\0')
 			return (unexpected_token(shell, NULL));

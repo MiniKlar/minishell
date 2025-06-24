@@ -2,7 +2,6 @@
 
 void	free_ctrl_d(t_shell *shell)
 {
-	free_all(shell);
 	free_array(shell->envp);
 	free(shell);
 	write(STDOUT_FILENO, "exit\n", 5);

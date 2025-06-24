@@ -27,11 +27,11 @@ int	handle_redirection(t_token *tokens, t_cmd *cmd)
 {
 	t_symbol	symbol;
 
-	if (ft_strncmp(tokens->value, "<", ft_strlen(tokens->value)) == 0)
+	if (ft_strncmp(tokens->value, "<", 2) == 0)
 		symbol = REDIR_IN;
-	else if (ft_strncmp(tokens->value, ">", ft_strlen(tokens->value)) == 0)
+	else if (ft_strncmp(tokens->value, ">", 2) == 0)
 		symbol = REDIR_OUT;
-	else if (ft_strncmp(tokens->value, "<<", ft_strlen(tokens->value)) == 0)
+	else if (ft_strncmp(tokens->value, "<<", 3) == 0)
 		symbol = HERE_DOC;
 	else
 		symbol = APPEND;

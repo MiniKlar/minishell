@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpatin <lpatin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lomont <lomont@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:20:57 by lpatin            #+#    #+#             */
-/*   Updated: 2025/06/24 17:20:58 by lpatin           ###   ########.fr       */
+/*   Updated: 2025/06/25 00:01:08 by lomont           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	exec_no_command(t_shell *shell)
 {
 	if (shell->cmd->redir)
 	{
-		redir_cmd_input_output(shell);
+		check_redir(shell, NULL);
 		ft_dup_std(shell);
 		ft_dup_redir(shell, false);
 		ft_dup_std_back(shell);
@@ -31,7 +31,7 @@ bool	exec_built_in(t_shell *shell, bool is_child)
 		shell->is_child = true;
 	if (!is_cmd_built_ins(shell) && is_child == false)
 		return (false);
-	redir_cmd_input_output(shell);
+	check_redir(shell, NULL);
 	if (!is_child)
 	{
 		ft_dup_std(shell);

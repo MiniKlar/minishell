@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env_struct.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpatin <lpatin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lomont <lomont@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 04:30:54 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/24 19:06:05 by lpatin           ###   ########.fr       */
+/*   Updated: 2025/06/24 20:43:08 by lomont           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ char	**ft_convert_node_to_envp(t_envp *env)
 		envp = ft_strjoin(envp, env->envp);
 		free(tmp);
 		tmp = envp;
-		envp = ft_strjoin(envp, " ");
+		envp = ft_strjoin(envp, "@");
 		free(tmp);
 		env = env->next;
 	}
-	final_envp = ft_split(envp, ' ');
+	final_envp = ft_split(envp, '@');
 	free(envp);
 	return (final_envp);
 }

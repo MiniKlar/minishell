@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpatin <lpatin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lomont <lomont@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 01:14:40 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/24 17:52:40 by lpatin           ###   ########.fr       */
+/*   Updated: 2025/06/24 23:57:36 by lomont           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,67 +32,45 @@ static size_t	calcul_len_tokens(t_token *tokens)
 	return (i);
 }
 
-static void	fill_cmd(t_shell **shell, t_token *tokens)
+static char	**fill_data(t_token *tokens, int *i, int *len_array)
+{
+	char	**array;
+
+	*i = -1;
+	*len_array = calcul_len_tokens(tokens);
+	array = malloc(sizeof(char *) * (*len_array + 1));
+	if (!array || len_array == 0)
+		return (free(array), NULL);
+	array[*len_array] = 0;
+	return (array);
+}
+
+static t_token	*fill_cmd(t_shell **shell, t_token *tokens)
 {
 	int		i;
 	int		len_array;
 	char	**array;
 
 	if (!tokens)
-		return ;
-	else
+		return (NULL);
+	array = fill_data(tokens, &i, &len_array);
+	while (tokens)
 	{
-		i = -1;
-		len_array = calcul_len_tokens(tokens);
-		array = malloc(sizeof(char *) * (len_array + 1));
-		if (!array || len_array == 0)
-			return (free(array));
-		array[len_array] = 0;
-		while (++i <= len_array - 1 && tokens)
+		if (is_redirection(tokens) > 0)
 		{
-			if (is_redirection(tokens) > 0 || ft_strncmp(tokens->value, "|", 2)
-				== 0)
-				tokens = tokens->next;
-			if (tokens)
-				array[i] = ft_strdup(tokens->value);
+			handle_redirection_token(tokens, (*shell)->cmd);
+			next_tokens(&tokens, 2);
+		}
+		else if (ft_strncmp(tokens->value, "|", 2) == 0)
+			break ;
+		else if (tokens && ++i <= len_array - 1)
+		{
+			array[i] = ft_strdup(tokens->value);
 			tokens = tokens->next;
 		}
-		(*shell)->cmd->cmd = array;
 	}
-}
-
-static void	forward_tokens(t_token **tokens, int *index, int *i)
-{
-	while (*index != *i)
-	{
-		if ((*tokens) != NULL)
-			(*tokens) = (*tokens)->next;
-		*index += 1;
-	}
-}
-
-static void	next_tokens(t_token **tokens, int i)
-{
-	int	index;
-
-	index = 0;
-	if (!tokens)
-		return ;
-	if (i == 1)
-		*tokens = (*tokens)->next;
-	else if (i == 2)
-		forward_tokens(tokens, &index, &i);
-	else
-	{
-		while (*tokens)
-		{
-			if (is_redirection((*tokens)) > 0
-				|| ft_strncmp((*tokens)->value, "|", 2) == 0)
-				break ;
-			else
-				*tokens = (*tokens)->next;
-		}
-	}
+	(*shell)->cmd->cmd = array;
+	return (tokens);
 }
 
 int	process_token(t_shell **shell, t_token *tokens)
@@ -109,14 +87,9 @@ int	process_token(t_shell **shell, t_token *tokens)
 			(*shell)->cmd = (*shell)->cmd->next;
 			next_tokens(&tokens, 1);
 		}
-		else if (is_redirection(tokens) > 0)
-		{
-			handle_redirection_token(tokens, (*shell)->cmd);
-			next_tokens(&tokens, 2);
-		}
 		else
 		{
-			fill_cmd(shell, tokens);
+			tokens = fill_cmd(shell, tokens);
 			next_tokens(&tokens, 0);
 		}
 	}

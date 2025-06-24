@@ -12,9 +12,9 @@ void	free_all(t_shell *shell)
 
 void	free_child(t_shell *shell, char *command_path)
 {
-	if (command_path)
-		free(command_path);
 	free_array(shell->envp);
 	free_all(shell);
+	if (command_path)
+		free(command_path);
 	free(shell);
 }

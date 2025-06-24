@@ -1,9 +1,22 @@
 #include "minishell.h"
 
-void	create_child(t_shell *shell);
-void	create_children(t_shell *shell);
-pid_t	*fork_cmd(t_shell *shell);
-int		dup_pipe(t_shell *shell);
+pid_t	*fork_cmd(t_shell *shell)
+{
+	size_t	nb_fork;
+	pid_t	*id_fork;
+
+	if (shell->nb_pipe == 0)
+		nb_fork = 1;
+	else
+		nb_fork = shell->nb_pipe + 1;
+	id_fork = malloc(sizeof(pid_t) * nb_fork);
+	if (!id_fork)
+	{
+		printf("Error malloc id_fork");
+		free_all(shell);
+	}
+	return (id_fork);
+}
 
 void	create_fdpipe(t_shell *shell)
 {
@@ -39,22 +52,4 @@ int	exec_cmd(t_shell *shell)
 	free(shell->pipex);
 	free(shell->id_fork);
 	return (0);
-}
-
-pid_t	*fork_cmd(t_shell *shell)
-{
-	size_t	nb_fork;
-	pid_t	*id_fork;
-
-	if (shell->nb_pipe == 0)
-		nb_fork = 1;
-	else
-		nb_fork = shell->nb_pipe + 1;
-	id_fork = malloc(sizeof(pid_t) * nb_fork);
-	if (!id_fork)
-	{
-		printf("Error malloc id_fork");
-		free_all(shell);
-	}
-	return (id_fork);
 }

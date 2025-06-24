@@ -2,9 +2,9 @@
 
 bool	error_infile(char *str)
 {
-	perror("File not accessible");
+	ft_putstr_fd("bash: ", 2);
 	ft_putstr_fd(str, 2);
-	ft_putchar_fd('\n', 2);
+	ft_putstr_fd(": No such file or directory\n", 2);
 	return (false);
 }
 
@@ -18,17 +18,17 @@ bool	redir_infile(t_shell *shell)
 		error_infile(str);
 	else if (access(str, R_OK) != 0)
 	{
-		perror("File not readable");
+		ft_putstr_fd("bash: ", 2);
 		ft_putstr_fd(str, 2);
-		ft_putchar_fd('\n', 2);
+		ft_putstr_fd(": Permission denied\n", 2);
 		return (false);
 	}
 	fd = open(str, O_RDWR);
 	if (fd == -1)
 	{
-		perror("Cannot open file");
+		ft_putstr_fd("bash: ", 2);
 		ft_putstr_fd(str, 2);
-		ft_putchar_fd('\n', 2);
+		ft_putstr_fd(": Cannot open file\n", 2);
 		return (false);
 	}
 	if (shell->cmd->fd_in > -1)

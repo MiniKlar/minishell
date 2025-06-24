@@ -9,7 +9,7 @@ char	*check_command_path(char *command, char **envp)
 	if (!command || !envp[0] || ft_strncmp(command, "Makefile", 9) == 0)
 		return (NULL);
 	if (access(command, F_OK | X_OK) == 0)
-		return (command);
+		return (ft_strdup(command));
 	if (ft_strchr(command, '/') != NULL && access(command, F_OK | X_OK) != 0)
 		return (NULL);
 	path = recup_env(envp);

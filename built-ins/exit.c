@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomont <lomont@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 03:49:02 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/18 19:23:35 by miniklar         ###   ########.fr       */
+/*   Updated: 2025/06/24 19:53:11 by lomont           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	print_error_exit(t_shell *shell, char *cmd, int error, int *code)
 		{
 			ft_putstr_fd("bash: exit", 2);
 			ft_putstr_fd(": too many arguments\n", 2);
-			exit_status_free(shell, 1);
+			shell->exit_code = 1;
 		}
 	}
 	else if (error == 1)
@@ -96,7 +96,10 @@ void	ft_exit(t_shell *shell)
 
 	ft_putstr_fd("exit\n", 1);
 	if (ft_size_array(shell->cmd->cmd) > 2)
+	{
 		print_error_exit(shell, shell->cmd->cmd[1], 0, &code);
+		return ;
+	}
 	if (!shell->cmd->cmd[1])
 		exit_status_free(shell, shell->exit_code);
 	check_if_number(shell->cmd->cmd[1], &is_number);

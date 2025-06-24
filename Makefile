@@ -29,11 +29,13 @@ SRC 			= ./main.c \
 				./exec/pipex_utils.c \
 				./exec/utils_path.c   \
 				./exec/utils_exec.c	   \
+				./exec/children.c		\
 				./parsing/raw_tokens.c \
 				./parsing/fill_str_with_quote.c \
 				./parsing/fill_str_without_quote.c \
 				./parsing/expansion.c   \
 				./parsing/tokens.c \
+				./parsing/tokens_utils.c \
 				./parsing/parsing.c \
 				./parsing/lexer.c \
 				./parsing/parser.c \

@@ -15,6 +15,9 @@ bool			exec_built_in(t_shell *shell, bool is_child);
 int				ft_wait(t_shell *shell, size_t nb_pipes, int *wstatus);
 char			*find_command_exist_executable(t_shell *shell);
 void			free_child(t_shell *shell, char *command_path);
+void			create_children(t_shell *shell);
+void			create_child(t_shell *shell);
+void			check_redir(t_shell *shell, char *command_path);
 
 //pipex_utils
 
