@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   ft_struct.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lpatin <lpatin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 04:32:07 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/06 04:32:08 by miniklar         ###   ########.fr       */
+/*   Updated: 2025/06/24 19:07:00 by lpatin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_envp	*ft_last_envp(t_envp *lst);
-static 	t_redir	*ft_last_redir(t_redir *lst);
+t_envp			*ft_last_envp(t_envp *lst);
+static	t_redir	*ft_last_redir(t_redir *lst);
 
 void	ft_del_first_raw_tokens(t_token **tokens)
 {
-	t_token *tmp;
+	t_token	*tmp;
 
 	if (!tokens)
 		return ;
@@ -32,8 +32,8 @@ void	ft_del_first_raw_tokens(t_token **tokens)
 
 void	ft_delone_env(t_envp *lst, char *env_to_find)
 {
-	t_envp *node_before_env_to_find;
-	t_envp *tmp;
+	t_envp	*node_before_env_to_find;
+	t_envp	*tmp;
 
 	tmp = NULL;
 	if (!lst)

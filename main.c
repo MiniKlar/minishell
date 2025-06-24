@@ -1,19 +1,29 @@
 #include "minishell.h"
 
-volatile sig_atomic_t g_child_running = 0;
-
-int main(void)
+void	free_ctrl_d(t_shell *shell)
 {
-	t_shell *shell;
-	char *command;
+	free_all(shell);
+	free_array(shell->envp);
+	free(shell);
+	write(STDOUT_FILENO, "exit\n", 5);
+}
+
+int	main(void)
+{
+	t_shell	*shell;
+	char	*command;
 
 	shell = init_shell(environ);
+	get_shell_context(shell);
 	set_signals_interactive();
 	while (1)
 	{
 		command = readline("minishell$ ");
 		if (command == NULL)
-			exit(EXIT_FAILURE);
+		{
+			free_ctrl_d(shell);
+			exit(0);
+		}
 		if (parsing(shell, command) == true)
 		{
 			exec(shell);

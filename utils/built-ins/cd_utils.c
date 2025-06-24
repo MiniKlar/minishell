@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lpatin <lpatin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 21:28:32 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/15 23:08:17 by miniklar         ###   ########.fr       */
+/*   Updated: 2025/06/24 19:04:58 by lpatin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ static char	*search_useruid(char *user_uid, int fd)
 	while (str)
 	{
 		if (!str)
-		return (NULL);
+			return (NULL);
 		if (ft_strnstr(str, user_uid, ft_strlen(str)) == 0)
-			continue;
+			continue ;
 		else
-			break;
+			break ;
 		str = get_next_line(fd);
 	}
 	tmp = get_next_line(fd);
@@ -39,7 +39,7 @@ static char	*search_useruid(char *user_uid, int fd)
 	return (str);
 }
 
-static char *get_useruid(void)
+static char	*get_useruid(void)
 {
 	char		*user_uid;
 	char		*terminal_name;
@@ -61,11 +61,11 @@ static char *get_useruid(void)
 		tmp = user_uid;
 		user_uid = ft_strjoin(user_uid, ":");
 		free(tmp);
-		return(user_uid);
+		return (user_uid);
 	}
 }
 
-static void		fill_index(char *str, size_t *i, size_t *k, size_t *j)
+static void	fill_index(char *str, size_t *i, size_t *k, size_t *j)
 {
 	while (str[*i])
 	{
@@ -75,13 +75,13 @@ static void		fill_index(char *str, size_t *i, size_t *k, size_t *j)
 			if (*k == 5)
 				*j = *i + 1;
 			if (*k == 6)
-				break;
+				break ;
 		}
 		*i += 1;
 	}
 }
 
-static char 	*find_home(char *str)
+static char	*find_home(char *str)
 {
 	char	*tmp;
 	size_t	i;

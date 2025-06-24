@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lpatin <lpatin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 21:21:20 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/17 01:30:53 by miniklar         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:37:51 by lpatin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ bool	in_quote(char c, char *current_quote)
 
 void	add_token(t_token **tokens, char *str, size_t i, bool full_str)
 {
-	char *tmp;
+	char	*tmp;
 
 	if (!full_str)
 	{
@@ -39,6 +39,12 @@ void	add_token(t_token **tokens, char *str, size_t i, bool full_str)
 	}
 	else
 		token_add_back(tokens, token_new(ft_strdup(str)));
+}
+
+void	last_case(t_token **tokens, char *line, size_t i)
+{
+	add_token(tokens, &line[i], 1, false);
+	return (i + 1);
 }
 
 int	handle_metacharacter(t_token **tokens, char *line, size_t i)
@@ -64,9 +70,6 @@ int	handle_metacharacter(t_token **tokens, char *line, size_t i)
 		return (i + 1);
 	}
 	else if (line[i] == '|' && line[i + 1] == ' ')
-	{
-		add_token(tokens, &line[i], 1, false);
-		return (i + 1);
-	}
+		last_case(tokens, line, i);
 	return (i);
 }

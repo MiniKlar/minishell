@@ -1,6 +1,6 @@
 #pragma once
 
-# include "minishell.h"
+#include "minishell.h"
 
 bool	parsing(t_shell *shell, char *line);
 
@@ -45,7 +45,7 @@ void	handle_syntax_error(t_shell *shell, t_token **tokens, char c);
 
 //REDIRECTIONS
 
-bool			redir_outfile(t_shell *shell);
-bool			redir_infile(t_shell *shell);
-bool			redir_cmd_input_output(t_shell *shell);
-bool			here_doc(t_cmd *cmd, int i);
+bool	redir_outfile(t_shell *shell);
+bool	redir_infile(t_shell *shell);
+bool	redir_cmd_input_output(t_shell *shell);
+bool	here_doc(t_cmd *cmd, int i);

@@ -1,18 +1,21 @@
 #include "minishell.h"
 
+void	error_infile(char *str)
+{
+	perror("File not accessible");
+	ft_putstr_fd(str, 2);
+	ft_putchar_fd('\n', 2);
+	return (false);
+}
+
 bool	redir_infile(t_shell *shell)
 {
-	int	fd;
-	char *str;
+	int		fd;
+	char	*str;
 
 	str = shell->cmd->redir->str;
 	if (access(str, F_OK) != 0)
-	{
-		perror("File not accessible");
-		ft_putstr_fd(str, 2);
-		ft_putchar_fd('\n', 2);
-		return (false);
-	}
+		error_infile(str);
 	else if (access(str, R_OK) != 0)
 	{
 		perror("File not readable");

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env_struct.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lpatin <lpatin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 04:30:54 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/19 03:37:38 by miniklar         ###   ########.fr       */
+/*   Updated: 2025/06/24 19:06:05 by lpatin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 char	**ft_convert_node_to_envp(t_envp *env)
 {
-	char *tmp;
-	char *envp;
-	char **final_envp;
+	char	*tmp;
+	char	*envp;
+	char	**final_envp;
 
 	envp = NULL;
 	if (!envp)
@@ -35,7 +35,7 @@ char	**ft_convert_node_to_envp(t_envp *env)
 	}
 	final_envp = ft_split(envp, ' ');
 	free(envp);
-	return(final_envp);
+	return (final_envp);
 }
 
 bool	find_change_env(t_envp *env, char *new_env, char *target_env)

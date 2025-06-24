@@ -17,6 +17,11 @@ SRC 			= ./main.c \
 				./built-ins/echo.c \
 				./built-ins/unset.c \
 				./built-ins/export.c \
+				./built-ins/export_utils.c \
+				./exec/exec.builtins.c \
+				./exec/exec_cmd_child.c \
+				./exec/exec_cmd_utils.c \
+				./exec/exec_dup_pipe.c \
 				./exec/exec.c  \
 				./exec/infile.c \
 				./exec/outfile.c \
@@ -36,6 +41,7 @@ SRC 			= ./main.c \
 				./parsing/syntax.c \
 				./parsing/here_doc.c \
 				./parsing/redir.c \
+				./parsing/redirs.utils.c \
 				./parsing/utils_parsing.c \
 				./parsing/error_message.c \
 				./utils/free.c \

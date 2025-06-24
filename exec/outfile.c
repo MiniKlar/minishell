@@ -2,8 +2,8 @@
 
 bool	redir_outfile(t_shell *shell)
 {
-	int	fd;
-	char *str;
+	int		fd;
+	char	*str;
 
 	str = shell->cmd->redir->str;
 	if (shell->cmd->redir->symbol == APPEND)

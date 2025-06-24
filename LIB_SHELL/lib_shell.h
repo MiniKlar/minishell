@@ -3,32 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   lib_shell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lpatin <lpatin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 22:57:19 by lomont            #+#    #+#             */
-/*   Updated: 2025/06/17 01:06:48 by miniklar         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:34:10 by lpatin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-# include "struct.h"
-# include <curses.h>
-# include <fcntl.h>
-# include <limits.h>
-# include <stdlib.h>
-# include <string.h>
-# include <stdio.h>
-# include <stdarg.h>
-# include <stdbool.h>
+#include "struct.h"
+#include <curses.h>
+#include <fcntl.h>
+#include <limits.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdarg.h>
+#include <stdbool.h>
 //# include <signal.h>
-# include <unistd.h>
-# include <term.h>
-# include <sys/stat.h>
-# include <sys/wait.h>
-# include <sys/types.h>
-# include <readline/readline.h>
-# include <readline/history.h>
+#include <unistd.h>
+#include <term.h>
+#include <sys/stat.h>
+#include <sys/wait.h>
+#include <sys/types.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 // IS FUNCTIONS
 
@@ -106,9 +106,9 @@ t_envp		*ft_last_envp(t_envp *lst);
 
 // REDIR STRUCT FUNCTIONS
 
-t_redir			*create_node_redir(char *arg);
-t_redir			*create_node_redir_out(char *arg);
-t_redir			*create_node_here_redir(char *arg);
+t_redir		*create_node_redir(char *arg);
+t_redir		*create_node_redir_out(char *arg);
+t_redir		*create_node_here_redir(char *arg);
 
 // INIT FUNCTION
 
@@ -134,9 +134,7 @@ void		free_env(t_envp *env);
 
 // GET_NEXT_LINE
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
-# endif
+#define BUFFER_SIZE 42
 
 char		*get_next_line(int fd);
 

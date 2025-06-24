@@ -1,37 +1,54 @@
 #include "minishell.h"
 
-void sig_handler(int signal)
+void	sigint_handler_child(int signal, t_shell *shell)
 {
-	if (signal == SIGINT && !g_child_running)
+	if (signal == SIGINT && shell->is_child)
+		write(STDOUT_FILENO, "\n", 1);
+}
+
+void	sig_handler(int signal)
+{
+	t_shell	*shell;
+
+	shell = get_shell_context(NULL);
+	if (signal == SIGINT && !shell->is_child)
 	{
 		write(STDOUT_FILENO, "\n", 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
+		shell->exit_code = 130;
 	}
-	else if (signal == SIGINT && g_child_running)
-		write(STDOUT_FILENO, "\n", 1);
-	else if (signal == SIGQUIT)
+	sigint_handler_child(signal, shell);
+	if (signal == SIGQUIT)
 	{
-		rl_on_new_line();
-		rl_redisplay();
+		if (shell->is_child)
+			shell->exit_code = 131;
+		else
+		{
+			rl_on_new_line();
+			rl_redisplay();
+		}
 	}
 }
 
-void set_signals_interactive(void)
+void	set_signals_interactive(void)
 {
-	struct sigaction act;
+	struct sigaction	act;
 
 	ft_bzero(&act, sizeof(act));
 	act.sa_handler = &sig_handler;
 	act.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &act, NULL);
+	ft_bzero(&act, sizeof(act));
+	act.sa_handler = SIG_IGN;
+	act.sa_flags = SA_RESTART;
 	sigaction(SIGQUIT, &act, NULL);
 }
 
-void set_signals_exec(void)
+void	set_signals_exec(void)
 {
-	struct sigaction act;
+	struct sigaction	act;
 
 	ft_bzero(&act, sizeof(act));
 	act.sa_handler = SIG_IGN;
@@ -40,9 +57,9 @@ void set_signals_exec(void)
 	sigaction(SIGQUIT, &act, NULL);
 }
 
-void set_signals_default(void)
+void	set_signals_default(void)
 {
-	struct sigaction act;
+	struct sigaction	act;
 
 	ft_bzero(&act, sizeof(act));
 	act.sa_handler = SIG_DFL;

@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lpatin <lpatin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 21:21:34 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/23 02:51:04 by miniklar         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:41:53 by lpatin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+
+void	error_heredoc_creation(t_shell **shell)
+{
+	(*shell)->cmd = (*shell)->first_cmd;
+	free_shell((*shell));
+	return (NULL);
+}
 
 t_shell	*process_heredoc(t_shell **shell)
 {
@@ -27,11 +34,7 @@ t_shell	*process_heredoc(t_shell **shell)
 			if ((*shell)->cmd->redir->symbol != HERE_DOC)
 				;
 			else if (!here_doc((*shell)->cmd, i))
-			{
-				(*shell)->cmd = (*shell)->first_cmd;
-				free_shell((*shell));
-				return (NULL);
-			}
+				error_heredoc_creation(shell);
 			(*shell)->cmd->redir = (*shell)->cmd->redir->next;
 			i++;
 		}
@@ -76,8 +79,8 @@ t_token	*proccess_raw_tokens(t_token *raw_tokens, int exit_code)
 
 bool	parsing(t_shell *shell, char *line)
 {
-	t_token *raw_tokens;
-	t_token *tokens;
+	t_token	*raw_tokens;
+	t_token	*tokens;
 
 	raw_tokens = tokenisation(shell, line);
 	if (!raw_tokens)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lltoa.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lpatin <lpatin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 00:19:05 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/16 00:23:14 by miniklar         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:34:36 by lpatin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ static int	count_digit(long long n)
 
 char	*ft_lltoa(long long n)
 {
-	char	*str;
-	size_t	len_n;
-	size_t	i;
-	int		neg;
+	char		*str;
+	size_t		len_n;
+	size_t		i;
+	int			neg;
 	long long	n1;
 
 	n1 = n;

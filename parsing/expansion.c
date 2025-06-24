@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lpatin <lpatin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 21:21:17 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/18 01:46:20 by miniklar         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:35:48 by lpatin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ static void	loop_env_variable(char *str, size_t *i)
 		if (*i == 0 && ft_isdigit(str[*i]) == true)
 		{
 			*i = 1;
-			break;
+			break ;
 		}
 		else if (ft_isalnum(str[*i]) == 0)
-			break;
+			break ;
 		else
 			*i += 1;
 	}
@@ -51,7 +51,7 @@ static char	*check_getenv(char *str)
 	}
 }
 
-char *handle_env_variable(char *str, size_t *index_parsing, int exit_code)
+char	*handle_env_variable(char *str, size_t *index_parsing, int exit_code)
 {
 	char	*env_variable;
 	size_t	i;

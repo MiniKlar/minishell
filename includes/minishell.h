@@ -4,13 +4,20 @@
 #include "execution.h"
 #include "parsing.h"
 
-extern char **environ;
-extern volatile sig_atomic_t g_child_running;  //ajoutee pour signaux
+extern char	**environ;
 
 //FREE
 
 void			free_shell(t_shell *node);
 void			free_all(t_shell *shell);
+
+//UTILS FUNCTIONS
+
+static char		*remove_char_arg(char *arg);
+static char		*remove_extra_char_before_egal(char *arg);
+static bool		check_arg_export_syntax(char *arg);
+static bool		error_export(char *arg, int error_code);
+static void		export_all(char **envp);
 
 //Struct functions
 
@@ -26,6 +33,7 @@ bool			find_change_env(t_envp *env, char *new_env, char *target_env);
 
 // Signals
 
-void			set_signals_exec(void); //ajoutee pour signaux
-void			set_signals_interactive(void); //ajoutee pour signaux
-void			set_signals_default(void); //ajoutee pour signaux
+void			set_signals_exec(void);
+void			set_signals_interactive(void);
+void			set_signals_default(void);
+t_shell			*get_shell_context(t_shell *shell);

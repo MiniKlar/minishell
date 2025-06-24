@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lpatin <lpatin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 21:21:28 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/18 00:27:43 by miniklar         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:38:14 by lpatin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	handle_redirection_token(t_token *tokens, t_cmd *cmd)
 	handle_redirection(tokens, cmd);
 	return (0);
 }
+
 size_t	find_corresponding_quote(char *line, char quote_to_find)
 {
 	size_t	i;
