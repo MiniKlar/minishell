@@ -6,7 +6,7 @@
 /*   By: lomont <lomont@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:20:57 by lpatin            #+#    #+#             */
-/*   Updated: 2025/06/25 00:01:08 by lomont           ###   ########.fr       */
+/*   Updated: 2025/06/25 01:23:58 by lomont           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ bool	exec_built_in(t_shell *shell, bool is_child)
 
 void	exec(t_shell *shell)
 {
-	if ((!shell->cmd->cmd && shell->nb_pipe == 0) || check_if_directory(shell))
+	if ((!shell->cmd->cmd[0] && shell->nb_pipe == 0)
+		|| check_if_directory(shell))
 		return (exec_no_command(shell));
 	else if (shell->nb_pipe == 0 && exec_built_in(shell, false) == true)
 		return ;

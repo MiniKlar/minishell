@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpatin <lpatin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lomont <lomont@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 19:52:35 by lomont            #+#    #+#             */
-/*   Updated: 2025/06/24 17:32:54 by lpatin           ###   ########.fr       */
+/*   Updated: 2025/06/25 01:42:18 by lomont           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_cmd
 typedef struct s_shell
 {
 	char		**envp;
+	char		*readline_cmd;
 	t_cmd		*first_cmd;
 	t_cmd		*cmd;
 	t_pipe		*pipex;

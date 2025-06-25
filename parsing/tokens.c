@@ -6,7 +6,7 @@
 /*   By: lomont <lomont@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 01:14:40 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/24 23:57:36 by lomont           ###   ########.fr       */
+/*   Updated: 2025/06/25 00:57:54 by lomont           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,11 @@ static char	**fill_data(t_token *tokens, int *i, int *len_array)
 	*len_array = calcul_len_tokens(tokens);
 	array = malloc(sizeof(char *) * (*len_array + 1));
 	if (!array || len_array == 0)
-		return (free(array), NULL);
+	{
+		if (array)
+			free(array);
+		return (NULL);
+	}
 	array[*len_array] = 0;
 	return (array);
 }
@@ -63,7 +67,7 @@ static t_token	*fill_cmd(t_shell **shell, t_token *tokens)
 		}
 		else if (ft_strncmp(tokens->value, "|", 2) == 0)
 			break ;
-		else if (tokens && ++i <= len_array - 1)
+		else if (array && tokens && ++i <= len_array - 1)
 		{
 			array[i] = ft_strdup(tokens->value);
 			tokens = tokens->next;

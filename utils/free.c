@@ -1,5 +1,12 @@
 #include "minishell.h"
 
+void	free_eof(t_shell *shell)
+{
+	free_array(shell->envp);
+	free(shell);
+	write(STDOUT_FILENO, "exit\n", 5);
+}
+
 void	free_all(t_shell *shell)
 {
 	if (shell)

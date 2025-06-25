@@ -1,6 +1,6 @@
 #include "parsing.h"
 
-void	read_heredoc(t_cmd *cmd, int fd);
+bool	read_heredoc(t_cmd *cmd, int fd);
 
 bool	here_doc(t_cmd *cmd, int i)
 {
@@ -9,18 +9,17 @@ bool	here_doc(t_cmd *cmd, int i)
 	char	*index_tmp;
 
 	index_tmp = ft_itoa(i);
+	if (!index_tmp)
+		return (NULL);
 	name = ft_strjoin("/tmp/tmp", index_tmp);
 	free(index_tmp);
 	if (!name)
 		return (false);
-	fd = open(name, O_CREAT | O_RDWR, 0755);
+	fd = open(name, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd == -1)
-	{
-		printf("Error when trying to open/create tmpfile %s", name);
-		free(name);
-		return (false);
-	}
-	read_heredoc(cmd, fd);
+		return (perror("open"), free(name), false);
+	if (!read_heredoc(cmd, fd))
+		return (free(name), false);
 	if (cmd->redir->str != NULL)
 	{
 		unlink(cmd->redir->str);
@@ -30,32 +29,36 @@ bool	here_doc(t_cmd *cmd, int i)
 	return (true);
 }
 
-void	read_heredoc(t_cmd *cmd, int fd)
+bool	read_heredoc(t_cmd *cmd, int fd)
 {
 	char	*word_to_match;
-	char	*matching_word;
-	size_t	i;
+	char	*word;
 
 	word_to_match = cmd->redir->str;
+	set_signals_heredoc();
 	while (1)
 	{
-		i = 0;
-		matching_word = readline("> ");
-		while (word_to_match[i] || matching_word[i])
+		ft_putstr_fd("> ", 1);
+		word = get_next_line(STDIN_FILENO);
+		if (!word)
 		{
-			if (word_to_match[i] == matching_word[i])
-				i++;
+			if (g_sig == 2)
+			{
+				ft_putstr_fd("bash: here-doc terminated by signal\n", 2);
+				return (close(fd), false);
+			}
 			else
 				break ;
 		}
-		if (i == ft_strlen(word_to_match) && matching_word[i] == '\0')
+		if (ft_strncmp(word_to_match, word, ft_strlen(word) - 1) == 0
+			&& (ft_strlen(word) - 1 == ft_strlen(word_to_match)))
 			break ;
-		ft_putstr_fd(matching_word, fd);
-		ft_putchar_fd('\n', fd);
-		free(matching_word);
+		ft_putstr_fd(word, fd);
+		free(word);
 	}
-	free(matching_word);
-	close(fd);
+	while (get_next_line(STDIN_FILENO) != NULL)
+		get_next_line(STDIN_FILENO);
+	return (free(word), close(fd), true);
 }
 
 bool	ft_tmp_open_heredoc(t_cmd *cmd)

@@ -6,7 +6,7 @@
 /*   By: lomont <lomont@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 23:43:00 by lomont            #+#    #+#             */
-/*   Updated: 2025/06/25 00:17:49 by lomont           ###   ########.fr       */
+/*   Updated: 2025/06/25 01:24:54 by lomont           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	next_tokens(t_token **tokens, int i)
 		}
 	}
 }
+
 bool	check_redir_delimiter(char *str, int *idx_str)
 {
 	size_t	index;

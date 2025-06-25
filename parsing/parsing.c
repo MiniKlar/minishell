@@ -6,7 +6,7 @@
 /*   By: lomont <lomont@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 21:21:34 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/25 00:35:18 by lomont           ###   ########.fr       */
+/*   Updated: 2025/06/25 09:50:19 by lomont           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,10 @@ t_shell	*process_heredoc(t_shell **shell)
 			if ((*shell)->cmd->redir->symbol != HERE_DOC)
 				;
 			else if (!here_doc((*shell)->cmd, i))
+			{
 				error_heredoc_creation(shell);
+				return (NULL);
+			}
 			(*shell)->cmd->redir = (*shell)->cmd->redir->next;
 			i++;
 		}
@@ -54,11 +57,12 @@ t_shell	*parse_tokens(t_shell *shell, t_token *tokens)
 		exit(EXIT_FAILURE);
 	}
 	process_token(&shell, tokens);
-	process_heredoc(&shell);
+	if (process_heredoc(&shell) == NULL)
+		shell = NULL;
 	return (shell);
 }
 
-t_token	*proccess_raw_tokens(t_token *raw_tokens, int exit_code)
+t_token	*process_raw_tokens(t_token *raw_tokens, int exit_code)
 {
 	t_token	*tokens;
 	char	*str;
@@ -85,7 +89,7 @@ bool	parsing(t_shell *shell, char *line)
 	raw_tokens = tokenisation(shell, line);
 	if (!raw_tokens)
 		return (false);
-	tokens = proccess_raw_tokens(raw_tokens, shell->exit_code);
+	tokens = process_raw_tokens(raw_tokens, shell->exit_code);
 	free_token_struct(raw_tokens);
 	if (!tokens)
 		return (false);

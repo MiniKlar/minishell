@@ -6,7 +6,7 @@
 /*   By: lomont <lomont@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 21:21:43 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/24 23:38:14 by lomont           ###   ########.fr       */
+/*   Updated: 2025/06/25 10:01:56 by lomont           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,12 @@ bool	is_metacharacter(char *str)
 		return (true);
 	else if (str[0] == '<' || str[0] == '>')
 		return (true);
-	else if ((str[0] == '<' || str[1] == '<')
-		&& (str[0] == '>' || str[1] == '>'))
-		return (true);
+	else if (ft_strlen(str) > 1)
+	{
+		if ((str[0] == '<' || str[1] == '<')
+			&& (str[0] == '>' || str[1] == '>'))
+			return (true);
+	}
 	return (false);
 }
 

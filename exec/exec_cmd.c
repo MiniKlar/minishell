@@ -42,6 +42,7 @@ int	exec_cmd(t_shell *shell)
 	shell->id_fork = fork_cmd(shell);
 	create_children(shell);
 	ft_wait(shell, shell->nb_pipe, &wstatus);
+	set_signals_interactive();
 	if (WIFEXITED(wstatus) == true && WEXITSTATUS(wstatus))
 	{
 		free(shell->pipex);

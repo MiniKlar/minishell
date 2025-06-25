@@ -4,12 +4,14 @@
 #include "execution.h"
 #include "parsing.h"
 
-extern char	**environ;
+extern char						**environ;
+extern volatile sig_atomic_t	g_sig;
 
 //FREE
 
 void			free_shell(t_shell *node);
 void			free_all(t_shell *shell);
+void			free_eof(t_shell *shell);
 
 //UTILS FUNCTIONS
 
@@ -38,7 +40,7 @@ bool			find_change_env(t_envp *env, char *new_env, char *target_env);
 
 // Signals
 
-void			set_signals_exec(void);
 void			set_signals_interactive(void);
-void			set_signals_default(void);
-t_shell			*get_shell_context(t_shell *shell);
+void			ignore_sigint(void);
+void			set_signals_child(void);
+void			set_signals_heredoc(void);

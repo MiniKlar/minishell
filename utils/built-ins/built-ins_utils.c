@@ -6,7 +6,7 @@
 /*   By: lomont <lomont@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 04:29:00 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/24 19:52:07 by lomont           ###   ########.fr       */
+/*   Updated: 2025/06/25 01:46:27 by lomont           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	exit_status_free(t_shell *shell, int code)
 {
 	free_array(shell->envp);
 	free_all(shell);
+	free(shell->readline_cmd);
 	free(shell);
 	clear_history();
 	exit(code);

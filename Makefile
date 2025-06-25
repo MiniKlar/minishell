@@ -30,6 +30,7 @@ SRC 			= ./main.c \
 				./exec/utils_path.c   \
 				./exec/utils_exec.c	   \
 				./exec/children.c		\
+				./exec/directory.c		\
 				./parsing/raw_tokens.c \
 				./parsing/fill_str_with_quote.c \
 				./parsing/fill_str_without_quote.c \
@@ -52,15 +53,15 @@ SRC 			= ./main.c \
 				./utils/built-ins/built-ins_utils.c \
 				./utils/built-ins/cd_utils.c \
 				./utils/signal.c \
-				./utils/signals_bis.c \
 
 OBJ 			= $(SRC:.c=.o)
 
-all: $(NAME)
-$(LIB_SHELL):
-	$(MAKE) -C LIB_SHELL all
+all: $(LIB_SHELL) $(NAME)
 
-$(NAME): $(LIB_SHELL) $(OBJ)
+$(LIB_SHELL):
+	$(MAKE) -C LIB_SHELL
+
+$(NAME): $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) ./LIB_SHELL/lib_shell.a -o $(NAME) -lreadline -ltermcap
 
 %.o: %.c

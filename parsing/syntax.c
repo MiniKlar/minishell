@@ -6,7 +6,7 @@
 /*   By: lomont <lomont@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 21:21:36 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/24 23:38:32 by lomont           ###   ########.fr       */
+/*   Updated: 2025/06/25 10:10:00 by lomont           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ static bool	check_pipe_syntax(t_shell *shell, t_token *tokens)
 	i = 0;
 	while (tokens->value[i])
 	{
-		if (tokens->value[i] == '|' && tokens->next->value[0] == '|')
+		if (tokens->value[i] == '|' && tokens->next
+			&& tokens->next->value[0] == '|')
 			return (unexpected_token(shell, "||"), false);
 		else if (tokens->value[i] == '|' && tokens->value[i + 1] == '|')
 			return (unexpected_token(shell, "||"), false);

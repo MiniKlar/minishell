@@ -6,7 +6,7 @@
 /*   By: lomont <lomont@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:05:03 by lomont            #+#    #+#             */
-/*   Updated: 2025/06/24 20:21:41 by lomont           ###   ########.fr       */
+/*   Updated: 2025/06/25 09:14:53 by lomont           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	check_id_fork_number(t_shell *shell, size_t *i)
 	}
 	if (shell->id_fork[*i] == 0)
 	{
-		set_signals_default();
+		set_signals_child();
 		create_child(shell);
 	}
 	if (shell->id_fork[*i] != 0)
@@ -39,7 +39,7 @@ void	create_children(t_shell *shell)
 	t_cmd	*tmp;
 
 	i = 0;
-	set_signals_exec();
+	ignore_sigint();
 	tmp = shell->cmd;
 	while (shell->cmd != NULL)
 	{
@@ -53,5 +53,4 @@ void	create_children(t_shell *shell)
 			close(shell->pipex->in_fd);
 	}
 	shell->cmd = tmp;
-	set_signals_interactive();
 }

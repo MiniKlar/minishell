@@ -23,7 +23,7 @@ bool	check_redir_delimiter(char *str, int *idx_str);
 /* Syntax */
 
 bool	check_syntax(t_shell *shell, t_token *tokens);
-t_token	*proccess_raw_tokens(t_token *raw_tokens, int exit_code);
+t_token	*process_raw_tokens(t_token *raw_tokens, int exit_code);
 t_token	*fill_raw_tokens(t_shell *shell, t_token **raw_tokens, char *line);
 
 /* Utils */
@@ -48,3 +48,4 @@ bool	redir_outfile(t_shell *shell);
 bool	redir_infile(t_shell *shell);
 bool	redir_cmd_input_output(t_shell *shell, bool *error);
 bool	here_doc(t_cmd *cmd, int i);
+bool	heredoc_wrapper(t_cmd *cmd, int fd);

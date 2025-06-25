@@ -1,68 +1,72 @@
 #include "minishell.h"
 
-void	sigint_handler_child(int signal, t_shell *shell)
+void	ignore_sigint(void)
 {
-	if (signal == SIGINT && shell->is_child)
-		write(STDOUT_FILENO, "\n", 1);
+	struct sigaction	sa_ignore;
+	struct sigaction	sa_child_quit;
+
+	ft_bzero(&sa_ignore, sizeof(sa_ignore));
+	sa_ignore.sa_handler = SIG_IGN;
+	sigaction(SIGINT, &sa_ignore, NULL);
+	ft_bzero(&sa_child_quit, sizeof(sa_child_quit));
+	sa_child_quit.sa_handler = SIG_IGN;
+	sigaction(SIGQUIT, &sa_child_quit, NULL);
 }
 
-void	sig_handler(int signal)
+void	sigint_handler(int signal)
 {
-	t_shell	*shell;
-
-	shell = get_shell_context(NULL);
-	if (signal == SIGINT && !shell->is_child)
+	if (signal == SIGINT)
 	{
 		write(STDOUT_FILENO, "\n", 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
-		shell->exit_code = 130;
+		g_sig = signal;
 	}
-	sigint_handler_child(signal, shell);
-	if (signal == SIGQUIT)
-	{
-		if (shell->is_child)
-			shell->exit_code = 131;
-		else
-		{
-			rl_on_new_line();
-			rl_redisplay();
-		}
-	}
+}
+
+void	sigint_handler_heredoc(int signal)
+{
+	(void)signal;
+	write(STDOUT_FILENO, "\n", 2);
+	g_sig = 2;
+}
+
+void	set_signals_heredoc(void)
+{
+	struct sigaction	sa_sigint;
+
+	ft_bzero(&sa_sigint, sizeof(sa_sigint));
+	sa_sigint.sa_handler = &sigint_handler_heredoc;
+	sa_sigint.sa_flags = 0;
+	sigaction(SIGINT, &sa_sigint, NULL);
+}
+
+void	set_signals_child(void)
+{
+	struct sigaction	sa_child;
+	struct sigaction	sa_child_quit;
+
+	ft_bzero(&sa_child, sizeof(sa_child));
+	sa_child.sa_handler = SIG_DFL;
+	sigaction(SIGINT, &sa_child, NULL);
+	ft_bzero(&sa_child_quit, sizeof(sa_child_quit));
+	sa_child_quit.sa_handler = SIG_IGN;
+	sa_child_quit.sa_flags = 0;
+	sigaction(SIGQUIT, &sa_child_quit, NULL);
 }
 
 void	set_signals_interactive(void)
 {
-	struct sigaction	act;
+	struct sigaction	sa;
+	struct sigaction	sb;
 
-	ft_bzero(&act, sizeof(act));
-	act.sa_handler = &sig_handler;
-	act.sa_flags = SA_RESTART;
-	sigaction(SIGINT, &act, NULL);
-	ft_bzero(&act, sizeof(act));
-	act.sa_handler = SIG_IGN;
-	act.sa_flags = SA_RESTART;
-	sigaction(SIGQUIT, &act, NULL);
-}
-
-void	set_signals_exec(void)
-{
-	struct sigaction	act;
-
-	ft_bzero(&act, sizeof(act));
-	act.sa_handler = SIG_IGN;
-	act.sa_flags = SA_RESTART;
-	sigaction(SIGINT, &act, NULL);
-	sigaction(SIGQUIT, &act, NULL);
-}
-
-void	set_signals_default(void)
-{
-	struct sigaction	act;
-
-	ft_bzero(&act, sizeof(act));
-	act.sa_handler = SIG_DFL;
-	sigaction(SIGINT, &act, NULL);
-	sigaction(SIGQUIT, &act, NULL);
+	ft_bzero(&sa, sizeof(sa));
+	sa.sa_handler = &sigint_handler;
+	sa.sa_flags = SA_RESTART;
+	sigaction(SIGINT, &sa, NULL);
+	ft_bzero(&sb, sizeof(sb));
+	sb.sa_handler = SIG_IGN;
+	sb.sa_flags = SA_RESTART;
+	sigaction(SIGQUIT, &sb, NULL);
 }

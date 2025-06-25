@@ -6,7 +6,7 @@
 /*   By: lomont <lomont@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 00:04:52 by miniklar          #+#    #+#             */
-/*   Updated: 2025/05/22 16:43:53 by lomont           ###   ########.fr       */
+/*   Updated: 2025/06/25 08:52:57 by lomont           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,11 @@ void	ft_putstr_fd(char *s, int fd)
 {
 	while (*s)
 	{
-		write(fd, &*s, 1);
+		if (write(fd, &*s, 1) == -1)
+		{
+			perror("write error");
+			return ;
+		}
 		s++;
 	}
 }
