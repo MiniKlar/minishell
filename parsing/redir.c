@@ -6,7 +6,7 @@
 /*   By: lpatin <lpatin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 23:37:28 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/24 19:24:01 by lpatin           ###   ########.fr       */
+/*   Updated: 2025/06/24 20:55:36 by lpatin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ bool	redir_heredoc_case(t_shell *shell, char *heredoc_n)
 		if (!ft_tmp_open_heredoc(shell->cmd))
 			return (false);
 		unlink(heredoc_n);
-		free(heredoc_n);
+		//free(heredoc_n);
 	}
 	return (true);
 }

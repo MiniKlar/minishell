@@ -36,6 +36,7 @@ int		handle_metacharacter(t_token **tokens, char *line, size_t i);
 int		handle_redirection_token(t_token *tokens, t_cmd *cmd);
 void	ft_del_first_raw_tokens(t_token **tokens);
 char	*ft_join_str(char *line, char *to_append);
+void	free_child(t_shell *shell, char *command_path);
 
 /* Error */
 
@@ -49,3 +50,4 @@ bool	redir_outfile(t_shell *shell);
 bool	redir_infile(t_shell *shell);
 bool	redir_cmd_input_output(t_shell *shell);
 bool	here_doc(t_cmd *cmd, int i);
+bool	heredoc_wrapper(t_cmd *cmd, int fd);

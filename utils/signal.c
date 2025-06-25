@@ -4,6 +4,14 @@ void	sigint_handler_child(int signal, t_shell *shell)
 {
 	if (signal == SIGINT && shell->is_child)
 		write(STDOUT_FILENO, "\n", 1);
+	else if (signal == SIGQUIT)
+	{
+		if (shell->is_child)
+		{
+			write(STDOUT_FILENO, "\n", 8);
+			shell->exit_code = 131;
+		}
+	}
 }
 
 void	sig_handler(int signal)
@@ -18,23 +26,19 @@ void	sig_handler(int signal)
 		rl_on_new_line();
 		rl_redisplay();
 		shell->exit_code = 130;
+		free(shell->readline_cmd);
+		shell->readline_cmd = NULL;
+		return ;
 	}
-	sigint_handler_child(signal, shell);
-	if (signal == SIGQUIT)
-	{
-		if (shell->is_child)
-			shell->exit_code = 131;
-		else
-		{
-			rl_on_new_line();
-			rl_redisplay();
-		}
-	}
+	else
+		sigint_handler_child(signal, shell);
+	if (shell->is_child)
+		sigint_handler_child(signal, shell);
 }
 
-void	set_signals_interactive(void)
+void set_signals_interactive(void)
 {
-	struct sigaction	act;
+	struct sigaction act;
 
 	ft_bzero(&act, sizeof(act));
 	act.sa_handler = &sig_handler;
@@ -51,7 +55,7 @@ void	set_signals_exec(void)
 	struct sigaction	act;
 
 	ft_bzero(&act, sizeof(act));
-	act.sa_handler = SIG_IGN;
+	act.sa_handler = &sig_handler;
 	act.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &act, NULL);
 	sigaction(SIGQUIT, &act, NULL);

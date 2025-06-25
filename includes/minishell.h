@@ -41,4 +41,6 @@ bool			find_change_env(t_envp *env, char *new_env, char *target_env);
 void			set_signals_exec(void);
 void			set_signals_interactive(void);
 void			set_signals_default(void);
+void			heredoc_signal_handler(void);
+void			read_heredoc(t_cmd *cmd, int fd);
 t_shell			*get_shell_context(t_shell *shell);

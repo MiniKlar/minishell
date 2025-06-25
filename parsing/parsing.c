@@ -6,7 +6,7 @@
 /*   By: lpatin <lpatin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 21:21:34 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/24 19:21:35 by lpatin           ###   ########.fr       */
+/*   Updated: 2025/06/25 00:47:01 by lpatin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	error_heredoc_creation(t_shell **shell)
 {
 	(*shell)->cmd = (*shell)->first_cmd;
 	free_shell((*shell));
+	shell = NULL;
 	return ;
 }
 
@@ -34,7 +35,10 @@ t_shell	*process_heredoc(t_shell **shell)
 			if ((*shell)->cmd->redir->symbol != HERE_DOC)
 				;
 			else if (!here_doc((*shell)->cmd, i))
+			{
 				error_heredoc_creation(shell);
+				return (false);
+			}
 			(*shell)->cmd->redir = (*shell)->cmd->redir->next;
 			i++;
 		}
