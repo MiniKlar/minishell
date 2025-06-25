@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_init.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lpatin <lpatin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 16:25:30 by lomont            #+#    #+#             */
+<<<<<<< Updated upstream
 /*   Updated: 2025/06/19 02:26:55 by miniklar         ###   ########.fr       */
+=======
+/*   Updated: 2025/06/25 01:35:17 by lpatin           ###   ########.fr       */
+>>>>>>> Stashed changes
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +28,7 @@ t_shell	*init_shell(char **envp)
 	}
 	shell->envp = ft_malloc_envp(envp);
 	shell->cmd = NULL;
+	shell->readline_cmd = NULL;
 	shell->id_fork = NULL;
 	shell->pipex = NULL;
 	shell->nb_pipe = 0;

@@ -6,12 +6,56 @@
 /*   By: lpatin <lpatin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 21:21:34 by miniklar          #+#    #+#             */
+<<<<<<< Updated upstream
 /*   Updated: 2025/06/23 18:30:44 by lpatin           ###   ########.fr       */
+=======
+/*   Updated: 2025/06/25 00:47:01 by lpatin           ###   ########.fr       */
+>>>>>>> Stashed changes
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
+<<<<<<< Updated upstream
+=======
+void	error_heredoc_creation(t_shell **shell)
+{
+	(*shell)->cmd = (*shell)->first_cmd;
+	free_shell((*shell));
+	shell = NULL;
+	return ;
+}
+
+t_shell	*process_heredoc(t_shell **shell)
+{
+	int		i;
+	t_redir	*tmp_redir;
+
+	i = 0;
+	(*shell)->first_cmd = (*shell)->cmd;
+	while ((*shell)->cmd)
+	{
+		tmp_redir = (*shell)->cmd->redir;
+		while ((*shell)->cmd->redir)
+		{
+			if ((*shell)->cmd->redir->symbol != HERE_DOC)
+				;
+			else if (!here_doc((*shell)->cmd, i))
+			{
+				error_heredoc_creation(shell);
+				return (false);
+			}
+			(*shell)->cmd->redir = (*shell)->cmd->redir->next;
+			i++;
+		}
+		(*shell)->cmd->redir = tmp_redir;
+		(*shell)->cmd = (*shell)->cmd->next;
+	}
+	(*shell)->cmd = (*shell)->first_cmd;
+	return (*shell);
+}
+
+>>>>>>> Stashed changes
 t_shell	*parse_tokens(t_shell *shell, t_token *tokens)
 {
 	shell->cmd = init_cmd(NULL);
