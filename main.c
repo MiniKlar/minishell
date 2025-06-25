@@ -1,11 +1,7 @@
 #include "minishell.h"
 
-int main(void)
+void	free_ctrl_d(t_shell *shell)
 {
-<<<<<<< Updated upstream
-	t_shell *shell;
-	char *command;
-=======
 	free_all(shell);
 	free_array(shell->envp);
 	free(shell);
