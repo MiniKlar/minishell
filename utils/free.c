@@ -9,12 +9,12 @@ void	free_eof(t_shell *shell)
 
 void	free_all(t_shell *shell)
 {
-	if (shell)
-		free_shell(shell);
 	if (shell->pipex && shell->is_child)
 		free(shell->pipex);
 	if (shell->id_fork && shell->is_child)
 		free(shell->id_fork);
+	if (shell)
+		free_shell(shell);
 }
 
 void	free_child(t_shell *shell, char *command_path)

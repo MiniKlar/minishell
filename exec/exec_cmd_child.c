@@ -6,7 +6,7 @@
 /*   By: lomont <lomont@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:14:42 by lpatin            #+#    #+#             */
-/*   Updated: 2025/06/24 23:59:43 by lomont           ###   ########.fr       */
+/*   Updated: 2025/06/25 12:39:20 by lomont           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,11 @@ void	check_redir(t_shell *shell, char *command_path)
 	error = false;
 	if (!redir_cmd_input_output(shell, &error))
 	{
-		free_child(shell, command_path);
-		exit(EXIT_FAILURE);
+		if (shell->is_child)
+		{
+			free_child(shell, command_path);
+			exit(EXIT_FAILURE);
+		}
 	}
 }
 

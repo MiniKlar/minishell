@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpatin <lpatin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lomont <lomont@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:11:27 by lpatin            #+#    #+#             */
-/*   Updated: 2025/06/24 19:14:19 by lpatin           ###   ########.fr       */
+/*   Updated: 2025/06/25 11:20:43 by lomont           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ bool	check_arg_export_syntax(char *arg)
 	bool	egal_seen;
 
 	i = 0;
-	egal_seen = false;
+	egal_seen = true;
 	if ((!ft_isalpha(arg[0]) && arg[0] != '_') || arg[0] == '\0')
 		return (error_export(arg, 0));
 	while (arg[++i])
@@ -64,7 +64,7 @@ bool	check_arg_export_syntax(char *arg)
 			egal_seen = true;
 			break ;
 		}
-		else if (ft_isalnum(arg[i]) != true && arg[i + 1] != '=' && arg[i]
+		if (ft_isalnum(arg[i]) != true && arg[i + 1] != '=' && arg[i]
 			!= '_')
 			return (error_export(arg, 0));
 		else if (ft_isalnum(arg[i]) != true && arg[i + 1] == '=' && arg[i]
@@ -115,7 +115,7 @@ void	export_all(char **envp)
 				index_egal = k;
 			ft_putchar_fd(envp[i][k], 1);
 		}
-		if (envp[i][k] == '\0' && index_egal != k - 1)
+		if (envp[i][k] == '\0' && index_egal != k - 1 && index_egal != 0)
 			ft_putstr_fd("\"\n", 1);
 		else
 			ft_putchar_fd('\n', 1);

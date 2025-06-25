@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpatin <lpatin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lomont <lomont@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 03:48:58 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/24 17:04:55 by lpatin           ###   ########.fr       */
+/*   Updated: 2025/06/25 11:00:22 by lomont           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,7 @@ static bool	check_arg_is_command(t_shell *shell)
 				error_path_env(shell);
 			else
 			{
-				if (ft_strncmp(cmd_path, shell->cmd->cmd[0],
-						ft_strlen(cmd_path)) == 0)
-					free(cmd_path);
+				free(cmd_path);
 				exec(shell);
 			}
 			return (false);

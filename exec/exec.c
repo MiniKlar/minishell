@@ -6,7 +6,7 @@
 /*   By: lomont <lomont@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:20:57 by lpatin            #+#    #+#             */
-/*   Updated: 2025/06/25 01:23:58 by lomont           ###   ########.fr       */
+/*   Updated: 2025/06/25 11:58:52 by lomont           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	exec_no_command(t_shell *shell)
 {
+	shell->is_child = false;
 	if (shell->cmd->redir)
 	{
 		check_redir(shell, NULL);

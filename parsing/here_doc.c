@@ -56,8 +56,8 @@ bool	read_heredoc(t_cmd *cmd, int fd)
 		ft_putstr_fd(word, fd);
 		free(word);
 	}
-	while (get_next_line(STDIN_FILENO) != NULL)
-		get_next_line(STDIN_FILENO);
+	while (get_next_line(fd) != NULL)
+		get_next_line(fd);
 	return (free(word), close(fd), true);
 }
 

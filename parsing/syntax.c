@@ -6,7 +6,7 @@
 /*   By: lomont <lomont@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 21:21:36 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/25 10:10:00 by lomont           ###   ########.fr       */
+/*   Updated: 2025/06/25 11:47:38 by lomont           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,8 @@
 
 static bool	check_pipe_syntax(t_shell *shell, t_token *tokens)
 {
-	size_t	i;
-
-	i = 0;
-	while (tokens->value[i])
-	{
-		if (tokens->value[i] == '|' && tokens->next
-			&& tokens->next->value[0] == '|')
-			return (unexpected_token(shell, "||"), false);
-		else if (tokens->value[i] == '|' && tokens->value[i + 1] == '|')
-			return (unexpected_token(shell, "||"), false);
-		i++;
-	}
+	if (tokens->value[0] == '|' && !tokens->next)
+		return (unexpected_token(shell, "|"), false);
 	return (true);
 }
 
@@ -74,7 +64,9 @@ bool	check_syntax(t_shell *shell, t_token *tokens)
 {
 	if (!tokens)
 		return (false);
-	if (tokens->value[0] == '|' && !tokens->next)
+	if (tokens->value[0] == '|' || ((tokens->value[0] == '|' && !tokens->next)
+		&& (tokens->value[0] == '|' && tokens->next->value[0] == '|'
+				&& !tokens->next->next)))
 		return (unexpected_token(shell, tokens->value));
 	while (tokens)
 	{
@@ -84,9 +76,6 @@ bool	check_syntax(t_shell *shell, t_token *tokens)
 			return (false);
 		if (tokens->value[0] == '&' && tokens->value[1] == '&')
 			return (unexpected_token(shell, "&&"));
-		if (tokens->value[0] == '|' && ((tokens->value[1] != '\0')
-				|| !tokens->next))
-			return (unexpected_token(shell, "||"));
 		if (tokens->value[0] == '<' && tokens->value[1] == '>'
 			&& tokens->value[2] == '\0')
 			return (unexpected_token(shell, NULL));

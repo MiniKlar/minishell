@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miniklar <miniklar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lomont <lomont@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 16:17:06 by lomont            #+#    #+#             */
-/*   Updated: 2025/06/21 02:07:32 by miniklar         ###   ########.fr       */
+/*   Updated: 2025/06/25 11:57:16 by lomont           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	free_shell(t_shell *shell)
 	if (!shell)
 		return ;
 	shell->nb_pipe = 0;
+	shell->is_child = false;
 	if (shell->cmd->fd_in > -1)
 		close(shell->cmd->fd_in);
 	if (shell->cmd->fd_out > -1)

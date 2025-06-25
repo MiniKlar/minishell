@@ -15,7 +15,7 @@ bool	redir_infile(t_shell *shell)
 
 	str = shell->cmd->redir->str;
 	if (access(str, F_OK) != 0)
-		error_infile(str);
+		return(error_infile(str), false);
 	else if (access(str, R_OK) != 0)
 	{
 		ft_putstr_fd("bash: ", 2);

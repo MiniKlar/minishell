@@ -25,16 +25,7 @@ char	*find_command_exist_executable(t_shell *shell)
 			printf("bash:%s: command not found\n", shell->cmd->cmd[0]);
 		else
 			printf("bash: %s: command not found\n", shell->cmd->cmd[0]);
-		free_array(shell->envp);
-		if (shell->pipex)
-		{
-			if (shell->pipex->in_fd != -1)
-				close(shell->pipex->in_fd);
-			close(shell->pipex->fdpipe[0]);
-			close(shell->pipex->fdpipe[1]);
-		}
-		free_all(shell);
-		free(shell);
+		free_child(shell, command_path);
 		exit(127);
 	}
 	else
