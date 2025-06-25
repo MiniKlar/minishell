@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   here_doc.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lomont <lomont@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/25 12:56:32 by lomont            #+#    #+#             */
+/*   Updated: 2025/06/25 13:04:01 by lomont           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parsing.h"
 
 bool	read_heredoc(t_cmd *cmd, int fd);
@@ -29,6 +41,11 @@ bool	here_doc(t_cmd *cmd, int i)
 	return (true);
 }
 
+static void	print_heredoc_signal_msg(void)
+{
+	ft_putstr_fd("bash: here-doc terminated by signal\n", 2);
+}
+
 bool	read_heredoc(t_cmd *cmd, int fd)
 {
 	char	*word_to_match;
@@ -43,10 +60,7 @@ bool	read_heredoc(t_cmd *cmd, int fd)
 		if (!word)
 		{
 			if (g_sig == 2)
-			{
-				ft_putstr_fd("bash: here-doc terminated by signal\n", 2);
-				return (close(fd), false);
-			}
+				return (print_heredoc_signal_msg(), close(fd), false);
 			else
 				break ;
 		}

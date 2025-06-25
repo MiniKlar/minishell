@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lomont <lomont@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/25 12:57:45 by lomont            #+#    #+#             */
+/*   Updated: 2025/06/25 13:05:54 by lomont           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #pragma once
 
 #include "../LIB_SHELL/lib_shell.h"
@@ -44,3 +56,5 @@ void			set_signals_interactive(void);
 void			ignore_sigint(void);
 void			set_signals_child(void);
 void			set_signals_heredoc(void);
+void			sigint_handler(int signal);
+void			sigint_handler_heredoc(int signal);

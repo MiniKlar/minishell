@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpatin <lpatin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lomont <lomont@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 21:28:32 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/24 19:04:58 by lpatin           ###   ########.fr       */
+/*   Updated: 2025/06/25 12:56:01 by lomont           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,7 @@ static char	*search_useruid(char *user_uid, int fd)
 	{
 		if (!str)
 			return (NULL);
-		if (ft_strnstr(str, user_uid, ft_strlen(str)) == 0)
-			continue ;
-		else
+		else if (ft_strnstr(str, user_uid, ft_strlen(str)) == 0)
 			break ;
 		str = get_next_line(fd);
 	}

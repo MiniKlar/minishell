@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signal.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lomont <lomont@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/25 12:56:11 by lomont            #+#    #+#             */
+/*   Updated: 2025/06/25 13:05:02 by lomont           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	ignore_sigint(void)
@@ -11,25 +23,6 @@ void	ignore_sigint(void)
 	ft_bzero(&sa_child_quit, sizeof(sa_child_quit));
 	sa_child_quit.sa_handler = SIG_IGN;
 	sigaction(SIGQUIT, &sa_child_quit, NULL);
-}
-
-void	sigint_handler(int signal)
-{
-	if (signal == SIGINT)
-	{
-		write(STDOUT_FILENO, "\n", 1);
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-		g_sig = signal;
-	}
-}
-
-void	sigint_handler_heredoc(int signal)
-{
-	(void)signal;
-	write(STDOUT_FILENO, "\n", 2);
-	g_sig = 2;
 }
 
 void	set_signals_heredoc(void)

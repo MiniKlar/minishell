@@ -6,7 +6,7 @@
 /*   By: lomont <lomont@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 21:21:36 by miniklar          #+#    #+#             */
-/*   Updated: 2025/06/25 11:47:38 by lomont           ###   ########.fr       */
+/*   Updated: 2025/06/25 12:57:01 by lomont           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ bool	check_syntax(t_shell *shell, t_token *tokens)
 	if (!tokens)
 		return (false);
 	if (tokens->value[0] == '|' || ((tokens->value[0] == '|' && !tokens->next)
-		&& (tokens->value[0] == '|' && tokens->next->value[0] == '|'
+			&& (tokens->value[0] == '|' && tokens->next->value[0] == '|'
 				&& !tokens->next->next)))
 		return (unexpected_token(shell, tokens->value));
 	while (tokens)

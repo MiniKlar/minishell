@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   infile.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lomont <lomont@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/25 12:55:11 by lomont            #+#    #+#             */
+/*   Updated: 2025/06/25 12:55:34 by lomont           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 bool	error_infile(char *str)
@@ -15,7 +27,7 @@ bool	redir_infile(t_shell *shell)
 
 	str = shell->cmd->redir->str;
 	if (access(str, F_OK) != 0)
-		return(error_infile(str), false);
+		return (error_infile(str), false);
 	else if (access(str, R_OK) != 0)
 	{
 		ft_putstr_fd("bash: ", 2);
