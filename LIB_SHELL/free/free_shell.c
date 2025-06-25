@@ -7,7 +7,11 @@
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 16:17:06 by lomont            #+#    #+#             */
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 /*   Updated: 2025/06/19 02:29:51 by miniklar         ###   ########.fr       */
+=======
+/*   Updated: 2025/06/25 02:09:52 by lpatin           ###   ########.fr       */
+>>>>>>> Stashed changes
 =======
 /*   Updated: 2025/06/25 02:09:52 by lpatin           ###   ########.fr       */
 >>>>>>> Stashed changes
@@ -24,6 +28,7 @@ void	free_shell(t_shell *shell)
 		free_cmd_struct(shell->first_cmd);
 	shell->nb_pipe = 0;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	if (shell->fd_in > -1)
 		close(shell->fd_in);
 	if (shell->fd_out > -1)
@@ -33,6 +38,8 @@ void	free_shell(t_shell *shell)
 	if (shell->tmp_stdout > -1)
 		close(shell->tmp_stdout);
 =======
+=======
+>>>>>>> Stashed changes
 	if (shell->cmd)
 	{
 		if (shell->cmd->fd_in > -1)
@@ -45,5 +52,8 @@ void	free_shell(t_shell *shell)
 			close(shell->tmp_stdin);
 		if (shell->tmp_stdout > -1)
 			close(shell->tmp_stdout);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 }

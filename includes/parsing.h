@@ -37,7 +37,10 @@ int		handle_redirection_token(t_token *tokens, t_cmd *cmd);
 void	ft_del_first_raw_tokens(t_token **tokens);
 char	*ft_join_str(char *line, char *to_append);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 void	free_child(t_shell *shell, char *command_path);
 
 >>>>>>> Stashed changes
@@ -56,4 +59,7 @@ bool	redir_infile(t_shell *shell);
 bool	redir_cmd_input_output(t_shell *shell);
 bool	here_doc(t_cmd *cmd, int i);
 bool	heredoc_wrapper(t_cmd *cmd, int fd);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes

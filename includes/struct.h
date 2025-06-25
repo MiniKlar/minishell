@@ -7,7 +7,11 @@
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 19:52:35 by lomont            #+#    #+#             */
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 /*   Updated: 2025/06/19 20:05:01 by lpatin           ###   ########.fr       */
+=======
+/*   Updated: 2025/06/25 01:34:43 by lpatin           ###   ########.fr       */
+>>>>>>> Stashed changes
 =======
 /*   Updated: 2025/06/25 01:34:43 by lpatin           ###   ########.fr       */
 >>>>>>> Stashed changes

@@ -15,6 +15,9 @@ int main(void)
 int	main(void)
 {
 	t_shell	*shell;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 	shell = init_shell(environ);
@@ -23,8 +26,13 @@ int	main(void)
 	while (1)
 	{
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		command = readline("bash-5.1$ ");
 		if (command == NULL)
+=======
+		shell->readline_cmd = readline("minishell$ ");
+		if (shell->readline_cmd == NULL)
+>>>>>>> Stashed changes
 =======
 		shell->readline_cmd = readline("minishell$ ");
 		if (shell->readline_cmd == NULL)

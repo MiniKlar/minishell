@@ -7,7 +7,11 @@
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 21:21:28 by miniklar          #+#    #+#             */
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 /*   Updated: 2025/06/23 18:28:59 by lpatin           ###   ########.fr       */
+=======
+/*   Updated: 2025/06/25 00:32:52 by lpatin           ###   ########.fr       */
+>>>>>>> Stashed changes
 =======
 /*   Updated: 2025/06/25 00:32:52 by lpatin           ###   ########.fr       */
 >>>>>>> Stashed changes
